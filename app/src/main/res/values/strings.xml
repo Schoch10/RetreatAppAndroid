@@ -1,0 +1,37 @@
+<resources>
+    <string name="app_name">RetreatApplication</string>
+
+    //Welcome Screen Strings
+    <string name="welcome">Welcome to the Slalom T Party!</string>
+    <string name="next_button">Next</string>
+
+    //Create User Strings
+    <string name="createUserLabel">Create User</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_create_user">CreateUserActivity</string>
+    <string name="title_activity_retreat_app_main_view">RetreatAppMainView</string>
+
+    //Main Activity View Strings
+
+    <string name="countdown_title_label">Countdown to Prohibition</string>
+    <string name="countdown_timer_label">Timer</string>
+    <string name="top_secret_label">Top Secret</string>
+    <string name="information_button">Info</string>
+    <string name="agenda_button">Agenda</string>
+    <string name="activities_button">Activities</string>
+    <string name="trending_button">Trending</string>
+
+    //Info Page Strings
+    <string name="information">Retreat Information</string>
+
+    //Trending Page String
+    <string name="trending">Trending</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="title_activity_game_view">GameViewActivity</string>
+    <string name="title_activity_information">InformationActivity</string>
+    <string name="title_activity_agenda">AgendaActivity</string>
+    <string name="title_activity_activities">ActivitiesActivity</string>
+    <string name="title_activity_trending">TrendingActivity</string>
+
+</resources>
