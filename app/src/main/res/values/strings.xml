@@ -4,6 +4,7 @@
     //Welcome Screen Strings
     <string name="welcome">Welcome to the Slalom T Party!</string>
     <string name="next_button">Next</string>
+    <string name="first_load">Yes</string>
 
     //Create User Strings
     <string name="createUserLabel">Create User</string>
