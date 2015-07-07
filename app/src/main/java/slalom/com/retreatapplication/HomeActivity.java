@@ -20,17 +20,19 @@ public class HomeActivity extends ActionBarActivity {
 
         SharedPreferences prefs = getPreferences(MODE_PRIVATE);
         Log.d(TAG, prefs.toString());
+        /*
         if (prefs.getBoolean("firstrun", true)) {
             Log.d(TAG, "firstrun: true");
+        */
             setContentView(R.layout.activity_home);
+        /*
             prefs.edit().putBoolean("firstrun", false).commit();
         } else if (!prefs.getBoolean("firstrun", false)) {
             Log.d(TAG, "firstrun: false");
             setContentView(R.layout.activity_retreat_app_main_view);
             prefs.edit().putBoolean("firstrun", true).commit();
         }
-
-
+        */
     }
 
 
