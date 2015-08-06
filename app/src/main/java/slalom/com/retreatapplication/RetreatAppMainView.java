@@ -1,11 +1,17 @@
 package slalom.com.retreatapplication;
 
+import android.os.CountDownTimer;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.content.Intent;
+import android.widget.TextView;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 
 public class RetreatAppMainView extends ActionBarActivity {
@@ -14,6 +20,7 @@ public class RetreatAppMainView extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_retreat_app_main_view);
+        setCountdowntimer((TextView)findViewById(R.id.textView3));
     }
 
     @Override
@@ -61,5 +68,38 @@ public class RetreatAppMainView extends ActionBarActivity {
     public void trendingButtonSelected(View view) {
         Intent trendingIntent = new Intent(this, TrendingActivity.class);
         startActivity(trendingIntent);
+    }
+
+    public void setCountdowntimer(View view) {
+        final TextView textView = (TextView)view;
+        Date now = new Date();
+        SimpleDateFormat dformat = new SimpleDateFormat("dd.MM.yyyy");
+        Date date = null;
+        try {
+            date = dformat.parse("28.08.2015");
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        long millisecondsLeft = date.getTime() - now.getTime();
+
+        CountDownTimer timer = new CountDownTimer(millisecondsLeft, 1000) {
+            int days, hours, minutes, seconds, secondsLeft;
+
+            public void onTick(long millisecondsLeft) {
+                secondsLeft = (int)(millisecondsLeft / 1000);
+                days = secondsLeft / 86400;
+                hours = (secondsLeft % 86400) / 3600;
+                minutes = (secondsLeft % 3600) / 60;
+                seconds = (secondsLeft % 3600) % 60;
+
+                textView.setText(String.format("%d:%02d:%02d:%02d",days,hours,minutes,seconds));
+            }
+
+            public void onFinish() {
+                textView.setText("Time to party!!");
+            }
+        }.start();
+
     }
 }
