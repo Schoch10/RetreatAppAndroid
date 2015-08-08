@@ -24,13 +24,15 @@
 
     //Info Page Strings
     <string name="information">Retreat Information</string>
+    <string name="address">310 Mount Washington Hotel Rd, Bretton Woods, NH 03575</string>
+    <string name="phone_number">603-278-1000</string>
 
     //Trending Page String
     <string name="trending">Trending</string>
 
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_game_view">GameViewActivity</string>
-    <string name="title_activity_information">InformationActivity</string>
+    <string name="title_activity_information">Information Activity</string>
     <string name="title_activity_agenda">AgendaActivity</string>
     <string name="title_activity_activities">ActivitiesActivity</string>
     <string name="title_activity_trending">TrendingActivity</string>
