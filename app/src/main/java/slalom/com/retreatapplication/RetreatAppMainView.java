@@ -20,7 +20,7 @@ public class RetreatAppMainView extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_retreat_app_main_view);
-        setCountdowntimer((TextView)findViewById(R.id.textView3));
+        setCountdowntimer(findViewById(R.id.textView3));
     }
 
     @Override

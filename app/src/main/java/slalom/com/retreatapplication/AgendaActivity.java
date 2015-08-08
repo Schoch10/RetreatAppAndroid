@@ -5,15 +5,10 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ListView;
-import android.widget.SimpleAdapter;
-
-import java.util.ArrayList;
-import java.util.HashMap;
 
 
 public class AgendaActivity extends Activity {
 
-    private SimpleAdapter sa;
     private String[][] agenda = {
             { "Arrive & Checkin", "Mt. Omni Lobby" },
             { "Cocktail Hour", "Mt. Omni Pool" },
@@ -23,26 +18,24 @@ public class AgendaActivity extends Activity {
             { "Breakfast", "Mt. Omni Restaurant" },
             { "Checkout", "Mt. Omni Lobby" }
     };
-    ArrayList<HashMap<String,String>> list = new ArrayList<HashMap<String,String>>();
+    private Integer[] imgId = {
+            R.drawable.ic_launcher,
+            R.drawable.ic_launcher,
+            R.drawable.ic_launcher,
+            R.drawable.ic_launcher,
+            R.drawable.ic_launcher,
+            R.drawable.ic_launcher,
+            R.drawable.ic_launcher
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_agenda);
 
-        HashMap<String,String> item;
-        for(int i=0; i<agenda.length; i++){
-            item = new HashMap<String,String>();
-            item.put( "line1", agenda[i][0]);
-            item.put( "line2", agenda[i][1]);
-            list.add( item );
-        }
-        sa = new SimpleAdapter(this, list,
-                android.R.layout.simple_list_item_2,
-                new String[] { "line1","line2" },
-                new int[] {android.R.id.text1, android.R.id.text2});
-        ListView listView = (ListView) findViewById(R.id.listView);
-        listView.setAdapter(sa);
+        CustomListAdapter customAdapter = new CustomListAdapter(this, agenda, imgId);
+        ListView listView = (ListView) findViewById(R.id.listView1);
+        listView.setAdapter(customAdapter);
     }
 
     @Override
