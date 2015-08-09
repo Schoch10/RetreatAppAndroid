@@ -1,111 +1,120 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    android:paddingBottom="@dimen/activity_vertical_margin"
     tools:context="slalom.com.retreatapplication.RetreatAppMainView">
 
-    <TextView android:text="@string/countdown_title_label" android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:textSize="20sp"
+    <TextView
         android:id="@+id/textView2"
-        android:textAlignment="center"
-        android:gravity="center"/>
-
-    <TextView android:text="@string/countdown_timer_label" android:layout_width="wrap_content"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="25sp"
-        android:layout_below="@+id/textView2"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:gravity="center"
+        android:text="@string/countdown_title_label"
+        android:textAlignment="center"
+        android:textSize="24sp"
+        android:textColor="#0372C8" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/textView2"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_alignRight="@+id/textView2"
-        android:layout_alignEnd="@+id/textView2"
-        android:textAlignment="center"
+        android:layout_below="@+id/textView2"
         android:gravity="center"
-        android:id="@+id/textView3" />
+        android:text="@string/countdown_timer_label"
+        android:textAlignment="center"
+        android:textSize="30sp"
+        android:textColor="#000000"/>
 
-    <Button
+    <ImageView
+        android:id="@+id/imageView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/top_secret_label"
+        android:layout_below="@+id/textView3"
+        android:layout_above="@+id/textView4"
+        android:maxHeight="130dp"
+        android:minWidth="150dp"
+        android:src="@mipmap/ic_launcher"
+        android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="User Name"
+        android:gravity="center"
+        android:layout_above="@+id/button6"
+        android:layout_marginBottom="5dp"
+        android:layout_centerHorizontal="true"
+        android:textColor="#0372C8"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <Button
+        android:id="@+id/button6"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="trendingButtonSelected"
+        android:text="@string/trending_button"
+        android:layout_centerVertical="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:background="#0372C8"
+        android:textColor="#FFFFFF"
+        android:layout_above="@+id/linearLayout" />
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:orientation="horizontal"
+        android:weightSum="1"
+        android:layout_above="@+id/button2"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp" >
+
+        <Button
+            android:id="@+id/button3"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.5"
+            android:onClick="infoButtonSelected"
+            android:text="@string/information_button" />
+
+        <Button
+            android:id="@+id/button4"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.5"
+            android:onClick="agendaButtonSelected"
+            android:text="@string/agenda_button"
+            android:singleLine="false" />
+    </LinearLayout>
+
+    <Button
         android:id="@+id/button2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/textView3"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_alignRight="@+id/textView3"
-        android:layout_alignEnd="@+id/textView3"
-        android:onClick="gameViewSelected"/>
-
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="150dp"
-        android:layout_below="@+id/textView3"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:weightSum="1"
-        android:id="@+id/linearLayout">
-
-
-        <Button
-            android:layout_width="120dp"
-            android:layout_height="130dp"
-            android:text="@string/information_button"
-            android:id="@+id/button3"
-            android:onClick="infoButtonSelected"/>
-
-        <Button
-            android:layout_width="120dp"
-            android:layout_height="132dp"
-            android:text="@string/agenda_button"
-            android:id="@+id/button4"
-            android:layout_weight="0.28"
-            android:onClick="agendaButtonSelected"/>
-
-        <Button
-            android:layout_width="120dp"
-            android:layout_height="132dp"
-            android:text="@string/activities_button"
-            android:id="@+id/button5"
-            android:layout_weight="0.39"
-            android:onClick="activitiesButtonSelected"/>
-    </LinearLayout>
-
-    <ImageView
-        android:layout_width="150dp"
-        android:layout_height="130dp"
-        android:id="@+id/imageView"
-        android:layout_below="@+id/linearLayout"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:src="@mipmap/ic_launcher" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="User Name"
-        android:id="@+id/textView4"
-        android:layout_centerVertical="true"
-        android:layout_toRightOf="@+id/imageView"
-        android:layout_toEndOf="@+id/imageView" />
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/trending_button"
-        android:id="@+id/button6"
-        android:layout_below="@+id/imageView"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignRight="@+id/button2"
-        android:layout_alignEnd="@+id/button2"
-        android:onClick="trendingButtonSelected"/>
-
+        android:onClick="gameViewSelected"
+        android:text="@string/top_secret_label"
+        android:background="#808080"/>
 
 </RelativeLayout>

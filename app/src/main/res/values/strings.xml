@@ -14,7 +14,7 @@
 
     //Main Activity View Strings
 
-    <string name="countdown_title_label">Countdown to Prohibition</string>
+    <string name="countdown_title_label">Countdown</string>
     <string name="countdown_timer_label">Timer</string>
     <string name="top_secret_label">Top Secret</string>
     <string name="information_button">Info</string>
