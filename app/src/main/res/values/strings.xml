@@ -35,4 +35,7 @@
     <string name="title_activity_activities">ActivitiesActivity</string>
     <string name="title_activity_trending">TrendingActivity</string>
 
+
+    //Activity/Location Page Strings
+    <string name="omni_placeholder">Omni Resort Mount Washington</string>
 </resources>
