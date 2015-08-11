@@ -25,6 +25,7 @@ import java.util.Map;
  */
 public class TPartyService extends IntentService {
 
+    // Do we really need a service? Should we just use async tasks instead?
     private final String TPARTY_ENDPOINT = "http://tpartyservice-dev.elasticbeanstalk.com/home/";
     private final String CHECK_INS = TPARTY_ENDPOINT + "pollparticipantlocations";
     private final String POSTS = TPARTY_ENDPOINT + "pollposts";
@@ -38,7 +39,7 @@ public class TPartyService extends IntentService {
     @Override
     protected void onHandleIntent(Intent intent) {
 
-        // all activities that call our service must include a "call" extra so we know what to do
+        // All activities that call our service must include a "call" extra so we know what to do
         try {
             switch (intent.getStringExtra("call")) {
                 case "getCheckIns":
@@ -56,15 +57,18 @@ public class TPartyService extends IntentService {
     }
 
     private JSONArray getResp(String serviceCall) throws IOException, JSONException {
-        HttpURLConnection urlConnection;
 
+        // Get data from whatever REST method we were given
         URL url = new URL(serviceCall);
-        urlConnection = (HttpURLConnection) url.openConnection();
+        HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
         InputStream in = new BufferedInputStream(urlConnection.getInputStream());
 
+        // Since all REST responses will be arrays of JSON we can just package them up
+        // as JSONArrays and send them back to the calling method
         BufferedReader r = new BufferedReader(new InputStreamReader(in));
         StringBuilder resp = new StringBuilder();
         String line;
+
         while ((line = r.readLine()) != null) {
             resp.append(line);
         }
@@ -77,6 +81,7 @@ public class TPartyService extends IntentService {
 
     private void saveCheckIns(JSONArray checkInsArray) throws JSONException {
 
+        // Get check in counts out of our array of check ins
         String locName;
         Map<String, Integer> checkIns = new HashMap<String, Integer>();
 
