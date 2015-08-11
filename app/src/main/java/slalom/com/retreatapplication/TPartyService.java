@@ -22,15 +22,15 @@ import java.util.Map;
 
 /**
  * Created by alexanderp on 8/9/2015.
+ * Do not use this class. Just keeping code around for now as referencec
  */
 public class TPartyService extends IntentService {
 
     // Do we really need a service? Should we just use async tasks instead?
     private final String TPARTY_ENDPOINT = "http://tpartyservice-dev.elasticbeanstalk.com/home/";
     private final String CHECK_INS = TPARTY_ENDPOINT + "pollparticipantlocations";
-    private final String POSTS = TPARTY_ENDPOINT + "pollposts";
+    private final String POSTS = TPARTY_ENDPOINT + "getpostsforlocation?locationid=";
     private static final String TAG = TPartyService.class.getSimpleName();
-
 
     public TPartyService() {
         super("TpartyDataService");
@@ -56,9 +56,18 @@ public class TPartyService extends IntentService {
 
     }
 
-    private JSONArray getResp(String serviceCall) throws IOException, JSONException {
+    private JSONArray getResp(String serviceCall) throws IOException, JSONException{
+        return this.getResp(serviceCall, -1);
+    }
+
+
+    private JSONArray getResp(String serviceCall, Integer locId) throws IOException, JSONException {
 
         // Get data from whatever REST method we were given
+        if (locId != -1) {
+            serviceCall.concat(locId.toString());
+        }
+
         URL url = new URL(serviceCall);
         HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
         InputStream in = new BufferedInputStream(urlConnection.getInputStream());

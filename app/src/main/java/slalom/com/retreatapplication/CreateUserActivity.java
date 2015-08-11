@@ -14,9 +14,16 @@ import android.view.MenuItem;
 import android.view.View;
 import android.content.Intent;
 import android.util.Log;
+import android.widget.EditText;
 import android.widget.ImageView;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
 public class CreateUserActivity extends ActionBarActivity {
 
@@ -29,6 +36,7 @@ public class CreateUserActivity extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_create_user);
     }
 
@@ -92,6 +100,26 @@ public class CreateUserActivity extends ActionBarActivity {
     }
     */
     public void createUserSelected(View view) {
+        /*
+        StringBuilder response = new StringBuilder();
+        EditText nameEditText = (EditText)findViewById(R.id.editText);
+        String userName = nameEditText.getText().toString();
+        try {
+            String postCall = "http://tpartyservice-dev.elasticbeanstalk.com/Home/CreateUser?username="+userName;
+            URL url = new URL(postCall);
+            HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+            InputStream in = new BufferedInputStream(urlConnection.getInputStream());
+
+            BufferedReader r = new BufferedReader(new InputStreamReader(in));
+            String line;
+
+            while ((line = r.readLine()) != null) {
+                response.append(line);
+            }
+        } catch (IOException ioE) {
+            ;
+        }
+        */
         Intent mainViewIntent = new Intent(this, RetreatAppMainView.class);
         startActivity(mainViewIntent);
     }
