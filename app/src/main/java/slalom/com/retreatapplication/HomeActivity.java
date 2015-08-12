@@ -19,8 +19,9 @@ public class HomeActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
 
 
-        Intent i = new Intent(this, TPartyService.class);
-        startService(i);
+        Intent tPartySvc = new Intent(this, TPartyService.class);
+        tPartySvc.putExtra("call", "getCheckIns");
+        startService(tPartySvc);
         // technically service stops itself, should we only initialize new service if it's been too long since last call? always initialize?
 
         SharedPreferences prefs = getPreferences(MODE_PRIVATE);
