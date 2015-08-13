@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.provider.MediaStore;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -22,8 +23,11 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLEncoder;
 
 public class CreateUserActivity extends ActionBarActivity {
 
@@ -32,6 +36,9 @@ public class CreateUserActivity extends ActionBarActivity {
 
     //Set string to easily identify debug data
     private static final String TAG = CreateUserActivity.class.getSimpleName();
+
+    private EditText nameEditText;
+    private boolean canProceed = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,27 +107,76 @@ public class CreateUserActivity extends ActionBarActivity {
     }
     */
     public void createUserSelected(View view) {
-        /*
+
         StringBuilder response = new StringBuilder();
-        EditText nameEditText = (EditText)findViewById(R.id.editText);
+        nameEditText = (EditText)findViewById(R.id.editText);
         String userName = nameEditText.getText().toString();
-        try {
-            String postCall = "http://tpartyservice-dev.elasticbeanstalk.com/Home/CreateUser?username="+userName;
-            URL url = new URL(postCall);
-            HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
-            InputStream in = new BufferedInputStream(urlConnection.getInputStream());
 
-            BufferedReader r = new BufferedReader(new InputStreamReader(in));
-            String line;
+        sendPostsAsync sendPostRunner = new sendPostsAsync();
+        sendPostRunner.execute(userName);
 
-            while ((line = r.readLine()) != null) {
-                response.append(line);
-            }
-        } catch (IOException ioE) {
-            ;
+        if (canProceed) {
+            Intent mainViewIntent = new Intent(this, RetreatAppMainView.class);
+            startActivity(mainViewIntent);
         }
-        */
-        Intent mainViewIntent = new Intent(this, RetreatAppMainView.class);
-        startActivity(mainViewIntent);
     }
+
+
+    private class sendPostsAsync extends AsyncTask<String, String, String> {
+
+        String response;
+
+        @Override
+        protected String doInBackground(String... userName)  {
+            publishProgress("Creating user record...");
+
+            try {
+
+                String postCall = "http://tpartyservice-dev.elasticbeanstalk.com/Home/CreateUser";
+                String params = "username="+URLEncoder.encode(userName[0], "utf-8");
+
+                URL url = new URL(postCall);
+                HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+
+                urlConnection.setDoOutput(true);
+                urlConnection.setRequestMethod("POST");
+
+                OutputStreamWriter outputWriter = new OutputStreamWriter(urlConnection.getOutputStream());
+
+                outputWriter.write(params);
+
+                InputStream in = new BufferedInputStream(urlConnection.getInputStream());
+                BufferedReader r = new BufferedReader(new InputStreamReader(in));
+                StringBuilder responseBuilder = new StringBuilder();
+                String line;
+
+                while ((line = r.readLine()) != null) {
+                    responseBuilder.append(line);
+                    response = responseBuilder.toString();
+                }
+
+                if (!response.equals("-1")) {
+                    canProceed=true;
+                } else {
+                    response = "Name already taken. Please try again.";
+                }
+            } catch (IOException ioE) {
+                response = "Something went wrong. Please try again.";
+            }
+
+            return response;
+
+        }
+
+        @Override
+        protected void onProgressUpdate(String... update) {
+             nameEditText.setText(update[0]);
+        }
+
+        @Override
+        protected void onPostExecute(String result){
+            nameEditText.setText(result);
+        }
+    }
+
 }

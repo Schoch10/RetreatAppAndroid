@@ -52,7 +52,9 @@ public class ActivitiesActivity extends Activity {
 
 
         ImageView test_image = (ImageView)findViewById(R.id.test_image);
+
         test_image.setImageResource(imageRsrc);
+
         test_text = (TextView)findViewById(R.id.test_text);
 
         getPostsAsync getPostsRunner = new getPostsAsync();
