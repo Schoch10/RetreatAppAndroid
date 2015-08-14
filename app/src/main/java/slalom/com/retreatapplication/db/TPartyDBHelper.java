@@ -1,4 +1,4 @@
-package slalom.com.retreatapplication;
+package slalom.com.retreatapplication.db;
 
 import android.database.sqlite.*;
 import android.content.Context;
@@ -8,6 +8,10 @@ import android.database.Cursor;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+
+import slalom.com.retreatapplication.CheckInContract;
+import slalom.com.retreatapplication.PostContract;
+import slalom.com.retreatapplication.PostObject;
 
 
 /**
