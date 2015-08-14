@@ -2,6 +2,7 @@ package slalom.com.retreatapplication.util;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,8 @@ import android.widget.TextView;
 import java.util.HashMap;
 import java.util.Map;
 
+import slalom.com.retreatapplication.ActivitiesActivity;
+import slalom.com.retreatapplication.AgendaActivity;
 import slalom.com.retreatapplication.R;
 
 /**
@@ -59,6 +62,18 @@ public class HashMapAdapter  extends BaseAdapter {
 
         textTitle.setText(key);
         textDetail.setText("Checked In: " + Value);
+
+        // Button click listener
+        textTitle.setOnClickListener(new View.OnClickListener() {
+            // When Button is clicked
+            public void onClick(View v) {
+                // Disable the button to avoid playing of song multiple times
+                textDetail.setEnabled(false);
+
+                Intent activitiesActivityIntent = new Intent(activityContext, ActivitiesActivity.class);
+                activityContext.startActivity(activitiesActivityIntent);
+            }
+        });
 
         // Button click listener
         textDetail.setOnClickListener(new View.OnClickListener() {

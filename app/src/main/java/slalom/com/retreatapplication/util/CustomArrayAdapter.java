@@ -4,30 +4,35 @@ import java.util.ArrayList;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.TextView;
 
+import slalom.com.retreatapplication.ActivitiesActivity;
 import slalom.com.retreatapplication.R;
-import slalom.com.retreatapplication.db.CheckIn;
+import slalom.com.retreatapplication.model.CheckIn;
+import slalom.com.retreatapplication.model.Location;
 
 /**
  * Created by senthilrajav on 8/10/15.
  */
-public class CustomArrayAdapter extends ArrayAdapter<CheckIn> {
+public class CustomArrayAdapter extends ArrayAdapter<Location> {
     // declaring our ArrayList of items
     private Activity activityContext;
-    private ArrayList<CheckIn> objects;
+    private ArrayList<Location> objects;
     private TextView textTitle;
     private TextView textDetail;
+    //private Button buttonRefresh;
 
     /* here we must override the constructor for ArrayAdapter
     * the only variable we care about now is ArrayList<Item> objects,
     * because it is the list of objects we want to display.
     */
-    public CustomArrayAdapter(Activity context, int textViewResourceId, ArrayList<CheckIn> objects) {
+    public CustomArrayAdapter(Activity context, int textViewResourceId, ArrayList<Location> objects) {
         super(context, textViewResourceId, objects);
         this.activityContext = context;
         this.objects = objects;
@@ -56,30 +61,32 @@ public class CustomArrayAdapter extends ArrayAdapter<CheckIn> {
 		 *
 		 * Therefore, i refers to the current Item object.
 		 */
-        CheckIn i = objects.get(position);
+        Location i = objects.get(position);
 
         if (i != null) {
 
             // This is how you obtain a reference to the TextViews.
             // These TextViews are created in the XML files we defined.
 
-            TextView textTitle = (TextView)v.findViewById(R.id.item);
+            textTitle = (TextView)v.findViewById(R.id.item);
             textDetail = (TextView)v.findViewById(R.id.textView1);
+            //buttonRefresh = (Button)v.findViewById(R.id.buttonRefresh);
 
-            String location = i.getLocation();
-            String checkIns = "CheckedIns# " + i.getCheckIns();
+            String location = i.getLocationName();
+            String checkIns = "Checked In# " + i.getCheckin();
 
             textTitle.setText(location);
             textDetail.setText(checkIns);
 
             // Button click listener
-            textDetail.setOnClickListener(new View.OnClickListener() {
+            textTitle.setOnClickListener(new View.OnClickListener() {
                 // When Button is clicked
                 public void onClick(View v) {
                     // Disable the button to avoid playing of song multiple times
                     textDetail.setEnabled(false);
-                    // Trigger Async Task (onPreExecute method)
-                    new TPartyTask().execute("getCheckIns");
+
+                    Intent activitiesActivityIntent = new Intent(activityContext, ActivitiesActivity.class);
+                    activityContext.startActivity(activitiesActivityIntent);
                 }
             });
         }

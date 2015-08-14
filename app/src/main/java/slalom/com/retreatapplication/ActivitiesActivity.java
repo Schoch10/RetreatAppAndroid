@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -170,5 +171,11 @@ public class ActivitiesActivity extends Activity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+
+    public void viewAllPostsSelected(View view) {
+        Intent trendingIntent = new Intent(this, ViewPostsActivity.class);
+        startActivity(trendingIntent);
     }
 }

@@ -1,17 +1,22 @@
 package slalom.com.retreatapplication;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import slalom.com.retreatapplication.db.TPartyDBHelper;
+import slalom.com.retreatapplication.model.Location;
+import slalom.com.retreatapplication.util.CustomArrayAdapter;
 import slalom.com.retreatapplication.util.HashMapAdapter;
 import slalom.com.retreatapplication.util.TPartyTask;
 
@@ -38,6 +43,7 @@ public class TrendingActivity extends Activity {
         setContentView(R.layout.activity_trending);
         //this.activityContext = this;
 
+        /*
         swipeLayout = (SwipeRefreshLayout)findViewById(R.id.swipe_container);
         swipeLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
@@ -50,14 +56,19 @@ public class TrendingActivity extends Activity {
         swipeLayout.setColorScheme(android.R.color.holo_blue_bright,
                 android.R.color.holo_green_light,
                 android.R.color.holo_orange_light,
-                android.R.color.holo_red_light);
+                android.R.color.holo_red_light);*/
 
         dbHelper = new TPartyDBHelper(this);
-        HashMap<String, Integer> checkIns = (HashMap<String, Integer>)dbHelper.getCheckIns();
+        ArrayList<Location> locations = (ArrayList<Location>)dbHelper.getLocations();
 
-        HashMapAdapter hashMapAdapter = new HashMapAdapter(this, checkIns);
+        CustomArrayAdapter customArrayAdapter = new CustomArrayAdapter(this, R.layout.activity_trending, locations);
         ListView listView = (ListView) findViewById(R.id.listView1);
-        listView.setAdapter(hashMapAdapter);
+        listView.setAdapter(customArrayAdapter);
+    }
+
+    public void refreshCheckInsSelected(View view) {
+        // Trigger Async Task
+        new TPartyTask().execute("getCheckIns", this);
     }
 
     @Override

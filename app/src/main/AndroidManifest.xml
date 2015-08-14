@@ -9,8 +9,7 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
-        <service android:name=".TPartyService" />
-
+        <service android:name=".util.TPartyTask" />
         <activity
             android:name=".HomeActivity"
             android:label="@string/app_name" >
@@ -47,6 +46,14 @@
         <activity
             android:name=".TrendingActivity"
             android:label="@string/title_activity_trending" >
+        </activity>
+        <activity
+            android:name=".ViewPostsActivity"
+            android:label="ViewPostsActivity" >
+        </activity>
+        <activity
+            android:name=".CreatePostActivity"
+            android:label="CreatePostActivity" >
         </activity>
     </application>
 
