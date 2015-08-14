@@ -1,6 +1,7 @@
 package slalom.com.retreatapplication;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -25,13 +26,19 @@ import java.net.URLEncoder;
 public class CreateUserActivity extends ActionBarActivity {
 
     //Set int for Select Picture Activity callback identify
-    static final int SELECT_PICTURE = 1;
+    private static final int SELECT_PICTURE = 1;
 
     //Set string to easily identify debug data
     private static final String TAG = CreateUserActivity.class.getSimpleName();
 
-    private EditText nameEditText;
+    //Don't allow users to create user unless we get explicit confirmation from service
     private boolean canProceed = false;
+
+    //Set username shared preferences variable name
+    private final String USER_NAME = "userName";
+
+    private String userName;
+    private EditText nameEditText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,15 +110,11 @@ public class CreateUserActivity extends ActionBarActivity {
 
         StringBuilder response = new StringBuilder();
         nameEditText = (EditText)findViewById(R.id.editText);
-        String userName = nameEditText.getText().toString();
+        userName = nameEditText.getText().toString();
 
         sendPostsAsync sendPostRunner = new sendPostsAsync();
         sendPostRunner.execute(userName);
 
-        if (canProceed) {
-            Intent mainViewIntent = new Intent(this, RetreatAppMainView.class);
-            startActivity(mainViewIntent);
-        }
     }
 
 
@@ -137,6 +140,7 @@ public class CreateUserActivity extends ActionBarActivity {
                 OutputStreamWriter outputWriter = new OutputStreamWriter(urlConnection.getOutputStream());
 
                 outputWriter.write(params);
+                outputWriter.flush();
 
                 InputStream in = new BufferedInputStream(urlConnection.getInputStream());
                 BufferedReader r = new BufferedReader(new InputStreamReader(in));
@@ -153,9 +157,14 @@ public class CreateUserActivity extends ActionBarActivity {
                 } else {
                     response = "Name already taken. Please try again.";
                 }
+
+                in.close();
+
             } catch (IOException ioE) {
                 response = "Something went wrong. Please try again.";
             }
+
+
 
             return response;
 
@@ -168,7 +177,17 @@ public class CreateUserActivity extends ActionBarActivity {
 
         @Override
         protected void onPostExecute(String result){
+
             nameEditText.setText(result);
+
+            if (canProceed) {
+
+                SharedPreferences settings = getPreferences(MODE_PRIVATE);
+                SharedPreferences.Editor editor = settings.edit();
+                editor.putString(USER_NAME, userName);
+                Intent mainViewIntent = new Intent(getApplicationContext(), RetreatAppMainView.class);
+                startActivity(mainViewIntent);
+            }
         }
     }
 

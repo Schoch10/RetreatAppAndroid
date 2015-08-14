@@ -26,8 +26,8 @@ import slalom.com.retreatapplication.R;
 public class ActivitiesActivity extends Activity {
 
     private static final String TAG = HomeActivity.class.getSimpleName();
-    private static final int MIN_DISTANCE = 175;
-    private final String LOC_ID_EXTRA = "locId";
+    //private static final int MIN_DISTANCE = 175;
+    private final String LOC_ID_EXTRA = "locationId";
     private final int OMNI_ID = 1;
     private Integer currentLocId;
     private float x1,x2;
@@ -61,7 +61,7 @@ public class ActivitiesActivity extends Activity {
         getPostsRunner.execute(currentLocId);
     }
 
-
+    /*
     @Override
     public boolean onTouchEvent(MotionEvent event) {
 
@@ -103,7 +103,7 @@ public class ActivitiesActivity extends Activity {
         return true;
 
     }
-
+    */
     private class getPostsAsync extends AsyncTask<Integer, String, String> {
 
         StringBuilder response = new StringBuilder();
@@ -136,7 +136,7 @@ public class ActivitiesActivity extends Activity {
                 ;
             }
 
-
+            Log.d(TAG, response.toString());
             return response.toString();
 
         }
