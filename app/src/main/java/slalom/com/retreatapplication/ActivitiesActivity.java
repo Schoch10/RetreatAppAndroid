@@ -12,6 +12,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
@@ -20,8 +22,14 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import slalom.com.retreatapplication.R;
+import slalom.com.retreatapplication.db.TPartyDBHelper;
+import slalom.com.retreatapplication.util.PostObject;
 
 public class ActivitiesActivity extends Activity {
 
@@ -106,39 +114,20 @@ public class ActivitiesActivity extends Activity {
     */
     private class getPostsAsync extends AsyncTask<Integer, String, String> {
 
-        StringBuilder response = new StringBuilder();
+        String response;
 
         @Override
-        protected String doInBackground(Integer... locationId)  {
+        protected String doInBackground(Integer... locationId) {
             publishProgress("Getting latest post...");
-
+            String location = locationId[0].toString();
             try {
-
-                Thread.sleep(3000);
-
-                String postCall = "http://tpartyservice-dev.elasticbeanstalk.com/home/getpostsforlocation?locationid="+locationId[0].toString();
-                URL url = new URL(postCall);
-                HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
-                InputStream in = new BufferedInputStream(urlConnection.getInputStream());
-
-                // Since all REST responses will be arrays of JSON we can just package them up
-                // as JSONArrays and send them back to the calling method
-                BufferedReader r = new BufferedReader(new InputStreamReader(in));
-                String line;
-
-                    while ((line = r.readLine()) != null) {
-                        response.append(line);
-                    }
-
+                savePosts(getPosts(location));
             } catch (IOException ioE) {
                 ;
-            } catch (InterruptedException iE) {
+            } catch (JSONException jE) {
                 ;
             }
-
-            Log.d(TAG, response.toString());
-            return response.toString();
-
+            return "success!";
         }
 
         @Override
@@ -147,9 +136,73 @@ public class ActivitiesActivity extends Activity {
         }
 
         @Override
-        protected void onPostExecute(String result){
+        protected void onPostExecute(String result) {
             test_text.setText(result);
         }
+
+        private JSONArray getPosts(String locationId) throws IOException, JSONException {
+            try {
+
+                Thread.sleep(3000);
+
+                String postCall = "http://tpartyservice-dev.elasticbeanstalk.com/home/getpostsforlocation?locationid=" + locationId;
+                URL url = new URL(postCall);
+                HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+                InputStream in = new BufferedInputStream(urlConnection.getInputStream());
+
+                // Since all REST responses will be arrays of JSON we can just package them up
+                // as JSONArrays and send them back to the calling method
+                StringBuilder responseBuilder = new StringBuilder();
+                BufferedReader r = new BufferedReader(new InputStreamReader(in));
+                String line;
+
+                while ((line = r.readLine()) != null) {
+                    responseBuilder.append(line);
+                }
+
+                response = responseBuilder.toString();
+
+            } catch (IOException ioE) {
+                ;
+            } catch (InterruptedException iE) {
+                ;
+            }
+
+            Log.d(TAG, response);
+
+            JSONArray resp_jArray = new JSONArray(response);
+
+            return resp_jArray;
+        }
+
+
+        private void savePosts(JSONArray checkInsArray) throws JSONException {
+
+            ArrayList<PostObject> posts = new ArrayList<PostObject>();
+            String locName;
+
+            for (int i = 0; i < checkInsArray.length(); i++) {
+                JSONObject jObj = checkInsArray.getJSONObject(i);
+
+                Integer postId = jObj.getInt("PostId");
+                Integer userId = jObj.getInt("UserId");
+                String userName = jObj.getString("UserName");
+                Integer locationId = jObj.getInt("LocationId");
+                String image = jObj.getString("S3ImageUrl");
+                String text = jObj.getString("PostText");
+                String timestampStr = jObj.getString("PostTS");
+                Integer timestamp = Integer.parseInt(timestampStr.substring(6, 19));
+
+                PostObject post = new PostObject(postId, userId, userName, locationId, image, text, timestamp);
+
+                posts.add(post);
+            }
+
+            TPartyDBHelper dbHelper = new TPartyDBHelper(ActivitiesActivity.this);
+            dbHelper.savePosts(posts);
+
+        }
+
     }
 
     @Override

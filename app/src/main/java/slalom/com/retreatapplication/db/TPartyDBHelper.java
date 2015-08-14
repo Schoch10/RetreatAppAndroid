@@ -113,7 +113,7 @@ public class TPartyDBHelper extends SQLiteOpenHelper {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
-        db.execSQL("DELETE FROM " + CheckInContract.TABLE_NAME);
+        db.execSQL("DELETE FROM " + PostContract.TABLE_NAME);
 
         ContentValues values;
         for (PostObject post : posts) {
