@@ -101,17 +101,17 @@ public class CreateUserActivity extends ActionBarActivity {
     */
     public void createUserSelected(View view) {
 
-//        StringBuilder response = new StringBuilder();
-//        nameEditText = (EditText)findViewById(R.id.editText);
-//        String userName = nameEditText.getText().toString();
-//
-//        sendPostsAsync sendPostRunner = new sendPostsAsync();
-//        sendPostRunner.execute(userName);
+        StringBuilder response = new StringBuilder();
+        nameEditText = (EditText)findViewById(R.id.editText);
+        String userName = nameEditText.getText().toString();
 
-//        if (canProceed) {
+        sendPostsAsync sendPostRunner = new sendPostsAsync();
+        sendPostRunner.execute(userName);
+
+        if (canProceed) {
             Intent mainViewIntent = new Intent(this, RetreatAppMainView.class);
             startActivity(mainViewIntent);
-//        }
+        }
     }
 
 
