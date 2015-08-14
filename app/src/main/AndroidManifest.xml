@@ -41,7 +41,7 @@
             android:label="@string/title_activity_agenda" >
         </activity>
         <activity
-            android:name=".ActivitiesActivity"
+            android:name=".LocationFeedActivity"
             android:label="@string/title_activity_activities" >
         </activity>
         <activity

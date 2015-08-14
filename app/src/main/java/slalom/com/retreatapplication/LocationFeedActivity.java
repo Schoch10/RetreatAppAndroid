@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -23,15 +22,11 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
-import slalom.com.retreatapplication.R;
 import slalom.com.retreatapplication.db.TPartyDBHelper;
 import slalom.com.retreatapplication.util.PostObject;
 
-public class ActivitiesActivity extends Activity {
+public class LocationFeedActivity extends Activity {
 
     private static final String TAG = HomeActivity.class.getSimpleName();
     //private static final int MIN_DISTANCE = 175;
@@ -56,7 +51,7 @@ public class ActivitiesActivity extends Activity {
             default: imageRsrc = R.mipmap.omni; break;
         }
 
-        setContentView(R.layout.activity_activities);
+        setContentView(R.layout.location_feed_activity);
 
 
         ImageView test_image = (ImageView)findViewById(R.id.test_image);
@@ -90,7 +85,7 @@ public class ActivitiesActivity extends Activity {
                         // Need an object that stores location id > rank mapping
                         // so when user swipes we increment or decrement rank, and
                         // and get loc id associated with that rank
-                        Intent nextActivityIntent = new Intent(this, ActivitiesActivity.class);
+                        Intent nextActivityIntent = new Intent(this, LocationFeedActivity.class);
                         nextActivityIntent.putExtra(LOC_ID_EXTRA, currentLocId+1);
                         startActivity(nextActivityIntent);
 
@@ -98,7 +93,7 @@ public class ActivitiesActivity extends Activity {
                         //swipe left
                         Log.d(TAG, "swipe left? x1: " + x1 + ", x2: " + x2);
 
-                        Intent nextActivityIntent = new Intent(this, ActivitiesActivity.class);
+                        Intent nextActivityIntent = new Intent(this, LocationFeedActivity.class);
                         nextActivityIntent.putExtra(LOC_ID_EXTRA, currentLocId-1);
                         startActivity(nextActivityIntent);
 
@@ -198,7 +193,7 @@ public class ActivitiesActivity extends Activity {
                 posts.add(post);
             }
 
-            TPartyDBHelper dbHelper = new TPartyDBHelper(ActivitiesActivity.this);
+            TPartyDBHelper dbHelper = new TPartyDBHelper(LocationFeedActivity.this);
             dbHelper.savePosts(posts);
 
         }

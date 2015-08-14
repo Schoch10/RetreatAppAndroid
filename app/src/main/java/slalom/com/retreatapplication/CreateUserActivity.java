@@ -36,8 +36,10 @@ public class CreateUserActivity extends ActionBarActivity {
 
     //Set username shared preferences variable name
     private final String USER_NAME = "userName";
+    private final String USER_ID = "userId";
 
     private String userName;
+    private Integer userId;
     private EditText nameEditText;
 
     @Override
@@ -153,6 +155,7 @@ public class CreateUserActivity extends ActionBarActivity {
                 }
 
                 if (!response.equals("-1")) {
+                    userId = Integer.parseInt(response);
                     canProceed=true;
                 } else {
                     response = "Name already taken. Please try again.";
@@ -164,29 +167,27 @@ public class CreateUserActivity extends ActionBarActivity {
                 response = "Something went wrong. Please try again.";
             }
 
-
-
             return response;
 
         }
 
         @Override
         protected void onProgressUpdate(String... update) {
-             nameEditText.setText(update[0]);
+             nameEditText.setHint(update[0]);
         }
 
         @Override
-        protected void onPostExecute(String result){
-
-            nameEditText.setText(result);
+        protected void onPostExecute(String response){
 
             if (canProceed) {
-
                 SharedPreferences settings = getPreferences(MODE_PRIVATE);
                 SharedPreferences.Editor editor = settings.edit();
+                editor.putInt(USER_ID, userId);
                 editor.putString(USER_NAME, userName);
                 Intent mainViewIntent = new Intent(getApplicationContext(), RetreatAppMainView.class);
                 startActivity(mainViewIntent);
+            } else {
+                nameEditText.setHint(response);
             }
         }
     }
