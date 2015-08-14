@@ -1,4 +1,4 @@
-package slalom.com.retreatapplication;
+package slalom.com.retreatapplication.db;
 
 import android.provider.BaseColumns;
 

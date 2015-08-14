@@ -9,9 +9,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import slalom.com.retreatapplication.CheckInContract;
-import slalom.com.retreatapplication.PostContract;
-import slalom.com.retreatapplication.PostObject;
+import slalom.com.retreatapplication.util.PostObject;
 
 
 /**

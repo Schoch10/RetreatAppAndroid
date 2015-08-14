@@ -1,4 +1,4 @@
-package slalom.com.retreatapplication;
+package slalom.com.retreatapplication.util;
 
 /**
  * Created by alexanderp on 8/14/2015.
