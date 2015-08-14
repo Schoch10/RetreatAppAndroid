@@ -1,6 +1,7 @@
 package slalom.com.retreatapplication;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.LayoutInflater;
@@ -9,29 +10,35 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.TextView;
 
 
 public class GameViewActivity extends ActionBarActivity {
 
+    private String[] strArray;
+    private GridViewAdapter gridViewAdapter = new GridViewAdapter(this);
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game_view);
-
-//        SharedPreferences prefs = getPreferences(MODE_PRIVATE);
-
         GridView gridview = (GridView) findViewById(R.id.gridview);
-        gridview.setAdapter(new GridViewAdapter(this));
 
-//        gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            public void onItemClick(AdapterView<?> parent, View v,
-//                                    int position, long id) {
-//                Toast.makeText(GameViewActivity.this, "" + position,
-//                        Toast.LENGTH_SHORT).show();
-//            }
-//        });
+        // Restore preferences
+        SharedPreferences prefs = getPreferences(MODE_PRIVATE);
+        strArray = getStoredAnswers(prefs, gridViewAdapter.getCount());
+
+        gridview.setAdapter(gridViewAdapter);
+    }
+
+    private String[] getStoredAnswers(SharedPreferences prefs, int cardCount) {
+        String[] answers = new String[cardCount];
+        for (int i = 0; i < cardCount; i++) {
+            answers[i] = prefs.getString("question_" + i, "");
+        }
+        return answers;
     }
 
     @Override
@@ -56,6 +63,30 @@ public class GameViewActivity extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    protected void onStop(){
+        super.onStop();
+
+        // We need an Editor object to make preference changes.
+        // All objects are from android.context.Context
+        SharedPreferences settings = getPreferences(MODE_PRIVATE);
+        SharedPreferences.Editor editor = settings.edit();
+
+        GridView gridview = (GridView) findViewById(R.id.gridview);
+        int cardCount = gridViewAdapter.getCount();
+        String answerText;
+        for (int i = 0; i < cardCount; i++) {
+            answerText = ((EditText)gridview.getChildAt(i).findViewById(R.id.editText2))
+                    .getText().toString();
+            if (answerText != "") {
+                editor.putString("question_" + i, answerText);
+            }
+        }
+
+        // Commit the edits!
+        editor.commit();
+    }
+
     public class GridViewAdapter extends BaseAdapter {
         private Context mContext;
 
@@ -75,7 +106,7 @@ public class GameViewActivity extends ActionBarActivity {
             return position;
         }
 
-        // create a new ImageView for each item referenced by the Adapter
+        // create a new Card View for each item referenced by the Adapter
         public View getView(int position, View convertView, ViewGroup parent) {
             if (convertView == null) {
                 LayoutInflater inflater = (LayoutInflater) mContext.getApplicationContext()
@@ -83,7 +114,13 @@ public class GameViewActivity extends ActionBarActivity {
                 convertView = inflater.inflate(R.layout.card_view, parent, false);
             }
             TextView textView = (TextView)convertView.findViewById(R.id.question);
+            EditText editView = (EditText)convertView.findViewById(R.id.editText2);
+
             textView.setText(questionsArray[position]);
+            if (strArray != null && strArray[position] != "") {
+                editView.setText(strArray[position]);
+            }
+
             return convertView;
         }
 

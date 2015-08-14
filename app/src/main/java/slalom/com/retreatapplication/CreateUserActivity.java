@@ -1,20 +1,14 @@
 package slalom.com.retreatapplication;
 
-import android.content.ContentResolver;
-import android.content.CursorLoader;
-import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.provider.MediaStore;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.content.Intent;
-import android.util.Log;
 import android.widget.EditText;
 import android.widget.ImageView;
 
@@ -23,7 +17,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -108,17 +101,17 @@ public class CreateUserActivity extends ActionBarActivity {
     */
     public void createUserSelected(View view) {
 
-        StringBuilder response = new StringBuilder();
-        nameEditText = (EditText)findViewById(R.id.editText);
-        String userName = nameEditText.getText().toString();
+//        StringBuilder response = new StringBuilder();
+//        nameEditText = (EditText)findViewById(R.id.editText);
+//        String userName = nameEditText.getText().toString();
+//
+//        sendPostsAsync sendPostRunner = new sendPostsAsync();
+//        sendPostRunner.execute(userName);
 
-        sendPostsAsync sendPostRunner = new sendPostsAsync();
-        sendPostRunner.execute(userName);
-
-        if (canProceed) {
+//        if (canProceed) {
             Intent mainViewIntent = new Intent(this, RetreatAppMainView.class);
             startActivity(mainViewIntent);
-        }
+//        }
     }
 
 
