@@ -24,10 +24,8 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
+
 
 import slalom.com.retreatapplication.db.CheckInContract;
 import slalom.com.retreatapplication.db.TPartyDBHelper;
@@ -37,7 +35,6 @@ public class LocationFeedActivity extends Activity {
 
     private static final String TAG = LocationFeedActivity.class.getSimpleName();
     //private static final int MIN_DISTANCE = 175;
-    private float x1,x2;
     private TextView test_text;
 
     @Override
@@ -70,7 +67,13 @@ public class LocationFeedActivity extends Activity {
         List<PostObject> localPosts = dbHelper.getLocalPosts(locationId);
 
         for (PostObject post: localPosts) {
-            Log.d(TAG, post.toString());
+            Log.d(TAG, post.postId().toString());
+            Log.d(TAG, post.userId().toString());
+            Log.d(TAG, post.userName().toString());
+            Log.d(TAG, post.locationId().toString());
+            Log.d(TAG, post.image().toString());
+            Log.d(TAG, post.text().toString());
+            Log.d(TAG, post.timestamp().toString());
         }
 
         getPostsAsync getPostsRunner = new getPostsAsync();
@@ -123,12 +126,13 @@ public class LocationFeedActivity extends Activity {
 
     private class getPostsAsync extends AsyncTask<Integer, String, String> {
 
+        Integer locationId;
         String response;
 
         @Override
         protected String doInBackground(Integer... location) {
             publishProgress("Getting latest post...");
-            Integer locationId = location[0];
+            locationId = location[0];
             savePosts(locationId, getPosts(locationId));
 
             return "success!";
@@ -141,7 +145,11 @@ public class LocationFeedActivity extends Activity {
 
         @Override
         protected void onPostExecute(String result) {
-            test_text.setText(result);
+
+            TPartyDBHelper dbHelper = new TPartyDBHelper(LocationFeedActivity.this);
+            List<PostObject> localPosts = dbHelper.getLocalPosts(locationId);
+
+            test_text.setText(localPosts.toString());
         }
 
         private JSONArray getPosts(Integer locationId) {
@@ -169,15 +177,8 @@ public class LocationFeedActivity extends Activity {
 
                 Log.d(TAG, response);
 
-                // Test alternate JSON parsing
-                respJArray.put(response);
+                respJArray = new JSONArray(response);
 
-                Log.d(TAG, respJArray.getJSONArray(0).toString());
-
-                for (int i=0; i<respJArray.length(); i++) {
-                    JSONArray jArray = respJArray.getJSONArray(i);
-                    Log.d(TAG, jArray.toString());
-                }
 
             } catch (IOException|JSONException e) {
                 Log.d(TAG, e.toString());
@@ -190,7 +191,7 @@ public class LocationFeedActivity extends Activity {
 
         private void savePosts(Integer locationId, JSONArray respArray) {
 
-            ArrayList<PostObject> posts = new ArrayList<PostObject>();
+            List<PostObject> posts = new ArrayList<PostObject>();
 
             Integer postId;
             Integer userId;

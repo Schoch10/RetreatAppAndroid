@@ -146,7 +146,7 @@ public class TPartyDBHelper extends SQLiteOpenHelper {
     }
 
 
-    public void savePosts(Integer locationId, ArrayList<PostObject> posts) {
+    public void savePosts(Integer locationId, List<PostObject> posts) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
