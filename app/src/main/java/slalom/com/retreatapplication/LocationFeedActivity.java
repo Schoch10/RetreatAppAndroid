@@ -2,6 +2,8 @@ package slalom.com.retreatapplication;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -22,17 +24,19 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
+import slalom.com.retreatapplication.db.CheckInContract;
 import slalom.com.retreatapplication.db.TPartyDBHelper;
 import slalom.com.retreatapplication.util.PostObject;
 
 public class LocationFeedActivity extends Activity {
 
-    private static final String TAG = HomeActivity.class.getSimpleName();
+    private static final String TAG = LocationFeedActivity.class.getSimpleName();
     //private static final int MIN_DISTANCE = 175;
-    private final String LOC_ID_EXTRA = "locationId";
-    private final int OMNI_ID = 1;
-    private Integer currentLocId;
     private float x1,x2;
     private TextView test_text;
 
@@ -40,13 +44,13 @@ public class LocationFeedActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Intent intent = getIntent();
-        currentLocId = intent.getIntExtra(LOC_ID_EXTRA, OMNI_ID);
+        Integer locationId = intent.getIntExtra("locationId", 3);
 
         //Need an object that stores location > image mappings
         int imageRsrc = -1;
-        switch(currentLocId) {
-            case 0: imageRsrc = R.mipmap.omni; break;
-            case 1: imageRsrc = R.mipmap.golf; break;
+        switch(locationId) {
+            case 3: imageRsrc = R.mipmap.omni; break;
+            case 4: imageRsrc = R.mipmap.golf; break;
 
             default: imageRsrc = R.mipmap.omni; break;
         }
@@ -60,8 +64,17 @@ public class LocationFeedActivity extends Activity {
 
         test_text = (TextView)findViewById(R.id.test_text);
 
+
+        TPartyDBHelper dbHelper = new TPartyDBHelper(this);
+
+        List<PostObject> localPosts = dbHelper.getLocalPosts(locationId);
+
+        for (PostObject post: localPosts) {
+            Log.d(TAG, post.toString());
+        }
+
         getPostsAsync getPostsRunner = new getPostsAsync();
-        getPostsRunner.execute(currentLocId);
+        getPostsRunner.execute(locationId);
     }
 
     /*
@@ -107,21 +120,17 @@ public class LocationFeedActivity extends Activity {
 
     }
     */
+
     private class getPostsAsync extends AsyncTask<Integer, String, String> {
 
         String response;
 
         @Override
-        protected String doInBackground(Integer... locationId) {
+        protected String doInBackground(Integer... location) {
             publishProgress("Getting latest post...");
-            String location = locationId[0].toString();
-            try {
-                savePosts(getPosts(location));
-            } catch (IOException ioE) {
-                ;
-            } catch (JSONException jE) {
-                ;
-            }
+            Integer locationId = location[0];
+            savePosts(locationId, getPosts(locationId));
+
             return "success!";
         }
 
@@ -135,12 +144,13 @@ public class LocationFeedActivity extends Activity {
             test_text.setText(result);
         }
 
-        private JSONArray getPosts(String locationId) throws IOException, JSONException {
+        private JSONArray getPosts(Integer locationId) {
+
+            JSONArray respJArray = new JSONArray();
+
             try {
 
-                Thread.sleep(3000);
-
-                String postCall = "http://tpartyservice-dev.elasticbeanstalk.com/home/getpostsforlocation?locationid=" + locationId;
+                String postCall = "http://tpartyservice-dev.elasticbeanstalk.com/home/getpostsforlocation?locationid=" + locationId.toString();
                 URL url = new URL(postCall);
                 HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
                 InputStream in = new BufferedInputStream(urlConnection.getInputStream());
@@ -157,44 +167,64 @@ public class LocationFeedActivity extends Activity {
 
                 response = responseBuilder.toString();
 
-            } catch (IOException ioE) {
-                ;
-            } catch (InterruptedException iE) {
-                ;
+                Log.d(TAG, response);
+
+                // Test alternate JSON parsing
+                respJArray.put(response);
+
+                Log.d(TAG, respJArray.getJSONArray(0).toString());
+
+                for (int i=0; i<respJArray.length(); i++) {
+                    JSONArray jArray = respJArray.getJSONArray(i);
+                    Log.d(TAG, jArray.toString());
+                }
+
+            } catch (IOException|JSONException e) {
+                Log.d(TAG, e.toString());
             }
 
-            Log.d(TAG, response);
+            return respJArray;
 
-            JSONArray resp_jArray = new JSONArray(response);
-
-            return resp_jArray;
         }
 
 
-        private void savePosts(JSONArray checkInsArray) throws JSONException {
+        private void savePosts(Integer locationId, JSONArray respArray) {
 
             ArrayList<PostObject> posts = new ArrayList<PostObject>();
-            String locName;
 
-            for (int i = 0; i < checkInsArray.length(); i++) {
-                JSONObject jObj = checkInsArray.getJSONObject(i);
+            Integer postId;
+            Integer userId;
+            String userName;
+            Integer currentLocationId;
+            String image;
+            String text;
+            String timestampStr;
+            Long timestamp;
 
-                Integer postId = jObj.getInt("PostId");
-                Integer userId = jObj.getInt("UserId");
-                String userName = jObj.getString("UserName");
-                Integer locationId = jObj.getInt("LocationId");
-                String image = jObj.getString("S3ImageUrl");
-                String text = jObj.getString("PostText");
-                String timestampStr = jObj.getString("PostTS");
-                Integer timestamp = Integer.parseInt(timestampStr.substring(6, 19));
+            for (int i = 0; i < respArray.length(); i++) {
+                try {
+                    JSONObject jObj = respArray.getJSONObject(i);
 
-                PostObject post = new PostObject(postId, userId, userName, locationId, image, text, timestamp);
+                    postId = jObj.getInt("PostId");
+                    userId = jObj.getInt("UserId");
+                    userName = jObj.getString("UserName");
+                    currentLocationId = jObj.getInt("LocationId");
+                    image = jObj.getString("S3ImageUrl");
+                    text = jObj.getString("PostText");
+                    timestampStr = jObj.getString("PostTS").substring(6, 19);
+                    timestamp = Long.parseLong(timestampStr);
 
-                posts.add(post);
+                    PostObject post = new PostObject(postId, userId, userName, currentLocationId, image, text, timestamp);
+                    posts.add(post);
+
+                } catch (JSONException jE) {
+                    Log.d(TAG, jE.toString());
+                }
+
             }
 
             TPartyDBHelper dbHelper = new TPartyDBHelper(LocationFeedActivity.this);
-            dbHelper.savePosts(posts);
+            dbHelper.savePosts(locationId, posts);
 
         }
 

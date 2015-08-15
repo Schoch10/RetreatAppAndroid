@@ -10,10 +10,10 @@ public class PostObject {
     private Integer locationId;
     private String image;
     private String text;
-    private Integer timestamp;
+    private Long timestamp;
 
 
-    public PostObject(Integer postId, Integer userId, String userName, Integer locationId, String image, String text, Integer timestamp) {
+    public PostObject(Integer postId, Integer userId, String userName, Integer locationId, String image, String text, Long timestamp) {
         this.postId = postId;
         this.userId = userId;
         this.userName = userName;
@@ -29,5 +29,17 @@ public class PostObject {
     public Integer locationId() {return this.locationId;}
     public String image() {return this.image;}
     public String text() {return this.text;}
-    public Integer timestamp() {return this.timestamp;}
+    public Long timestamp() {return this.timestamp;}
+
+    public String toString() {
+        return "[{\"postId\":"+this.postId
+                +", \"userId\":"+this.userId
+                +", \"userName\":" +this.userName
+                +", \"locationId\":"+this.locationId
+                +", \"image\":"+this.image
+                +", \"text\":"+this.text
+                +", \"timestamp\":"+this.timestamp
+                +"}]";
+    }
+
 }

@@ -7,7 +7,10 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 import slalom.com.retreatapplication.util.PostObject;
 
@@ -19,6 +22,7 @@ import slalom.com.retreatapplication.util.PostObject;
 public class TPartyDBHelper extends SQLiteOpenHelper {
     public static final int DATABASE_VERSION = 1;
     public static final String DATABASE_NAME = "TParty.db";
+    private final String TAG = TPartyDBHelper.class.getSimpleName();
 
     public TPartyDBHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -109,11 +113,45 @@ public class TPartyDBHelper extends SQLiteOpenHelper {
         return (checkIns);
     }
 
-    public void savePosts(ArrayList<PostObject> posts) {
+    public List<PostObject> getLocalPosts(Integer locationId) {
+        List<PostObject> sortedPosts = new LinkedList<PostObject>();
+
+        SQLiteDatabase db = getReadableDatabase();
+
+        // After the query, the cursor points to the first database row
+        // returned by the request.
+        String[] args = {locationId.toString()};
+        Cursor cursor = db.rawQuery(
+                "SELECT * FROM " + PostContract.TABLE_NAME
+                        + " WHERE " + PostContract.RowEntry.LOCATION_ID + "=?"
+                        + " ORDER BY " + PostContract.RowEntry.TIMESTAMP + " DESC"
+                , args);
+
+        while (cursor.moveToNext()) {
+            Integer postId = cursor.getInt(cursor.getColumnIndex(PostContract.RowEntry.POST_ID));
+            Integer userId = cursor.getInt(cursor.getColumnIndex(PostContract.RowEntry.USER_ID));
+            String userName = cursor.getString(cursor.getColumnIndex(PostContract.RowEntry.USER_NAME));
+            Integer storedLocationId = cursor.getInt(cursor.getColumnIndex(PostContract.RowEntry.LOCATION_ID));
+            String image = cursor.getString(cursor.getColumnIndex(PostContract.RowEntry.IMAGE));
+            String text = cursor.getString(cursor.getColumnIndex(PostContract.RowEntry.TEXT));
+            Long timestamp = cursor.getLong(cursor.getColumnIndex(PostContract.RowEntry.TIMESTAMP));
+
+            PostObject post = new PostObject(postId, userId, userName, storedLocationId, image, text, timestamp);
+
+            sortedPosts.add(post);
+        }
+        cursor.close();
+
+        return sortedPosts;
+    }
+
+
+    public void savePosts(Integer locationId, ArrayList<PostObject> posts) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
-        db.execSQL("DELETE FROM " + PostContract.TABLE_NAME);
+        String[] args = {locationId.toString()};
+        db.delete(PostContract.TABLE_NAME, PostContract.RowEntry.LOCATION_ID+"=?", args);
 
         ContentValues values;
         for (PostObject post : posts) {
