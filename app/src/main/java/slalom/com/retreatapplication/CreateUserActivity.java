@@ -35,6 +35,7 @@ public class CreateUserActivity extends ActionBarActivity {
     private boolean canProceed = false;
 
     //Set username shared preferences variable name
+    private static final String PREFS_NAME = "UserPreferences";
     private final String USER_NAME = "userName";
     private final String USER_ID = "userId";
 
@@ -180,10 +181,12 @@ public class CreateUserActivity extends ActionBarActivity {
         protected void onPostExecute(String response){
 
             if (canProceed) {
-                SharedPreferences settings = getPreferences(MODE_PRIVATE);
+                SharedPreferences settings = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
                 SharedPreferences.Editor editor = settings.edit();
                 editor.putInt(USER_ID, userId);
                 editor.putString(USER_NAME, userName);
+                editor.commit();
+
                 Intent mainViewIntent = new Intent(getApplicationContext(), RetreatAppMainView.class);
                 startActivity(mainViewIntent);
             } else {
