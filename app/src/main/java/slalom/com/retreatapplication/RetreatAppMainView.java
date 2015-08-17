@@ -61,7 +61,7 @@ public class RetreatAppMainView extends ActionBarActivity {
     }
 
     public void activitiesButtonSelected(View view) {
-        Intent activitiesIntent = new Intent(this, ActivitiesActivity.class);
+        Intent activitiesIntent = new Intent(this, LocationFeedActivity.class);
         startActivity(activitiesIntent);
     }
 
