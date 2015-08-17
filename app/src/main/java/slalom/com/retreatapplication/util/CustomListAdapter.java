@@ -1,4 +1,4 @@
-package slalom.com.retreatapplication;
+package slalom.com.retreatapplication.util;
 
 import android.app.Activity;
 import android.content.Context;
@@ -7,6 +7,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
+
+import slalom.com.retreatapplication.R;
 
 /**
  * Created by jill.burgess on 8/7/15.

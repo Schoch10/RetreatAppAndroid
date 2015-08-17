@@ -48,6 +48,14 @@
             android:name=".TrendingActivity"
             android:label="@string/title_activity_trending" >
         </activity>
+        <activity
+            android:name=".ViewPostsActivity"
+            android:label="ViewPostsActivity" >
+        </activity>
+        <activity
+            android:name=".CreatePostActivity"
+            android:label="CreatePostActivity" >
+        </activity>
     </application>
 
 </manifest>

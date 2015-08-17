@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -45,7 +46,9 @@ public class ActivitiesActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Intent intent = getIntent();
-        currentLocId = intent.getIntExtra(LOC_ID_EXTRA, OMNI_ID);
+
+        Bundle b = getIntent().getExtras();
+        currentLocId = (int)b.getLong(LOC_ID_EXTRA, OMNI_ID);
 
         //Need an object that stores location > image mappings
         int imageRsrc = -1;
@@ -225,5 +228,11 @@ public class ActivitiesActivity extends Activity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+
+    public void viewAllPostsSelected(View view) {
+        Intent trendingIntent = new Intent(this, ViewPostsActivity.class);
+        startActivity(trendingIntent);
     }
 }

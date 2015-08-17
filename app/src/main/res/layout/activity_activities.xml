@@ -13,7 +13,8 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
-        android:layout_marginBottom="66dp">
+        android:layout_marginBottom="66dp"
+        android:id="@+id/linearLayout2">
 
         <ImageView
             android:contentDescription="@string/omni_placeholder"
@@ -28,6 +29,20 @@
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:gravity="center_vertical|center_horizontal" />
+
+
     </LinearLayout>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="View Posts"
+        android:id="@+id/button5"
+        android:onClick="viewAllPostsSelected"
+        android:layout_alignParentBottom="true"
+        android:layout_alignRight="@+id/linearLayout2"
+        android:layout_alignEnd="@+id/linearLayout2"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 
 </RelativeLayout>
