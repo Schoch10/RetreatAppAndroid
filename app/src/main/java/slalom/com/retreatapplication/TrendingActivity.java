@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -23,9 +24,12 @@ import slalom.com.retreatapplication.util.TPartyTask;
 
 public class TrendingActivity extends Activity {
     SwipeRefreshLayout swipeLayout;
-    //Activity activityContext;
+    Activity activityContext;
+    Intent activityIntent;
     TPartyDBHelper dbHelper;
     TextView textDetail;
+    ArrayList<Location> locations;
+    Location location;
 
     private Integer[] imgId = {
             R.drawable.ic_launcher,
@@ -41,7 +45,7 @@ public class TrendingActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_trending);
-        //this.activityContext = this;
+        activityContext = this;
 
         /*
         swipeLayout = (SwipeRefreshLayout)findViewById(R.id.swipe_container);
@@ -59,11 +63,28 @@ public class TrendingActivity extends Activity {
                 android.R.color.holo_red_light);*/
 
         dbHelper = new TPartyDBHelper(this);
-        ArrayList<Location> locations = (ArrayList<Location>)dbHelper.getLocations();
+        locations = (ArrayList<Location>)dbHelper.getLocations();
 
         CustomArrayAdapter customArrayAdapter = new CustomArrayAdapter(this, R.layout.activity_trending, locations);
         ListView listView = (ListView) findViewById(R.id.listView1);
         listView.setAdapter(customArrayAdapter);
+
+        // OnItem click listener
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            // When Button is clicked
+            public void onItemClick(AdapterView<?> parent, View view,
+                                    int position, long id) {
+
+                location = locations.get(position);
+                Bundle b = new Bundle();
+                b.putString("locName", location.getLocationName());
+                b.putLong("locId", location.getLocationId());
+
+                activityIntent = new Intent(activityContext, ActivitiesActivity.class);
+                activityIntent.putExtras(b);
+                activityContext.startActivity(activityIntent);
+            }
+        });
     }
 
     public void refreshCheckInsSelected(View view) {

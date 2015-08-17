@@ -29,6 +29,7 @@ public class TPartyTask extends AsyncTask<Object, Object, Object> {
     private final String TPARTY_ENDPOINT = "http://tpartyservice-dev.elasticbeanstalk.com/home/";
     private final String CHECK_INS = TPARTY_ENDPOINT + "pollparticipantlocations";
     private final String POSTS = TPARTY_ENDPOINT + "pollposts";
+    private final String CHECK_IN_USER = TPARTY_ENDPOINT + "checkin";
     private static final String TAG = TPartyTask.class.getSimpleName();
     private String operationName;
     private Activity activityContext;
@@ -49,6 +50,16 @@ public class TPartyTask extends AsyncTask<Object, Object, Object> {
                 saveCheckIns(getResp(CHECK_INS));
                 refreshActivity(TrendingActivity.class);
 
+            } else if ("checkInUser".equals(operationName)) {
+                int USER_ID = (int)args[2];
+                int LOCATION_ID = (int)args[3];
+                String CHECK_IN_URL = CHECK_IN_USER +"?userId=" + USER_ID +"&locationId="+LOCATION_ID;
+                checkInUser(CHECK_IN_URL);
+                saveCheckIns(getResp(CHECK_INS));
+                //Refresh
+                //Intent viewPostsActivity = new Intent(this, ViewPostsActivity.class);
+                //startActivity(viewPostsActivity);
+
             } else if ("getPosts".equals(operationName)) {
                 savePosts(getResp(POSTS));
             }
@@ -63,6 +74,23 @@ public class TPartyTask extends AsyncTask<Object, Object, Object> {
     @Override
     protected void onPostExecute(Object arg) {
         //
+    }
+    //JSON Array response from service call
+    private boolean checkInUser(String serviceCall) throws IOException, JSONException {
+        HttpURLConnection urlConnection;
+
+        URL url = new URL(serviceCall);
+        urlConnection = (HttpURLConnection) url.openConnection();
+        InputStream in = new BufferedInputStream(urlConnection.getInputStream());
+
+        BufferedReader r = new BufferedReader(new InputStreamReader(in));
+        StringBuilder resp = new StringBuilder();
+        String line;
+        while ((line = r.readLine()) != null) {
+            resp.append(line);
+        }
+
+        return (Boolean.valueOf(resp.toString())).booleanValue();
     }
 
     //JSON Array response from service call

@@ -10,14 +10,14 @@
         android:id="@+id/listView1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/button5" />
+        android:layout_above="@+id/createPostButton" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Post"
-        android:id="@+id/button5"
-        android:onClick="createPostSelected"
+        android:id="@+id/createPostButton"
+        android:onClick="onCreatePost"
         android:layout_alignParentBottom="true"
         android:layout_alignRight="@+id/listView1"
         android:layout_alignEnd="@+id/listView1"
@@ -27,8 +27,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Check In"
-        android:id="@+id/button8"
+        android:id="@+id/checkInButton"
         android:width="340px"
+        android:onClick="onCheckIn"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />

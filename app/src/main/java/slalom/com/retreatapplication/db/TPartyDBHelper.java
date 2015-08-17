@@ -161,4 +161,40 @@ public class TPartyDBHelper extends SQLiteOpenHelper {
 
         return (locations);
     }
+
+    public boolean isUserCheckedIn(long userId, long locationId){
+        boolean checkedIn = false;
+        // Define a projection that specifies which columns from the database
+        // you will actually use after this query.
+        String[] CheckIns = {
+                CheckInContract.RowEntry._ID
+        };
+
+        // Define 'where' part of query.
+        String selection = CheckInContract.RowEntry.COLUMN_NAME_USER_ID + "=? AND " + CheckInContract.RowEntry.COLUMN_NAME_LOCATION_ID + "=?";
+
+        // Specify arguments in placeholder order.
+        String[] selectionArgs = { String.valueOf(userId), String.valueOf(locationId)};
+
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.query(
+                CheckInContract.TABLE_NAME,  // The table to query
+                CheckIns,                               // The columns to return
+                selection,                                // The columns for the WHERE clause
+                selectionArgs,                            // The values for the WHERE clause
+                null,                                     // don't group the rows
+                null,                                     // don't filter by row groups
+                null                                 // The sort order
+        );
+
+        cursor.moveToFirst();
+        if(cursor != null && cursor.getCount()>0){
+            long checkInId = cursor.getLong(
+                    cursor.getColumnIndexOrThrow(CheckInContract.RowEntry._ID)
+            );
+            if(checkInId > 0) checkedIn = true;
+        }
+
+        return checkedIn;
+    }
 }

@@ -38,7 +38,9 @@ public class ActivitiesActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Intent intent = getIntent();
-        currentLocId = intent.getIntExtra(LOC_ID_EXTRA, OMNI_ID);
+
+        Bundle b = getIntent().getExtras();
+        currentLocId = (int)b.getLong(LOC_ID_EXTRA, OMNI_ID);
 
         //Need an object that stores location > image mappings
         int imageRsrc = -1;

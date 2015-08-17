@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.TextView;
+import android.os.Bundle;
 
 import slalom.com.retreatapplication.ActivitiesActivity;
 import slalom.com.retreatapplication.R;
@@ -22,8 +23,10 @@ import slalom.com.retreatapplication.model.Location;
  */
 public class CustomArrayAdapter extends ArrayAdapter<Location> {
     // declaring our ArrayList of items
+    private Intent activityIntent;
     private Activity activityContext;
     private ArrayList<Location> objects;
+    private Location location;
     private TextView textTitle;
     private TextView textDetail;
     //private Button buttonRefresh;
@@ -61,9 +64,9 @@ public class CustomArrayAdapter extends ArrayAdapter<Location> {
 		 *
 		 * Therefore, i refers to the current Item object.
 		 */
-        Location i = objects.get(position);
+        location = objects.get(position);
 
-        if (i != null) {
+        if (location != null) {
 
             // This is how you obtain a reference to the TextViews.
             // These TextViews are created in the XML files we defined.
@@ -72,12 +75,10 @@ public class CustomArrayAdapter extends ArrayAdapter<Location> {
             textDetail = (TextView)v.findViewById(R.id.textView1);
             //buttonRefresh = (Button)v.findViewById(R.id.buttonRefresh);
 
-            String location = i.getLocationName();
-            String checkIns = "Checked In# " + i.getCheckin();
+            textTitle.setText(location.getLocationName());
+            textDetail.setText("Checked In# " + location.getCheckin());
 
-            textTitle.setText(location);
-            textDetail.setText(checkIns);
-
+            /*
             // Button click listener
             textTitle.setOnClickListener(new View.OnClickListener() {
                 // When Button is clicked
@@ -85,10 +86,17 @@ public class CustomArrayAdapter extends ArrayAdapter<Location> {
                     // Disable the button to avoid playing of song multiple times
                     textDetail.setEnabled(false);
 
-                    Intent activitiesActivityIntent = new Intent(activityContext, ActivitiesActivity.class);
-                    activityContext.startActivity(activitiesActivityIntent);
+                    activityIntent = new Intent(activityContext, ActivitiesActivity.class);
+
+                    //String selected = objects.get(position);
+                    Bundle b = new Bundle();
+                    b.putString("locName", location.getLocationName());
+                    b.putLong("locId", location.getLocationId());
+                    activityIntent.putExtras(b);
+
+                    activityContext.startActivity(activityIntent);
                 }
-            });
+            });*/
         }
         // the view must be returned to our activity
         return v;
