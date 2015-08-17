@@ -1,48 +1,53 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    android:paddingBottom="@dimen/activity_vertical_margin"
     tools:context="slalom.com.retreatapplication.LocationFeedActivity">
 
-    <LinearLayout
-        android:orientation="vertical"
+    <!--<TextView-->
+        <!--android:id="@+id/location_title"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_above="@+id/postListView"-->
+        <!--android:layout_alignParentTop="true"-->
+        <!--android:text="location"-->
+        <!--android:textColor="#000000"-->
+        <!--android:textSize="24sp" />-->
+
+    <ListView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/postListView"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_above="@+id/linearLayout" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginBottom="66dp"
-        android:id="@+id/linearLayout2">
+        android:id="@+id/linearLayout">
 
-        <ImageView
-            android:contentDescription="@string/omni_placeholder"
-            android:layout_width="fill_parent"
-            android:layout_height="250dp"
-            android:id="@+id/test_image"
-            android:src="@drawable/ic_launcher"
-             />
+        <Button
+            android:id="@+id/checkInButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="50"
+            android:onClick="onCheckIn"
+            android:text="Check In" />
 
-        <TextView android:id="@+id/test_text"
-            android:text="@string/activities_button"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:gravity="center_vertical|center_horizontal" />
-
+        <Button
+            android:id="@+id/createPostButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="50"
+            android:onClick="onCreatePost"
+            android:text="Post" />
 
     </LinearLayout>
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="View Posts"
-        android:id="@+id/button5"
-        android:onClick="viewAllPostsSelected"
-        android:layout_alignParentBottom="true"
-        android:layout_alignRight="@+id/linearLayout2"
-        android:layout_alignEnd="@+id/linearLayout2"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
 
 </RelativeLayout>
