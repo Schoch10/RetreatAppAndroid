@@ -1,19 +1,15 @@
 package slalom.com.retreatapplication;
 
-import android.content.ContentResolver;
-import android.content.CursorLoader;
-import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
-import android.provider.MediaStore;
-import android.support.v7.app.ActionBarActivity;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.content.Intent;
-import android.util.Log;
 import android.widget.EditText;
 import android.widget.ImageView;
 
@@ -22,16 +18,27 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLEncoder;
 
 public class CreateUserActivity extends ActionBarActivity {
 
     //Set int for Select Picture Activity callback identify
-    static final int SELECT_PICTURE = 1;
+    private static final int SELECT_PICTURE = 1;
 
     //Set string to easily identify debug data
     private static final String TAG = CreateUserActivity.class.getSimpleName();
+
+    //Don't allow users to create user unless we get explicit confirmation from service
+    private boolean canProceed = false;
+
+    //Set username shared preferences variable name
+    private final String USER_NAME = "userName";
+
+    private String userName;
+    private EditText nameEditText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,27 +107,88 @@ public class CreateUserActivity extends ActionBarActivity {
     }
     */
     public void createUserSelected(View view) {
-        /*
+
         StringBuilder response = new StringBuilder();
-        EditText nameEditText = (EditText)findViewById(R.id.editText);
-        String userName = nameEditText.getText().toString();
-        try {
-            String postCall = "http://tpartyservice-dev.elasticbeanstalk.com/Home/CreateUser?username="+userName;
-            URL url = new URL(postCall);
-            HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
-            InputStream in = new BufferedInputStream(urlConnection.getInputStream());
+        nameEditText = (EditText)findViewById(R.id.editText);
+        userName = nameEditText.getText().toString();
 
-            BufferedReader r = new BufferedReader(new InputStreamReader(in));
-            String line;
+        sendPostsAsync sendPostRunner = new sendPostsAsync();
+        sendPostRunner.execute(userName);
 
-            while ((line = r.readLine()) != null) {
-                response.append(line);
-            }
-        } catch (IOException ioE) {
-            ;
-        }
-        */
-        Intent mainViewIntent = new Intent(this, RetreatAppMainView.class);
-        startActivity(mainViewIntent);
     }
+
+
+    private class sendPostsAsync extends AsyncTask<String, String, String> {
+
+        String response;
+
+        @Override
+        protected String doInBackground(String... userName)  {
+            publishProgress("Creating user record...");
+
+            try {
+
+                String postCall = "http://tpartyservice-dev.elasticbeanstalk.com/Home/CreateUser";
+                String params = "username="+URLEncoder.encode(userName[0], "utf-8");
+
+                URL url = new URL(postCall);
+                HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+
+                urlConnection.setDoOutput(true);
+                urlConnection.setRequestMethod("POST");
+
+                OutputStreamWriter outputWriter = new OutputStreamWriter(urlConnection.getOutputStream());
+
+                outputWriter.write(params);
+                outputWriter.flush();
+
+                InputStream in = new BufferedInputStream(urlConnection.getInputStream());
+                BufferedReader r = new BufferedReader(new InputStreamReader(in));
+                StringBuilder responseBuilder = new StringBuilder();
+                String line;
+
+                while ((line = r.readLine()) != null) {
+                    responseBuilder.append(line);
+                    response = responseBuilder.toString();
+                }
+
+                if (!response.equals("-1")) {
+                    canProceed=true;
+                } else {
+                    response = "Name already taken. Please try again.";
+                }
+
+                in.close();
+
+            } catch (IOException ioE) {
+                response = "Something went wrong. Please try again.";
+            }
+
+
+
+            return response;
+
+        }
+
+        @Override
+        protected void onProgressUpdate(String... update) {
+             nameEditText.setText(update[0]);
+        }
+
+        @Override
+        protected void onPostExecute(String result){
+
+            nameEditText.setText(result);
+
+            if (canProceed) {
+
+                SharedPreferences settings = getPreferences(MODE_PRIVATE);
+                SharedPreferences.Editor editor = settings.edit();
+                editor.putString(USER_NAME, userName);
+                Intent mainViewIntent = new Intent(getApplicationContext(), RetreatAppMainView.class);
+                startActivity(mainViewIntent);
+            }
+        }
+    }
+
 }

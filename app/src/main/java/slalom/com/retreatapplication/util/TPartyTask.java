@@ -30,10 +30,10 @@ public class TPartyTask extends AsyncTask<Object, Object, Object> {
     private final String CHECK_INS = TPARTY_ENDPOINT + "pollparticipantlocations";
     private final String POSTS = TPARTY_ENDPOINT + "pollposts";
     private final String CHECK_IN_USER = TPARTY_ENDPOINT + "checkin";
+    private TPartyDBHelper dbHelper;
     private static final String TAG = TPartyTask.class.getSimpleName();
     private String operationName;
     private Activity activityContext;
-    private TPartyDBHelper dbHelper;
 
     @Override
     protected void onPreExecute() {}
@@ -63,6 +63,13 @@ public class TPartyTask extends AsyncTask<Object, Object, Object> {
             } else if ("getPosts".equals(operationName)) {
                 savePosts(getResp(POSTS));
             }
+            if ("getCheckIns".equals(operationName)) {
+                saveCheckIns(getResp(CHECK_INS));
+
+            } /*else if ("getPosts".equals(operationName)) {
+                savePosts(getResp(POSTS));
+
+            }*/
 
         } catch (Exception e) {
             //What should we do here?;
@@ -75,6 +82,7 @@ public class TPartyTask extends AsyncTask<Object, Object, Object> {
     protected void onPostExecute(Object arg) {
         //
     }
+
     //JSON Array response from service call
     private boolean checkInUser(String serviceCall) throws IOException, JSONException {
         HttpURLConnection urlConnection;
@@ -147,7 +155,8 @@ public class TPartyTask extends AsyncTask<Object, Object, Object> {
     }
 
     private void updateLocations(JSONArray checkInsArray) throws JSONException {
-        int locID; int checkInCount;
+        int locID;
+        int checkInCount;
         Map<Integer, Integer> checkIns = new HashMap<Integer, Integer>();
 
         for (int i = 0; i < checkInsArray.length(); i++) {
@@ -161,7 +170,6 @@ public class TPartyTask extends AsyncTask<Object, Object, Object> {
         }
         dbHelper.updateLocations(checkIns);
     }
-
 
     private void savePosts(JSONArray postsArray) throws IOException, JSONException {
         //...

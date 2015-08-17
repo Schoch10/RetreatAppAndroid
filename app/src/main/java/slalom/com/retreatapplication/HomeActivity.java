@@ -9,6 +9,8 @@ import android.view.View;
 import android.content.Intent;
 import android.util.Log;
 
+import slalom.com.retreatapplication.util.TPartyService;
+
 
 public class HomeActivity extends ActionBarActivity {
 

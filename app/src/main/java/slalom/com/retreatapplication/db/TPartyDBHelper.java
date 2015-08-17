@@ -5,14 +5,11 @@ import android.content.Context;
 import android.util.Log;
 import android.content.ContentValues;
 import android.database.Cursor;
-
-import java.sql.Date;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Map;
-
 import slalom.com.retreatapplication.model.Location;
 import slalom.com.retreatapplication.model.CheckIn;
+import slalom.com.retreatapplication.util.PostObject;
 
 
 /**
@@ -42,6 +39,7 @@ public class TPartyDBHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(LocationContract.SQL_CREATE_TABLE);
         db.execSQL(CheckInContract.SQL_CREATE_TABLE);
+        db.execSQL(PostContract.SQL_CREATE_TABLE);
         initializeData(db);
     }
 
@@ -67,9 +65,6 @@ public class TPartyDBHelper extends SQLiteOpenHelper {
      * @param db the database being initialized.
      */
     private void initializeData(SQLiteDatabase db) {
-        //Call TParty Service to add initial values
-        //....
-
         //Save list of locations
         ArrayList<Location> locations = new ArrayList<Location>();
         Location item;
@@ -99,7 +94,7 @@ public class TPartyDBHelper extends SQLiteOpenHelper {
         // Gets the data repository in write mode
         SQLiteDatabase db = this.getWritableDatabase();
 
-        db.execSQL("DELETE FROM "+ CheckInContract.TABLE_NAME);
+        db.execSQL("DELETE FROM " + CheckInContract.TABLE_NAME);
 
         for (CheckIn item : checkIns) {
             values = new ContentValues();
@@ -109,7 +104,7 @@ public class TPartyDBHelper extends SQLiteOpenHelper {
             values.put(CheckInContract.RowEntry.COLUMN_NAME_USERNAME, item.getUsername());
             values.put(CheckInContract.RowEntry.COLUMN_NAME_USER_ID, item.getUserId());
             values.put(CheckInContract.RowEntry.COLUMN_NAME_CHECKIN_ID, item.getCheckInID());
-            db.insert(CheckInContract.TABLE_NAME, null, values);
+            long rowId = db.insert(CheckInContract.TABLE_NAME, null, values);
         }
     }
 
@@ -134,13 +129,13 @@ public class TPartyDBHelper extends SQLiteOpenHelper {
      *
      * @return the current projects from the database.
      */
+
     public ArrayList<Location> getLocations() {
         ArrayList<Location> locations = new ArrayList<Location>();
         Location location;
+
         SQLiteDatabase db = getReadableDatabase();
 
-        // After the query, the cursor points to the first database row
-        // returned by the request.
         Cursor cursor = db.query(LocationContract.TABLE_NAME, null, null, null, null, null, null);
 
         while (cursor.moveToNext()) {
@@ -196,5 +191,27 @@ public class TPartyDBHelper extends SQLiteOpenHelper {
         }
 
         return checkedIn;
+    }
+
+    public void savePosts(ArrayList<PostObject> posts) {
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        db.execSQL("DELETE FROM " + PostContract.TABLE_NAME);
+
+        ContentValues values;
+        for (PostObject post : posts) {
+            values = new ContentValues();
+            values.put(PostContract.RowEntry.POST_ID, post.postId());
+            values.put(PostContract.RowEntry.USER_ID, post.userId());
+            values.put(PostContract.RowEntry.USER_NAME, post.userName());
+            values.put(PostContract.RowEntry.LOCATION_ID, post.locationId());
+            values.put(PostContract.RowEntry.IMAGE, post.image());
+            values.put(PostContract.RowEntry.TEXT, post.text());
+            values.put(PostContract.RowEntry.TIMESTAMP, post.timestamp());
+
+            db.insert(PostContract.TABLE_NAME, null, values);
+        }
+
     }
 }
