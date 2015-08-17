@@ -7,13 +7,17 @@
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
-        android:label="@string/app_name"
+        android:label="RetreatApplication"
         android:theme="@style/AppTheme" >
         <service android:name=".util.TPartyService" />
 
         <activity
             android:name=".HomeActivity"
             android:label="@string/app_name" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity
             android:name=".CreateUserActivity"
@@ -38,10 +42,6 @@
         <activity
             android:name=".LocationFeedActivity"
             android:label="@string/title_activity_activities" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".TrendingActivity"

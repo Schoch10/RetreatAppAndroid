@@ -12,7 +12,7 @@ import android.widget.TextView;
 import java.util.HashMap;
 import java.util.Map;
 
-import slalom.com.retreatapplication.ActivitiesActivity;
+import slalom.com.retreatapplication.LocationFeedActivity;
 import slalom.com.retreatapplication.AgendaActivity;
 import slalom.com.retreatapplication.R;
 
@@ -70,8 +70,8 @@ public class HashMapAdapter  extends BaseAdapter {
                 // Disable the button to avoid playing of song multiple times
                 textDetail.setEnabled(false);
 
-                Intent activitiesActivityIntent = new Intent(activityContext, ActivitiesActivity.class);
-                activityContext.startActivity(activitiesActivityIntent);
+                Intent locationFeedIntent = new Intent(activityContext, LocationFeedActivity.class);
+                activityContext.startActivity(locationFeedIntent);
             }
         });
 

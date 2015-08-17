@@ -10,20 +10,18 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
+import slalom.com.retreatapplication.LocationFeedActivity;
 import slalom.com.retreatapplication.db.TPartyDBHelper;
 import slalom.com.retreatapplication.model.Location;
 import slalom.com.retreatapplication.util.CustomArrayAdapter;
-import slalom.com.retreatapplication.util.HashMapAdapter;
 import slalom.com.retreatapplication.util.TPartyTask;
 
 
 public class TrendingActivity extends Activity {
-    SwipeRefreshLayout swipeLayout;
+    //SwipeRefreshLayout swipeLayout;
     Activity activityContext;
     Intent activityIntent;
     TPartyDBHelper dbHelper;
@@ -77,10 +75,10 @@ public class TrendingActivity extends Activity {
 
                 location = locations.get(position);
                 Bundle b = new Bundle();
-                b.putString("locName", location.getLocationName());
-                b.putLong("locId", location.getLocationId());
+                b.putString("locationName", location.getLocationName());
+                b.putLong("locationId", location.getLocationId());
 
-                activityIntent = new Intent(activityContext, ActivitiesActivity.class);
+                activityIntent = new Intent(activityContext, LocationFeedActivity.class);
                 activityIntent.putExtras(b);
                 activityContext.startActivity(activityIntent);
             }

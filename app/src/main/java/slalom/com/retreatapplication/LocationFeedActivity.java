@@ -42,12 +42,12 @@ public class LocationFeedActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Intent intent = getIntent();
 
+        int locationId = 3;
         Bundle b = getIntent().getExtras();
-        int currentLocId = (int)b.getLong(LOC_ID_EXTRA, OMNI_ID);
 
-        Integer locationId = intent.getIntExtra("locationId", 3);
+        if(b!=null)
+            locationId = (int)b.getLong("locationId", 3);
 
         //Need an object that stores location > image mappings
         int imageRsrc = -1;

@@ -9,13 +9,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.TextView;
-import android.os.Bundle;
 
-import slalom.com.retreatapplication.ActivitiesActivity;
+
 import slalom.com.retreatapplication.R;
-import slalom.com.retreatapplication.model.CheckIn;
 import slalom.com.retreatapplication.model.Location;
 
 /**
