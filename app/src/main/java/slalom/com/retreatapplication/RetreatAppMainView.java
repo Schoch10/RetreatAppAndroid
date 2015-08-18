@@ -1,5 +1,6 @@
 package slalom.com.retreatapplication;
 
+import android.content.SharedPreferences;
 import android.os.CountDownTimer;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -16,11 +17,16 @@ import java.util.Date;
 
 public class RetreatAppMainView extends ActionBarActivity {
 
+    private static final String PREFS_NAME = "UserPreferences";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_retreat_app_main_view);
         setCountdowntimer(findViewById(R.id.textView3));
+
+        SharedPreferences prefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
+        ((TextView)findViewById(R.id.textView4)).setText(prefs.getString("userName", ""));
     }
 
     @Override

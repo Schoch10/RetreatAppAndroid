@@ -1,17 +1,21 @@
 package slalom.com.retreatapplication;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import org.json.JSONArray;
@@ -28,47 +32,56 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-
-import slalom.com.retreatapplication.db.CheckInContract;
 import slalom.com.retreatapplication.db.TPartyDBHelper;
 import slalom.com.retreatapplication.util.PostObject;
+import slalom.com.retreatapplication.util.TPartyTask;
 
 public class LocationFeedActivity extends Activity {
 
     private static final String TAG = LocationFeedActivity.class.getSimpleName();
     //private static final int MIN_DISTANCE = 175;
-    private TextView test_text;
+    private TextView postTextView;
+
+    private TPartyDBHelper dbHelper;
+    private boolean checkedIn = false;
+    private int userId = 0;
+    private int locationId = 0;
+
+    // UserPreferences file that hold local userId
+    private static final String PREFS_NAME = "UserPreferences";
+
+    private CustomListAdapter postListAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        int locationId = 3;
-        Bundle b = getIntent().getExtras();
+        SharedPreferences prefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
+        userId = prefs.getInt("userId", 2);
 
-        if(b!=null)
-            locationId = (int)b.getLong("locationId", 3);
+        Bundle b = getIntent().getExtras();
+        if(b != null) {
+            locationId = (int) b.getLong("locationId", 3);
+        }
 
         //Need an object that stores location > image mappings
-        int imageRsrc = -1;
-        switch(locationId) {
-            case 3: imageRsrc = R.mipmap.omni; break;
-            case 4: imageRsrc = R.mipmap.golf; break;
-
-            default: imageRsrc = R.mipmap.omni; break;
-        }
+//        int imageRsrc = -1;
+//        switch(locationId) {
+//            case 3: imageRsrc = R.mipmap.omni; break;
+//            case 4: imageRsrc = R.mipmap.golf; break;
+//
+//            default: imageRsrc = R.mipmap.omni; break;
+//        }
 
         setContentView(R.layout.location_feed_activity);
 
+//        ImageView test_image = (ImageView)findViewById(R.id.test_image);
+//        test_image.setImageResource(imageRsrc);
+//        postTextView = (TextView)findViewById(R.id.postTextView);
 
-        ImageView test_image = (ImageView)findViewById(R.id.test_image);
+        postTextView= (TextView)findViewById(R.id.post_text);
 
-        test_image.setImageResource(imageRsrc);
-
-        test_text = (TextView)findViewById(R.id.test_text);
-
-
-        TPartyDBHelper dbHelper = new TPartyDBHelper(this);
+        dbHelper = new TPartyDBHelper(this);
 
         List<PostObject> localPosts = dbHelper.getLocalPosts(locationId);
 
@@ -84,51 +97,18 @@ public class LocationFeedActivity extends Activity {
 
         getPostsAsync getPostsRunner = new getPostsAsync();
         getPostsRunner.execute(locationId);
-    }
 
-    /*
-    @Override
-    public boolean onTouchEvent(MotionEvent event) {
+        checkedIn = dbHelper.isUserCheckedIn(userId, locationId);
 
-        switch(event.getAction()) {
-
-            case MotionEvent.ACTION_DOWN:
-                x1 = event.getX();
-                break;
-
-            case MotionEvent.ACTION_UP:
-                x2 = event.getX();
-                float deltaX = x2 - x1;
-                if (Math.abs(deltaX) > MIN_DISTANCE) {
-                    if (deltaX > 0) {
-                        //swipe right
-                        Log.d(TAG, "swipe right? x1: " + x1 + ", x2: " + x2);
-
-                        // Need an object that stores location id > rank mapping
-                        // so when user swipes we increment or decrement rank, and
-                        // and get loc id associated with that rank
-                        Intent nextActivityIntent = new Intent(this, LocationFeedActivity.class);
-                        nextActivityIntent.putExtra(LOC_ID_EXTRA, currentLocId+1);
-                        startActivity(nextActivityIntent);
-
-                } else if (deltaX < 0) {
-                        //swipe left
-                        Log.d(TAG, "swipe left? x1: " + x1 + ", x2: " + x2);
-
-                        Intent nextActivityIntent = new Intent(this, LocationFeedActivity.class);
-                        nextActivityIntent.putExtra(LOC_ID_EXTRA, currentLocId-1);
-                        startActivity(nextActivityIntent);
-
-                    }
-                }
-
-                break;
+        if(checkedIn){
+            Button btn = (Button)findViewById(R.id.checkInButton);
+            btn.setEnabled(false);
         }
 
-        return true;
-
+        postListAdapter = new CustomListAdapter(this, localPosts);
+        ListView postListView = (ListView) findViewById(R.id.postListView);
+        postListView.setAdapter(postListAdapter);
     }
-    */
 
     private class getPostsAsync extends AsyncTask<Integer, String, String> {
 
@@ -146,7 +126,7 @@ public class LocationFeedActivity extends Activity {
 
         @Override
         protected void onProgressUpdate(String... update) {
-            test_text.setText(update[0]);
+//            postTextView.setText(update[0]);
         }
 
         @Override
@@ -155,7 +135,7 @@ public class LocationFeedActivity extends Activity {
             TPartyDBHelper dbHelper = new TPartyDBHelper(LocationFeedActivity.this);
             List<PostObject> localPosts = dbHelper.getLocalPosts(locationId);
 
-            test_text.setText(localPosts.toString());
+//            postTextView.setText(localPosts.toString());
         }
 
         private JSONArray getPosts(Integer locationId) {
@@ -259,9 +239,110 @@ public class LocationFeedActivity extends Activity {
         return super.onOptionsItemSelected(item);
     }
 
+    public void onCreatePost(View view) {
+        Intent createPostActivity = new Intent(this, CreatePostActivity.class);
+        startActivity(createPostActivity);
+    }
 
-    public void viewAllPostsSelected(View view) {
-        Intent trendingIntent = new Intent(this, ViewPostsActivity.class);
-        startActivity(trendingIntent);
+    public void onCheckIn(View view) {
+        //Disable button
+        Button btn = (Button)findViewById(R.id.checkInButton);
+        btn.setEnabled(false);
+
+        //Call checkIn API and update local DB
+        //Trigger Async Task
+        new TPartyTask().execute("checkInUser", this, userId, locationId);
+    }
+
+//    public void viewAllPostsSelected(View view) {
+//        Intent trendingIntent = new Intent(this, ViewPostsActivity.class);
+//        startActivity(trendingIntent);
+//    }
+
+
+    public class CustomListAdapter extends BaseAdapter {
+        private Context mContext;
+        private List<PostObject> postList;
+
+        public CustomListAdapter(Context c, List<PostObject> postList) {
+            mContext = c;
+            this.postList = postList;
+        }
+
+        public int getCount() {
+            return postList.size();
+        }
+
+        public Object getItem(int position) {
+            return postList.get(position);
+        }
+
+        public long getItemId(int position) {
+            return position;
+        }
+
+        // create a single post View for each item referenced by the Adapter
+        public View getView(int position, View convertView, ViewGroup parent) {
+            if (convertView == null) {
+                LayoutInflater inflater = (LayoutInflater) mContext.getApplicationContext()
+                        .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                convertView = inflater.inflate(R.layout.single_post, parent, false);
+            }
+
+            ImageView postImageView = (ImageView) convertView.findViewById(R.id.post_image);
+            TextView postTextView = (TextView)convertView.findViewById(R.id.post_text);
+            TextView authorTextView = (TextView)convertView.findViewById(R.id.author_text);
+
+            postImageView.setImageResource(R.drawable.ic_launcher);
+            postTextView.setText(((PostObject)getItem(position)).text());
+            authorTextView.setText(((PostObject)getItem(position)).userName());
+
+            return convertView;
+        }
     }
 }
+
+
+    /*
+        @Override
+        public boolean onTouchEvent(MotionEvent event) {
+
+            switch(event.getAction()) {
+
+                case MotionEvent.ACTION_DOWN:
+                    x1 = event.getX();
+                    break;
+
+                case MotionEvent.ACTION_UP:
+                    x2 = event.getX();
+                    float deltaX = x2 - x1;
+                    if (Math.abs(deltaX) > MIN_DISTANCE) {
+                        if (deltaX > 0) {
+                            //swipe right
+                            Log.d(TAG, "swipe right? x1: " + x1 + ", x2: " + x2);
+
+                            // Need an object that stores location id > rank mapping
+                            // so when user swipes we increment or decrement rank, and
+                            // and get loc id associated with that rank
+                            Intent nextActivityIntent = new Intent(this, LocationFeedActivity.class);
+                            nextActivityIntent.putExtra(LOC_ID_EXTRA, currentLocId+1);
+                            startActivity(nextActivityIntent);
+
+                    } else if (deltaX < 0) {
+                            //swipe left
+                            Log.d(TAG, "swipe left? x1: " + x1 + ", x2: " + x2);
+
+                            Intent nextActivityIntent = new Intent(this, LocationFeedActivity.class);
+                            nextActivityIntent.putExtra(LOC_ID_EXTRA, currentLocId-1);
+                            startActivity(nextActivityIntent);
+
+                        }
+                    }
+
+                    break;
+            }
+
+            return true;
+
+        }
+    */
