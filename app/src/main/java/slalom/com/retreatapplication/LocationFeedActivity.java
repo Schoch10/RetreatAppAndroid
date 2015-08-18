@@ -43,6 +43,8 @@ public class LocationFeedActivity extends Activity {
     private TextView postTextView;
 
     private TPartyDBHelper dbHelper;
+    private Intent activityIntent;
+    private Bundle bundle;
     private boolean checkedIn = false;
     private int userId = 0;
     private int locationId = 0;
@@ -59,9 +61,9 @@ public class LocationFeedActivity extends Activity {
         SharedPreferences prefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
         userId = prefs.getInt("userId", 2);
 
-        Bundle b = getIntent().getExtras();
-        if(b != null) {
-            locationId = (int) b.getLong("locationId", 3);
+        bundle = getIntent().getExtras();
+        if(bundle != null) {
+            locationId = (int) bundle.getLong("locationId", 3);
         }
 
         //Need an object that stores location > image mappings
@@ -240,12 +242,12 @@ public class LocationFeedActivity extends Activity {
     }
 
     public void onCreatePost(View view) {
-        Bundle b = new Bundle();
-        b.putLong("locationId", locationId);
+        bundle = new Bundle();
+        bundle.putLong("locationId", locationId);
 
-        Intent createPostActivity = new Intent(this, CreatePostActivity.class);
-        createPostActivity.putExtras(b);
-        startActivity(createPostActivity);
+        activityIntent = new Intent(this, CreatePostActivity.class);
+        activityIntent.putExtras(bundle);
+        startActivity(activityIntent);
     }
 
     public void onCheckIn(View view) {
@@ -258,11 +260,17 @@ public class LocationFeedActivity extends Activity {
         new TPartyTask().execute("checkInUser", this, userId, locationId);
     }
 
+    public void refreshLocationFeed(View view) {
+        bundle = new Bundle();
+        bundle.putLong("locationId", locationId);
+
+        new TPartyTask().execute("refreshActivity", this, LocationFeedActivity.class, bundle);
+    }
+
 //    public void viewAllPostsSelected(View view) {
 //        Intent trendingIntent = new Intent(this, ViewPostsActivity.class);
 //        startActivity(trendingIntent);
 //    }
-
 
     public class CustomListAdapter extends BaseAdapter {
         private Context mContext;

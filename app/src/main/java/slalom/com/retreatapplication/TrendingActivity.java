@@ -9,11 +9,9 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.support.v4.widget.SwipeRefreshLayout;
 
 import java.util.ArrayList;
 
-import slalom.com.retreatapplication.LocationFeedActivity;
 import slalom.com.retreatapplication.db.TPartyDBHelper;
 import slalom.com.retreatapplication.model.Location;
 import slalom.com.retreatapplication.util.CustomArrayAdapter;
@@ -21,7 +19,6 @@ import slalom.com.retreatapplication.util.TPartyTask;
 
 
 public class TrendingActivity extends Activity {
-    //SwipeRefreshLayout swipeLayout;
     Activity activityContext;
     Intent activityIntent;
     TPartyDBHelper dbHelper;
@@ -44,21 +41,6 @@ public class TrendingActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_trending);
         activityContext = this;
-
-        /*
-        swipeLayout = (SwipeRefreshLayout)findViewById(R.id.swipe_container);
-        swipeLayout.setOnRefreshListener(new OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                // Trigger Async Task (onPreExecute method)
-                new TPartyTask().execute("getCheckIns", this);
-                swipeLayout.setRefreshing(false);
-            }
-        });
-        swipeLayout.setColorScheme(android.R.color.holo_blue_bright,
-                android.R.color.holo_green_light,
-                android.R.color.holo_orange_light,
-                android.R.color.holo_red_light);*/
 
         dbHelper = new TPartyDBHelper(this);
         locations = (ArrayList<Location>)dbHelper.getLocations();

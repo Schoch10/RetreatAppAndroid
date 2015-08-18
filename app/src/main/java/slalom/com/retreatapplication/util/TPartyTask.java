@@ -3,6 +3,7 @@ package slalom.com.retreatapplication.util;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.os.Bundle;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -41,8 +42,11 @@ public class TPartyTask extends AsyncTask<Object, Object, Object> {
     private final String CHECK_IN_USER = TPARTY_ENDPOINT + "checkin";
     private final String SAVE_POST = TPARTY_ENDPOINT + "DoPost";
     private TPartyDBHelper dbHelper;
+    private Class activityClass;
     private String operationName;
+    private Intent activityIntent;
     private Activity activityContext;
+    private Bundle bundle;
     private int userId; private int locationId;
     private String postText; private String serviceURL;
 
@@ -59,7 +63,7 @@ public class TPartyTask extends AsyncTask<Object, Object, Object> {
 
             if ("getCheckIns".equals(operationName)) {
                 saveCheckIns(getResp(CHECK_INS));
-                refreshActivity(TrendingActivity.class);
+                refreshActivity(TrendingActivity.class, null);
 
             } else if ("checkInUser".equals(operationName)) {
                 //Construct Service url
@@ -73,12 +77,13 @@ public class TPartyTask extends AsyncTask<Object, Object, Object> {
                 //fetch CheckIns
                 saveCheckIns(getResp(CHECK_INS));
 
-                //Refresh
-                //Intent viewPostsActivity = new Intent(this, ViewPostsActivity.class);
-                //startActivity(viewPostsActivity);
-
             } else if ("getPosts".equals(operationName)) {
                 //savePosts(getResp(POSTS));
+
+            }else if ("refreshActivity".equals(operationName)) {
+                activityClass = (Class)args[2];
+                if(args[3]!=null) bundle = (Bundle)args[3];
+                refreshActivity(activityClass, bundle);
 
             } else if ("getCheckIns".equals(operationName)) {
                 saveCheckIns(getResp(CHECK_INS));
@@ -145,9 +150,10 @@ public class TPartyTask extends AsyncTask<Object, Object, Object> {
         return resp_jArray;
     }
 
-    private void refreshActivity(Class activityClass){
+    private void refreshActivity(Class activityClass, Bundle bundle){
         //Refresh View
-        Intent activityIntent = new Intent(activityContext, activityClass);
+        activityIntent = new Intent(activityContext, activityClass);
+        if(bundle!=null) activityIntent.putExtras(bundle);
         activityContext.startActivity(activityIntent);
         activityContext.finish();
     }
@@ -169,13 +175,6 @@ public class TPartyTask extends AsyncTask<Object, Object, Object> {
         }
         dbHelper.saveCheckIns(checkIns);
         updateLocations(checkInsArray);
-
-        //Refresh View
-        /*
-        Intent refresh = new Intent(activityContext, TrendingActivity.class);
-        activityContext.startActivity(refresh);
-        activityContext.finish();
-        */
     }
 
     private void updateLocations(JSONArray checkInsArray) throws JSONException {
@@ -210,13 +209,13 @@ public class TPartyTask extends AsyncTask<Object, Object, Object> {
 
             // Execute HTTP Post Request
             HttpResponse response = httpclient.execute(httppost);
-        } catch (IOException e) {
+        } catch (Exception e) {
             // TODO Auto-generated catch block
         }
 
         //Refresh View
-        Intent refresh = new Intent(activityContext, LocationFeedActivity.class);
-        activityContext.startActivity(refresh);
-        activityContext.finish();
+        bundle = new Bundle();
+        bundle.putLong("locationId", locationId);
+        refreshActivity(LocationFeedActivity.class, bundle);
     }
 }
