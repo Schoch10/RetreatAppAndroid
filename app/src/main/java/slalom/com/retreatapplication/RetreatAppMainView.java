@@ -27,6 +27,7 @@ public class RetreatAppMainView extends ActionBarActivity {
 
         SharedPreferences prefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
         ((TextView)findViewById(R.id.textView4)).setText(prefs.getString("userName", ""));
+
     }
 
     @Override

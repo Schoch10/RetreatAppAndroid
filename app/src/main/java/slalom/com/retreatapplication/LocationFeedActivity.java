@@ -137,7 +137,9 @@ public class LocationFeedActivity extends Activity {
             TPartyDBHelper dbHelper = new TPartyDBHelper(LocationFeedActivity.this);
             List<PostObject> localPosts = dbHelper.getLocalPosts(locationId);
 
-//            postTextView.setText(localPosts.toString());
+            postListAdapter = new CustomListAdapter(LocationFeedActivity.this, localPosts);
+            ListView postListView = (ListView) findViewById(R.id.postListView);
+            postListView.setAdapter(postListAdapter);
         }
 
         private JSONArray getPosts(Integer locationId) {
