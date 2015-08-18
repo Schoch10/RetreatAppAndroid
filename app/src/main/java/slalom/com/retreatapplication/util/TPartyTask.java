@@ -3,7 +3,6 @@ package slalom.com.retreatapplication.util;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.AsyncTask;
-import android.util.Log;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -16,24 +15,35 @@ import java.io.InputStreamReader;
 import java.io.BufferedReader;
 import java.net.URL;
 import java.net.HttpURLConnection;
+import java.util.List;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+
+import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
 
 import slalom.com.retreatapplication.TrendingActivity;
 import slalom.com.retreatapplication.db.TPartyDBHelper;
 import slalom.com.retreatapplication.model.CheckIn;
 
 public class TPartyTask extends AsyncTask<Object, Object, Object> {
-
+    private static final String TAG = TPartyTask.class.getSimpleName();
     private final String TPARTY_ENDPOINT = "http://tpartyservice-dev.elasticbeanstalk.com/home/";
     private final String CHECK_INS = TPARTY_ENDPOINT + "pollparticipantlocations";
     private final String POSTS = TPARTY_ENDPOINT + "pollposts";
     private final String CHECK_IN_USER = TPARTY_ENDPOINT + "checkin";
+    private final String SAVE_POST = TPARTY_ENDPOINT + "DoPost";
     private TPartyDBHelper dbHelper;
-    private static final String TAG = TPartyTask.class.getSimpleName();
     private String operationName;
     private Activity activityContext;
+    private int userId; private int locationId;
+    private String postText; private String serviceURL;
 
     @Override
     protected void onPreExecute() {}
@@ -51,25 +61,37 @@ public class TPartyTask extends AsyncTask<Object, Object, Object> {
                 refreshActivity(TrendingActivity.class);
 
             } else if ("checkInUser".equals(operationName)) {
-                int USER_ID = (int)args[2];
-                int LOCATION_ID = (int)args[3];
-                String CHECK_IN_URL = CHECK_IN_USER +"?userId=" + USER_ID +"&locationId="+LOCATION_ID;
-                checkInUser(CHECK_IN_URL);
+                //Construct Service url
+                userId = (int)args[2];
+                locationId = (int)args[3];
+                serviceURL = CHECK_IN_USER +"?userId=" + userId +"&locationId="+locationId;
+
+                //check In
+                checkInUser(serviceURL);
+
+                //fetch CheckIns
                 saveCheckIns(getResp(CHECK_INS));
+
                 //Refresh
                 //Intent viewPostsActivity = new Intent(this, ViewPostsActivity.class);
                 //startActivity(viewPostsActivity);
 
             } else if ("getPosts".equals(operationName)) {
-                savePosts(getResp(POSTS));
-            }
-            if ("getCheckIns".equals(operationName)) {
+                //savePosts(getResp(POSTS));
+
+            } else if ("getCheckIns".equals(operationName)) {
                 saveCheckIns(getResp(CHECK_INS));
 
-            } /*else if ("getPosts".equals(operationName)) {
-                savePosts(getResp(POSTS));
+            } else if ("savePost".equals(operationName)) {
+                //Construct Service url
+                userId = (int)args[2];
+                locationId = (int)args[3];
+                postText = (String)args[4];
+                serviceURL = SAVE_POST +"?userId=" + userId +"&locationId="+locationId +"&postText="+postText;
 
-            }*/
+                //Save post
+                savePost(serviceURL);
+            }
 
         } catch (Exception e) {
             //What should we do here?;
@@ -171,7 +193,23 @@ public class TPartyTask extends AsyncTask<Object, Object, Object> {
         dbHelper.updateLocations(checkIns);
     }
 
-    private void savePosts(JSONArray postsArray) throws IOException, JSONException {
-        //...
+    private void savePost(String serviceCall) throws IOException, JSONException {
+        // Create a new HttpClient and Post Header
+        HttpClient httpclient = new DefaultHttpClient();
+        HttpPost httppost = new HttpPost(serviceCall);
+
+        try {
+            // Add your data
+            List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(3);
+            nameValuePairs.add(new BasicNameValuePair("UserId", String.valueOf(userId)));
+            nameValuePairs.add(new BasicNameValuePair("LocationId", String.valueOf(locationId)));
+            nameValuePairs.add(new BasicNameValuePair("postText", postText));
+            httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+
+            // Execute HTTP Post Request
+            HttpResponse response = httpclient.execute(httppost);
+        } catch (IOException e) {
+        // TODO Auto-generated catch block
+        }
     }
 }
