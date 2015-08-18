@@ -41,7 +41,7 @@
         </activity>
         <activity
             android:name=".LocationFeedActivity"
-            android:label="@string/title_activity_activities" >
+            android:label="@string/title_activity_location_feed" >
         </activity>
         <activity
             android:name=".TrendingActivity"

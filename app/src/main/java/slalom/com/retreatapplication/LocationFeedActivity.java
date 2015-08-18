@@ -220,7 +220,7 @@ public class LocationFeedActivity extends Activity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_activities, menu);
+        getMenuInflater().inflate(R.menu.menu_location_feed_activity, menu);
         return true;
     }
 
@@ -264,7 +264,7 @@ public class LocationFeedActivity extends Activity {
 //    }
 
 
-    public class CustomListAdapter extends BaseAdapter {
+    private class CustomListAdapter extends BaseAdapter {
         private Context mContext;
         private List<PostObject> postList;
 

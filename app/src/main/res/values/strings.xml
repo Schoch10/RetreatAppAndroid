@@ -9,8 +9,8 @@
     //Create User Strings
     <string name="createUserLabel">Create User</string>
     <string name="action_settings">Settings</string>
-    <string name="title_activity_create_user">CreateUserActivity</string>
-    <string name="title_activity_retreat_app_main_view">RetreatAppMainView</string>
+    <string name="title_activity_create_user">Create User</string>
+    <string name="title_activity_retreat_app_main_view">Slalom</string>
 
     //Main Activity View Strings
 
@@ -33,9 +33,9 @@
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_game_view">GameViewActivity</string>
     <string name="title_activity_information">Information Activity</string>
-    <string name="title_activity_agenda">AgendaActivity</string>
-    <string name="title_activity_activities">ActivitiesActivity</string>
-    <string name="title_activity_trending">TrendingActivity</string>
+    <string name="title_activity_agenda">Agenda</string>
+    <string name="title_activity_location_feed">Location Feed</string>
+    <string name="title_activity_trending">Trending Now</string>
 
 
     //Activity/Location Page Strings
