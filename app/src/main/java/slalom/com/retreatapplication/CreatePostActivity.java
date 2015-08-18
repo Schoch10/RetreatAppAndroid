@@ -1,18 +1,37 @@
 package slalom.com.retreatapplication;
 
 import android.app.Activity;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.EditText;
+
+import slalom.com.retreatapplication.util.TPartyTask;
 
 /**
  * Created by senthilrajav on 8/13/15.
  */
 public class CreatePostActivity extends Activity {
+    private int userId = 0;
+    private int locationId = 0;
+
+    // UserPreferences file that hold local userId
+    private static final String PREFS_NAME = "UserPreferences";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        SharedPreferences prefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
+        userId = prefs.getInt("userId", 2);
+
+        Bundle b = getIntent().getExtras();
+        if(b != null) {
+            locationId = (int) b.getLong("locationId", 3);
+        }
+
         setContentView(R.layout.activity_create_post);
     }
 
@@ -37,4 +56,14 @@ public class CreatePostActivity extends Activity {
 
         return super.onOptionsItemSelected(item);
     }
+
+    public void createPostSelected(View view) {
+        EditText postText = (EditText)findViewById(R.id.editText);
+        String newPost = postText.getText().toString();
+
+        //Call checkIn API and update local DB
+        //Trigger Async Task
+        new TPartyTask().execute("savePost", this, userId, locationId, newPost);
+    }
+
 }

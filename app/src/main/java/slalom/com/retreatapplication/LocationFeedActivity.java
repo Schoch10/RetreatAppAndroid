@@ -240,7 +240,11 @@ public class LocationFeedActivity extends Activity {
     }
 
     public void onCreatePost(View view) {
+        Bundle b = new Bundle();
+        b.putLong("locationId", locationId);
+
         Intent createPostActivity = new Intent(this, CreatePostActivity.class);
+        createPostActivity.putExtras(b);
         startActivity(createPostActivity);
     }
 

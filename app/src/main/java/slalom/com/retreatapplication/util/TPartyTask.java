@@ -28,6 +28,7 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 
+import slalom.com.retreatapplication.LocationFeedActivity;
 import slalom.com.retreatapplication.TrendingActivity;
 import slalom.com.retreatapplication.db.TPartyDBHelper;
 import slalom.com.retreatapplication.model.CheckIn;
@@ -90,7 +91,8 @@ public class TPartyTask extends AsyncTask<Object, Object, Object> {
                 serviceURL = SAVE_POST +"?userId=" + userId +"&locationId="+locationId +"&postText="+postText;
 
                 //Save post
-                savePost(serviceURL);
+                //savePost(serviceURL);
+                savePost(SAVE_POST, userId, locationId, postText);
             }
 
         } catch (Exception e) {
@@ -193,7 +195,7 @@ public class TPartyTask extends AsyncTask<Object, Object, Object> {
         dbHelper.updateLocations(checkIns);
     }
 
-    private void savePost(String serviceCall) throws IOException, JSONException {
+    private void savePost(String serviceCall, int userId, int locationId, String postText) throws IOException, JSONException {
         // Create a new HttpClient and Post Header
         HttpClient httpclient = new DefaultHttpClient();
         HttpPost httppost = new HttpPost(serviceCall);
@@ -209,7 +211,12 @@ public class TPartyTask extends AsyncTask<Object, Object, Object> {
             // Execute HTTP Post Request
             HttpResponse response = httpclient.execute(httppost);
         } catch (IOException e) {
-        // TODO Auto-generated catch block
+            // TODO Auto-generated catch block
         }
+
+        //Refresh View
+        Intent refresh = new Intent(activityContext, LocationFeedActivity.class);
+        activityContext.startActivity(refresh);
+        activityContext.finish();
     }
 }
