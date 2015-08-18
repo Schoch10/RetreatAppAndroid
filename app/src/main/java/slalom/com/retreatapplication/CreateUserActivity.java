@@ -112,7 +112,7 @@ public class CreateUserActivity extends ActionBarActivity {
     public void createUserSelected(View view) {
 
         StringBuilder response = new StringBuilder();
-        nameEditText = (EditText)findViewById(R.id.editText);
+        nameEditText = (EditText)findViewById(R.id.nameEditText);
         userName = nameEditText.getText().toString();
 
         sendPostsAsync sendPostRunner = new sendPostsAsync();
