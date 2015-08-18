@@ -42,9 +42,14 @@ public class TrendingActivity extends Activity {
         setContentView(R.layout.activity_trending);
         activityContext = this;
 
+        //Get latest CheckIns from REST service and update local store
+        new TPartyTask().execute("getCheckIns", this);
+
+        //Get latest CheckIns from local store
         dbHelper = new TPartyDBHelper(this);
         locations = (ArrayList<Location>)dbHelper.getLocations();
 
+        //Using adapter class for rendering
         CustomArrayAdapter customArrayAdapter = new CustomArrayAdapter(this, R.layout.activity_trending, locations);
         ListView listView = (ListView) findViewById(R.id.listView1);
         listView.setAdapter(customArrayAdapter);
@@ -69,7 +74,8 @@ public class TrendingActivity extends Activity {
 
     public void refreshCheckInsSelected(View view) {
         // Trigger Async Task
-        new TPartyTask().execute("getCheckIns", this);
+        //new TPartyTask().execute("getCheckIns", this);
+        new TPartyTask().execute("refreshActivity", this, TrendingActivity.class, null);
     }
 
     @Override

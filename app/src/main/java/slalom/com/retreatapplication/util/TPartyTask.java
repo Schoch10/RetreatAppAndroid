@@ -63,7 +63,7 @@ public class TPartyTask extends AsyncTask<Object, Object, Object> {
 
             if ("getCheckIns".equals(operationName)) {
                 saveCheckIns(getResp(CHECK_INS));
-                refreshActivity(TrendingActivity.class, null);
+                //refreshActivity(TrendingActivity.class, null);
 
             } else if ("checkInUser".equals(operationName)) {
                 //Construct Service url
@@ -84,9 +84,6 @@ public class TPartyTask extends AsyncTask<Object, Object, Object> {
                 activityClass = (Class)args[2];
                 if(args[3]!=null) bundle = (Bundle)args[3];
                 refreshActivity(activityClass, bundle);
-
-            } else if ("getCheckIns".equals(operationName)) {
-                saveCheckIns(getResp(CHECK_INS));
 
             } else if ("savePost".equals(operationName)) {
                 //Construct Service url
