@@ -13,7 +13,8 @@
 
         <activity
             android:name=".HomeActivity"
-            android:label="Welcome to the Slalom T Party!" >
+            android:label="Welcome to the Slalom T Party!"
+            android:noHistory="true" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -21,7 +22,8 @@
         </activity>
         <activity
             android:name=".CreateUserActivity"
-            android:label="Create User" >
+            android:label="Create User"
+            android:noHistory="true" >
         </activity>
         <activity
             android:name=".RetreatAppMainView"
