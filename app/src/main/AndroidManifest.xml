@@ -13,7 +13,7 @@
 
         <activity
             android:name=".HomeActivity"
-            android:label="@string/app_name" >
+            android:label="Slalom" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -21,23 +21,23 @@
         </activity>
         <activity
             android:name=".CreateUserActivity"
-            android:label="@string/title_activity_create_user" >
+            android:label="Create User" >
         </activity>
         <activity
             android:name=".RetreatAppMainView"
-            android:label="@string/title_activity_retreat_app_main_view" >
+            android:label="Slalom" >
         </activity>
         <activity
             android:name=".GameViewActivity"
-            android:label="@string/title_activity_game_view" >
+            android:label="Game" >
         </activity>
         <activity
             android:name=".InformationActivity"
-            android:label="@string/title_activity_information" >
+            android:label="Information" >
         </activity>
         <activity
             android:name=".AgendaActivity"
-            android:label="@string/title_activity_agenda" >
+            android:label="Agenda" >
         </activity>
         <activity
             android:name=".LocationFeedActivity"
@@ -45,15 +45,15 @@
         </activity>
         <activity
             android:name=".TrendingActivity"
-            android:label="@string/title_activity_trending" >
+            android:label="Select Location" >
         </activity>
         <activity
             android:name=".ViewPostsActivity"
-            android:label="ViewPostsActivity" >
+            android:label="View Posts" >
         </activity>
         <activity
             android:name=".CreatePostActivity"
-            android:label="CreatePostActivity" >
+            android:label="New Post" >
         </activity>
     </application>
 
