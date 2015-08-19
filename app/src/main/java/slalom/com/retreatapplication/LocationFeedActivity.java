@@ -270,6 +270,7 @@ public class LocationFeedActivity extends AppCompatActivity {
     public void refreshLocationFeed(View view) {
         bundle = new Bundle();
         bundle.putLong("locationId", locationId);
+        bundle.putString("locationName", location);
 
         new TPartyTask().execute("refreshActivity", this, LocationFeedActivity.class, bundle);
     }
