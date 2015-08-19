@@ -1,7 +1,5 @@
 package slalom.com.retreatapplication.util;
 
-import java.util.ArrayList;
-
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -11,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 
 import slalom.com.retreatapplication.R;
 import slalom.com.retreatapplication.model.Location;
@@ -51,7 +50,7 @@ public class CustomArrayAdapter extends ArrayAdapter<Location> {
         // to inflate it basically means to render, or show, the view.
         if (v == null) {
             LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            v = inflater.inflate(R.layout.image_list, parent, false);
+            v = inflater.inflate(R.layout.trending_list_item, parent, false);
         }
 
 		/*
@@ -68,12 +67,12 @@ public class CustomArrayAdapter extends ArrayAdapter<Location> {
             // This is how you obtain a reference to the TextViews.
             // These TextViews are created in the XML files we defined.
 
-            textTitle = (TextView)v.findViewById(R.id.item);
-            textDetail = (TextView)v.findViewById(R.id.textView1);
+            textTitle = (TextView)v.findViewById(R.id.location_name);
+            textDetail = (TextView)v.findViewById(R.id.check_in_count);
             //buttonRefresh = (Button)v.findViewById(R.id.buttonRefresh);
 
             textTitle.setText(location.getLocationName());
-            textDetail.setText("Checked In# " + location.getCheckin());
+            textDetail.setText("" + location.getCheckin());
 
             /*
             // Button click listener
