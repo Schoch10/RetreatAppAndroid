@@ -9,19 +9,8 @@
         android:layout_height="match_parent"
         android:id="@+id/imageView2"
         android:src="@drawable/speakeasy_crowd"
-        android:scaleType="centerCrop"
-        android:layout_alignTop="@+id/textView"
-        android:layout_alignLeft="@+id/textView"
-        android:layout_alignStart="@+id/textView" />
+        android:scaleType="centerCrop" />
 
-    <TextView android:text="@string/welcome"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
-        android:id="@+id/textView"
-        android:textSize="30dp"
-        android:textColor="#ffffff"
-        android:background="#0072c8"/>
 
     <Button
         android:layout_width="wrap_content"

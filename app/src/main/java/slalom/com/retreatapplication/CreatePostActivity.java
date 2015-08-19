@@ -16,6 +16,8 @@ import slalom.com.retreatapplication.util.TPartyTask;
 public class CreatePostActivity extends AppCompatActivity {
     private int userId = 0;
     private int locationId = 0;
+    private String location;
+    private Bundle bundle;
 
     // UserPreferences file that hold local userId
     private static final String PREFS_NAME = "UserPreferences";
@@ -27,10 +29,14 @@ public class CreatePostActivity extends AppCompatActivity {
         SharedPreferences prefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
         userId = prefs.getInt("userId", 2);
 
-        Bundle b = getIntent().getExtras();
-        if(b != null) {
-            locationId = (int) b.getLong("locationId", 3);
+        bundle = getIntent().getExtras();
+        if(bundle != null) {
+            locationId = (int) bundle.getLong("locationId", 3);
+            location = bundle.getString("locationName");
         }
+
+        //update ActionBar title with location name of selected location in view
+        setTitle(location);
 
         setContentView(R.layout.activity_create_post);
     }
