@@ -1,13 +1,13 @@
 package slalom.com.retreatapplication;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.CountDownTimer;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.os.CountDownTimer;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.content.Intent;
 import android.widget.TextView;
 
 import java.text.ParseException;
@@ -15,7 +15,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 
-public class RetreatAppMainView extends ActionBarActivity {
+public class RetreatAppMainView extends AppCompatActivity {
 
     private static final String PREFS_NAME = "UserPreferences";
 

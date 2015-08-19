@@ -1,7 +1,7 @@
 package slalom.com.retreatapplication;
 
-import android.app.Activity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ListView;
@@ -9,7 +9,7 @@ import android.widget.ListView;
 import slalom.com.retreatapplication.util.CustomListAdapter;
 
 
-public class AgendaActivity extends Activity {
+public class AgendaActivity extends AppCompatActivity {
 
     private String[][] agenda = {
             { "Arrive & Checkin", "Mt. Omni Lobby" },

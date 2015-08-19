@@ -3,6 +3,7 @@ package slalom.com.retreatapplication;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -18,23 +19,13 @@ import slalom.com.retreatapplication.util.CustomArrayAdapter;
 import slalom.com.retreatapplication.util.TPartyTask;
 
 
-public class TrendingActivity extends Activity {
+public class TrendingActivity extends AppCompatActivity {
     Activity activityContext;
     Intent activityIntent;
     TPartyDBHelper dbHelper;
     TextView textDetail;
     ArrayList<Location> locations;
     Location location;
-
-    private Integer[] imgId = {
-            R.drawable.ic_launcher,
-            R.drawable.ic_launcher,
-            R.drawable.ic_launcher,
-            R.drawable.ic_launcher,
-            R.drawable.ic_launcher,
-            R.drawable.ic_launcher,
-            R.drawable.ic_launcher
-    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

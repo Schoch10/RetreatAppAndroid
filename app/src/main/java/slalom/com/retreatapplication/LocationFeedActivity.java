@@ -1,11 +1,11 @@
 package slalom.com.retreatapplication;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -36,7 +36,7 @@ import slalom.com.retreatapplication.db.TPartyDBHelper;
 import slalom.com.retreatapplication.util.PostObject;
 import slalom.com.retreatapplication.util.TPartyTask;
 
-public class LocationFeedActivity extends Activity {
+public class LocationFeedActivity extends AppCompatActivity {
 
     private static final String TAG = LocationFeedActivity.class.getSimpleName();
     //private static final int MIN_DISTANCE = 175;
@@ -48,6 +48,7 @@ public class LocationFeedActivity extends Activity {
     private boolean checkedIn = false;
     private int userId = 0;
     private int locationId = 0;
+    private String location = "";
 
     // UserPreferences file that hold local userId
     private static final String PREFS_NAME = "UserPreferences";
@@ -64,7 +65,11 @@ public class LocationFeedActivity extends Activity {
         bundle = getIntent().getExtras();
         if(bundle != null) {
             locationId = (int) bundle.getLong("locationId", 3);
+            location = bundle.getString("locationName");
         }
+
+        //update ActionBar title with location name of selected location in view
+        setTitle(location);
 
         //Need an object that stores location > image mappings
 //        int imageRsrc = -1;

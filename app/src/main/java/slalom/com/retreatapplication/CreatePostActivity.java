@@ -1,8 +1,8 @@
 package slalom.com.retreatapplication;
 
-import android.app.Activity;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -13,7 +13,7 @@ import slalom.com.retreatapplication.util.TPartyTask;
 /**
  * Created by senthilrajav on 8/13/15.
  */
-public class CreatePostActivity extends Activity {
+public class CreatePostActivity extends AppCompatActivity {
     private int userId = 0;
     private int locationId = 0;
 
