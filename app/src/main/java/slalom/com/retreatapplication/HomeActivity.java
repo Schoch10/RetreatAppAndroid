@@ -8,37 +8,25 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 
 
 public class HomeActivity extends AppCompatActivity {
 
     private static final String TAG = HomeActivity.class.getSimpleName();
+    private static final String PREFS_NAME = "UserPreferences";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-
-        //Intent tPartySvc = new Intent(this, TPartyTask.class);
-        //tPartySvc.putExtra("call", "getCheckIns");
-        //startService(tPartySvc);
-        // technically service stops itself, should we only initialize new service if it's been too long since last call? always initialize?
-
-        SharedPreferences prefs = getPreferences(MODE_PRIVATE);
-        Log.d(TAG, prefs.toString());
-        /*
-        if (prefs.getBoolean("tpartyfirstrun", true)) {
-            Log.d(TAG, "tpartyfirstrun: true");
-        */
+        SharedPreferences prefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
+        if (prefs.getString("userName", "").equals("")) {
             setContentView(R.layout.activity_home);
-        /*
-            prefs.edit().putBoolean("tpartyfirstrun", false).commit();
-        } else if (!prefs.getBoolean("tpartyfirstrun", false)) {
-            Log.d(TAG, "tpartyfirstrun: false");
-            setContentView(R.layout.activity_retreat_app_main_view);
-            prefs.edit().putBoolean("tpartyfirstrun", true).commit();
+        } else {
+            Intent mainViewIntent = new Intent(getApplicationContext(), RetreatAppMainView.class);
+            startActivity(mainViewIntent);
         }
-        */
     }
 
 

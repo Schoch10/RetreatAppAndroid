@@ -251,6 +251,7 @@ public class LocationFeedActivity extends AppCompatActivity {
     public void onCreatePost(View view) {
         bundle = new Bundle();
         bundle.putLong("locationId", locationId);
+        bundle.putString("locationName", location);
 
         activityIntent = new Intent(this, CreatePostActivity.class);
         activityIntent.putExtras(bundle);

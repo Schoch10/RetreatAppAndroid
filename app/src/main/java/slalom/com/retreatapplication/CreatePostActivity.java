@@ -16,6 +16,7 @@ import slalom.com.retreatapplication.util.TPartyTask;
 public class CreatePostActivity extends AppCompatActivity {
     private int userId = 0;
     private int locationId = 0;
+    private String locationName = "Omni";
 
     // UserPreferences file that hold local userId
     private static final String PREFS_NAME = "UserPreferences";
@@ -30,6 +31,7 @@ public class CreatePostActivity extends AppCompatActivity {
         Bundle b = getIntent().getExtras();
         if(b != null) {
             locationId = (int) b.getLong("locationId", 3);
+            locationName = b.getString("locationName", "Omni");
         }
 
         setContentView(R.layout.activity_create_post);
@@ -63,7 +65,7 @@ public class CreatePostActivity extends AppCompatActivity {
 
         //Call checkIn API and update local DB
         //Trigger Async Task
-        new TPartyTask().execute("savePost", this, userId, locationId, newPost);
+        new TPartyTask().execute("savePost", this, userId, locationId, locationName, newPost);
     }
 
 }

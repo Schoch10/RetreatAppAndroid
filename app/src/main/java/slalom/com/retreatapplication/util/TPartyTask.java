@@ -47,7 +47,7 @@ public class TPartyTask extends AsyncTask<Object, Object, Object> {
     private Intent activityIntent;
     private Activity activityContext;
     private Bundle bundle;
-    private int userId; private int locationId;
+    private int userId; private int locationId; private String locationName;
     private String postText; private String serviceURL;
 
     @Override
@@ -89,12 +89,13 @@ public class TPartyTask extends AsyncTask<Object, Object, Object> {
                 //Construct Service url
                 userId = (int)args[2];
                 locationId = (int)args[3];
-                postText = (String)args[4];
+                locationName = (String)args[4];
+                postText = (String)args[5];
                 serviceURL = SAVE_POST +"?userId=" + userId +"&locationId="+locationId +"&postText="+postText;
 
                 //Save post
                 //savePost(serviceURL);
-                savePost(SAVE_POST, userId, locationId, postText);
+                savePost(SAVE_POST, userId, locationId, locationName, postText);
             }
 
         } catch (Exception e) {
@@ -191,7 +192,7 @@ public class TPartyTask extends AsyncTask<Object, Object, Object> {
         dbHelper.updateLocations(checkIns);
     }
 
-    private void savePost(String serviceCall, int userId, int locationId, String postText) throws IOException, JSONException {
+    private void savePost(String serviceCall, int userId, int locationId, String locationName, String postText) throws IOException, JSONException {
         // Create a new HttpClient and Post Header
         HttpClient httpclient = new DefaultHttpClient();
         HttpPost httppost = new HttpPost(serviceCall);
@@ -213,6 +214,7 @@ public class TPartyTask extends AsyncTask<Object, Object, Object> {
         //Refresh View
         bundle = new Bundle();
         bundle.putLong("locationId", locationId);
+        bundle.putString("locationName", locationName);
         refreshActivity(LocationFeedActivity.class, bundle);
     }
 }
