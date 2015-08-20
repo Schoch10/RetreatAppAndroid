@@ -42,6 +42,7 @@ public class TrendingActivity extends AppCompatActivity {
     private Location location;
     private CustomArrayAdapter customArrayAdapter;
     private Bundle bundle;
+    private ListView listView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,7 +51,7 @@ public class TrendingActivity extends AppCompatActivity {
         activityContext = this;
 
         //Get latest CheckIns from REST service and update local store
-        new LocationsAsyncTask().execute("getCheckIns", this);
+        new LocationsAsyncTask().execute(this);
 
         //Get latest CheckIns from local store
         dbHelper = new TPartyDBHelper(this);
@@ -58,7 +59,7 @@ public class TrendingActivity extends AppCompatActivity {
 
         //Using adapter class for rendering
         customArrayAdapter = new CustomArrayAdapter(this, R.layout.activity_trending, locations);
-        ListView listView = (ListView) findViewById(R.id.listView1);
+        listView = (ListView) findViewById(R.id.listView1);
         listView.setAdapter(customArrayAdapter);
 
         // OnItem click listener
@@ -127,7 +128,6 @@ public class TrendingActivity extends AppCompatActivity {
 
     private void updateLocations(JSONArray checkInsArray) throws JSONException {
         int locID;
-        int checkInCount;
         Map<Integer, Integer> checkIns = new HashMap<Integer, Integer>();
 
         for (int i = 0; i < checkInsArray.length(); i++) {
@@ -165,15 +165,11 @@ public class TrendingActivity extends AppCompatActivity {
     private class LocationsAsyncTask extends AsyncTask<Object, Object, Object>  {
         private final String TPARTY_ENDPOINT = "http://tpartyservice-dev.elasticbeanstalk.com/home/";
         private final String CHECK_INS = TPARTY_ENDPOINT + "pollparticipantlocations";
-        private TPartyDBHelper dbHelper;
-        private Activity activityContext;
-        private String operationName;
 
         protected String doInBackground(Object... args) {
             // all activities that call our service must include a "call" extra so we know what to do
             try {
-                operationName = (String)args[0];
-                activityContext = (Activity)args[1];
+                activityContext = (Activity)args[0];
                 dbHelper = new TPartyDBHelper(activityContext);
 
                 saveCheckIns(getResp(CHECK_INS));
@@ -192,7 +188,7 @@ public class TrendingActivity extends AppCompatActivity {
 
             //Using adapter class for rendering
             customArrayAdapter = new CustomArrayAdapter(TrendingActivity.this, R.layout.activity_trending, locations);
-            ListView listView = (ListView) findViewById(R.id.listView1);
+            listView = (ListView) findViewById(R.id.listView1);
             listView.setAdapter(customArrayAdapter);
         }
     }
