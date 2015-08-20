@@ -40,4 +40,6 @@
 
     //Activity/Location Page Strings
     <string name="omni_placeholder">Omni Resort Mount Washington</string>
+    <string name="check_in_button">TAP TO CHECK-IN!</string>
+    <string name="checked_in_post_button">Checked-in, write something ...</string>
 </resources>

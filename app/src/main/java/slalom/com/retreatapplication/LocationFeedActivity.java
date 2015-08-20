@@ -109,7 +109,9 @@ public class LocationFeedActivity extends AppCompatActivity {
 
         if(checkedIn){
             Button btn = (Button)findViewById(R.id.checkInButton);
-            btn.setEnabled(false);
+//            btn.setEnabled(false);
+            btn.setVisibility(View.GONE);
+            findViewById(R.id.createPostButton).setVisibility(View.VISIBLE);
         }
 
         postListAdapter = new CustomListAdapter(this, localPosts);
@@ -262,6 +264,8 @@ public class LocationFeedActivity extends AppCompatActivity {
         //Disable button
         Button btn = (Button)findViewById(R.id.checkInButton);
         btn.setEnabled(false);
+        btn.setVisibility(View.GONE);
+        findViewById(R.id.createPostButton).setVisibility(View.VISIBLE);
 
         //Call checkIn API and update local DB
         //Trigger Async Task
@@ -310,13 +314,19 @@ public class LocationFeedActivity extends AppCompatActivity {
                 convertView = inflater.inflate(R.layout.single_post, parent, false);
             }
 
+            ImageView postUserImageView = (ImageView) convertView.findViewById(R.id.post_user_image);
+            TextView postUserNameTextView = (TextView)convertView.findViewById(R.id.post_user_name);
+            TextView elapsedTimestampTextView = (TextView)convertView.findViewById(R.id.post_elapsed_timestamp);
             ImageView postImageView = (ImageView) convertView.findViewById(R.id.post_image);
             TextView postTextView = (TextView)convertView.findViewById(R.id.post_text);
-            TextView authorTextView = (TextView)convertView.findViewById(R.id.author_text);
 
+            PostObject post = ((PostObject) getItem(position));
+
+            postUserImageView.setImageResource(R.drawable.ic_launcher);
+            postUserNameTextView.setText(post.userName());
+            elapsedTimestampTextView.setText("" + post.timestamp());
             postImageView.setImageResource(R.drawable.ic_launcher);
-            postTextView.setText(((PostObject)getItem(position)).text());
-            authorTextView.setText(((PostObject)getItem(position)).userName());
+            postTextView.setText(post.text());
 
             return convertView;
         }
