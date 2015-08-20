@@ -2,14 +2,17 @@ package slalom.com.retreatapplication;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.net.URI;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -27,6 +30,7 @@ public class RetreatAppMainView extends AppCompatActivity {
 
         SharedPreferences prefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
         ((TextView)findViewById(R.id.textView4)).setText(prefs.getString("userName", ""));
+        ((ImageView)findViewById(R.id.imageView)).setImageURI(Uri.parse(prefs.getString("userImage", "")));
 
     }
 

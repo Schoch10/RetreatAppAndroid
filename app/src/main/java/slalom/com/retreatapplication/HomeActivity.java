@@ -21,12 +21,19 @@ public class HomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         SharedPreferences prefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
+
+        //Uncomment this call when testing
+        //setContentView(R.layout.activity_home);
+
+        //Comment this if {} block out when testing
         if (prefs.getString("userName", "").equals("")) {
             setContentView(R.layout.activity_home);
         } else {
             Intent mainViewIntent = new Intent(getApplicationContext(), RetreatAppMainView.class);
             startActivity(mainViewIntent);
         }
+
+
     }
 
 
