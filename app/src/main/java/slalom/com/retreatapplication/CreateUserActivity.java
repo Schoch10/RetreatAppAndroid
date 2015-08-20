@@ -14,6 +14,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
@@ -111,7 +112,7 @@ public class CreateUserActivity extends AppCompatActivity {
 */
                 String imageUriId = imageUri.getPathSegments().get(1).split(":")[1];
                 String[] filePathColumn = {MediaStore.Images.Media.DATA};
-                Cursor cursor = getContentResolver().query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, filePathColumn, "_id = ?", new String[] {imageUriId}, null);
+                Cursor cursor = getContentResolver().query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, filePathColumn, "_id = ?", new String[]{imageUriId}, null);
                 cursor.moveToFirst();
                 int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
                 userImage = cursor.getString(columnIndex);
@@ -134,7 +135,6 @@ public class CreateUserActivity extends AppCompatActivity {
     */
     public void createUserSelected(View view) {
 
-        StringBuilder response = new StringBuilder();
         nameEditText = (EditText)findViewById(R.id.nameEditText);
         userName = nameEditText.getText().toString();
 
@@ -182,7 +182,7 @@ public class CreateUserActivity extends AppCompatActivity {
                     userId = Integer.parseInt(response);
                     canProceed=true;
                 } else {
-                    response = "Name already taken. Please try again.";
+                    response = "Name already taken. Please choose a new name.";
                 }
 
                 in.close();
@@ -214,7 +214,11 @@ public class CreateUserActivity extends AppCompatActivity {
                 Intent mainViewIntent = new Intent(getApplicationContext(), RetreatAppMainView.class);
                 startActivity(mainViewIntent);
             } else {
-                nameEditText.setHint(response);
+                CharSequence text = response;
+                int duration = Toast.LENGTH_LONG;
+
+                Toast toast = Toast.makeText(CreateUserActivity.this, text, duration);
+                toast.show();
             }
         }
     }
