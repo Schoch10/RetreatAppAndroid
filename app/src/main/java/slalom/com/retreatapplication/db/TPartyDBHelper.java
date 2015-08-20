@@ -76,16 +76,16 @@ public class TPartyDBHelper extends SQLiteOpenHelper {
         ArrayList<Location> locations = new ArrayList<Location>();
         Location item;
 
-        item = new Location(); item.setLocationId(3); item.setLocationName("Hotel Bar"); item.setLocationImage("bar.png"); item.setCheckin(0); locations.add(item);
-        item = new Location(); item.setLocationId(4); item.setLocationName("Hotel Lobby"); item.setLocationImage("lobby.png"); item.setCheckin(0); locations.add(item);
+        item = new Location(); item.setLocationId(3); item.setLocationName("The Cave"); item.setLocationImage("bar.png"); item.setCheckin(0); locations.add(item);
+        item = new Location(); item.setLocationId(4); item.setLocationName("Lobby & Terrace"); item.setLocationImage("lobby.png"); item.setCheckin(0); locations.add(item);
         item = new Location(); item.setLocationId(5); item.setLocationName("Golf"); item.setLocationImage("golf.png"); item.setCheckin(0); locations.add(item);
         item = new Location(); item.setLocationId(6); item.setLocationName("Lawn Games"); item.setLocationImage("lawn.png"); item.setCheckin(0); locations.add(item);
         item = new Location(); item.setLocationId(7); item.setLocationName("Spa"); item.setLocationImage("spa.png"); item.setCheckin(0); locations.add(item);
-        item = new Location(); item.setLocationId(8); item.setLocationName("Zipline"); item.setLocationImage("zipline.png"); item.setCheckin(0); locations.add(item);
-        item = new Location(); item.setLocationId(9); item.setLocationName("Outdoor Activites"); item.setLocationImage("outdoor.png"); item.setCheckin(0); locations.add(item);
-        item = new Location(); item.setLocationId(10); item.setLocationName("Town"); item.setLocationImage("town.png"); item.setCheckin(0); locations.add(item);
-        item = new Location(); item.setLocationId(11); item.setLocationName("Banquet"); item.setLocationImage("banquet.png"); item.setCheckin(0); locations.add(item);
-        item = new Location(); item.setLocationId(12); item.setLocationName("After Party"); item.setLocationImage("party.png"); item.setCheckin(0); locations.add(item);
+        item = new Location(); item.setLocationId(8); item.setLocationName("Outdoor Activities/Town"); item.setLocationImage("outdoor.png"); item.setCheckin(0); locations.add(item);
+        item = new Location(); item.setLocationId(9); item.setLocationName("Stickney's"); item.setLocationImage("stickneys.png"); item.setCheckin(0); locations.add(item);
+        item = new Location(); item.setLocationId(10); item.setLocationName("Pool"); item.setLocationImage("pool.png"); item.setCheckin(0); locations.add(item);
+        item = new Location(); item.setLocationId(11); item.setLocationName("Presidential Foyer"); item.setLocationImage("pfoyer.png"); item.setCheckin(0); locations.add(item);
+        item = new Location(); item.setLocationId(12); item.setLocationName("After Party"); item.setLocationImage("afterparty.png"); item.setCheckin(0); locations.add(item);
 
         for (Location loc : locations) {
             values = new ContentValues();

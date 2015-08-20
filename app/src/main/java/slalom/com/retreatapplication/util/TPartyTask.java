@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.widget.ListView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -30,9 +31,11 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 
 import slalom.com.retreatapplication.LocationFeedActivity;
+import slalom.com.retreatapplication.R;
 import slalom.com.retreatapplication.TrendingActivity;
 import slalom.com.retreatapplication.db.TPartyDBHelper;
 import slalom.com.retreatapplication.model.CheckIn;
+import slalom.com.retreatapplication.model.Location;
 
 public class TPartyTask extends AsyncTask<Object, Object, Object> {
     private static final String TAG = TPartyTask.class.getSimpleName();
@@ -63,7 +66,6 @@ public class TPartyTask extends AsyncTask<Object, Object, Object> {
 
             if ("getCheckIns".equals(operationName)) {
                 saveCheckIns(getResp(CHECK_INS));
-                //refreshActivity(TrendingActivity.class, null);
 
             } else if ("checkInUser".equals(operationName)) {
                 //Construct Service url
@@ -106,9 +108,7 @@ public class TPartyTask extends AsyncTask<Object, Object, Object> {
     }
 
     @Override
-    protected void onPostExecute(Object arg) {
-        //
-    }
+    protected void onPostExecute(Object arg) { }
 
     //JSON Array response from service call
     private boolean checkInUser(String serviceCall) throws IOException, JSONException {
