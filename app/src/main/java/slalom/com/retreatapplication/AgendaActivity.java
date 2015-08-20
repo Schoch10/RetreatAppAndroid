@@ -12,13 +12,13 @@ import slalom.com.retreatapplication.util.CustomListAdapter;
 public class AgendaActivity extends AppCompatActivity {
 
     private String[][] agenda = {
-            { "Arrive & Checkin", "Mt. Omni Lobby" },
-            { "Cocktail Hour", "Mt. Omni Pool" },
-            { "Breakfast", "Mt. Omni Restaurant" },
-            { "Activities Freetime", "Check Activities Schedule" },
-            { "20s Gala", "Mt. Omni Ballroom" },
-            { "Breakfast", "Mt. Omni Restaurant" },
-            { "Checkout", "Mt. Omni Lobby" }
+            { "Arrive & Checkin", "Mt. Omni Lobby", "4:00 PM" },
+            { "Cocktail Hour", "Mt. Omni Pool", "4:00 PM"  },
+            { "Breakfast", "Mt. Omni Restaurant", "4:00 PM"  },
+            { "Activities Freetime", "Check Activities Schedule", "4:00 PM"  },
+            { "20s Gala", "Mt. Omni Ballroom", "4:00 PM"  },
+            { "Breakfast", "Mt. Omni Restaurant", "4:00 PM"  },
+            { "Checkout", "Mt. Omni Lobby", "4:00 PM" }
     };
     private Integer[] imgId = {
             R.drawable.ic_launcher,
