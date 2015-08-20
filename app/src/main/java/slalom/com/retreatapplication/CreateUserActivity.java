@@ -2,9 +2,11 @@ package slalom.com.retreatapplication;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
@@ -23,6 +25,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 
+
 public class CreateUserActivity extends AppCompatActivity {
 
     //Set int for Select Picture Activity callback identify
@@ -38,9 +41,11 @@ public class CreateUserActivity extends AppCompatActivity {
     private static final String PREFS_NAME = "UserPreferences";
     private final String USER_NAME = "userName";
     private final String USER_ID = "userId";
+    private final String USER_IMAGE = "userImage";
 
     private String userName;
     private Integer userId;
+    private String userImage;
     private EditText nameEditText;
 
     @Override
@@ -85,8 +90,8 @@ public class CreateUserActivity extends AppCompatActivity {
             Log.d(TAG, "Result OK");
             if (requestCode == SELECT_PICTURE) {
                 Uri imageUri = data.getData();
-                Log.d(TAG, "String: "+imageUri.toString());
-                Log.d(TAG, "Path: "+imageUri.getPath());
+                Log.d(TAG, "String: " + imageUri.toString());
+                Log.d(TAG, "Path: " + imageUri.getPath());
                 //Uri uriPath = Uri.parse(imageUri.getPath());
                 //InputStream uriStream = getContentResolver().openInputStream(imageUri);
                 //Bitmap bitmap = BitmapFactory.decodeStream(this.getContentResolver().openInputStream(imageUri));
@@ -94,9 +99,27 @@ public class CreateUserActivity extends AppCompatActivity {
                 //Log.d(TAG, bitmap.toString());
                 //((ImageView) findViewById(R.id.imageView3)).setImageBitmap(bitmap);
                 ((ImageView) findViewById(R.id.imageView3)).setImageURI(imageUri);
+                //((ImageView) findViewById(R.id.imageView)).setImageURI(imageUri);
+
+                /*
+                String[] filePathColumn = {MediaStore.Images.Media.DATA};
+                Cursor cursor = getContentResolver().query(imageUri, filePathColumn, null, null, null);
+                cursor.moveToFirst();
+                int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+                String filePath = cursor.getString(columnIndex);
+                cursor.close();
+*/
+                String imageUriId = imageUri.getPathSegments().get(1).split(":")[1];
+                String[] filePathColumn = {MediaStore.Images.Media.DATA};
+                Cursor cursor = getContentResolver().query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, filePathColumn, "_id = ?", new String[] {imageUriId}, null);
+                cursor.moveToFirst();
+                int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+                userImage = cursor.getString(columnIndex);
+                cursor.close();
+
+            } else {
+                Log.d(TAG, "Result not OK");
             }
-        } else {
-            Log.d(TAG, "Result not OK");
         }
     }
     /*
@@ -185,6 +208,7 @@ public class CreateUserActivity extends AppCompatActivity {
                 SharedPreferences.Editor editor = settings.edit();
                 editor.putInt(USER_ID, userId);
                 editor.putString(USER_NAME, userName);
+                editor.putString(USER_IMAGE, userImage);
                 editor.commit();
 
                 Intent mainViewIntent = new Intent(getApplicationContext(), RetreatAppMainView.class);
