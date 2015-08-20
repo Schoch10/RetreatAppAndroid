@@ -3,6 +3,7 @@ package slalom.com.retreatapplication;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -81,6 +82,8 @@ public class LocationFeedActivity extends AppCompatActivity {
 //        }
 
         setContentView(R.layout.location_feed_activity);
+        //Add user image to check in and post button
+        ((ImageView)findViewById(R.id.user_image)).setImageURI(Uri.parse(prefs.getString("userImage", "")));
 
 //        ImageView test_image = (ImageView)findViewById(R.id.test_image);
 //        test_image.setImageResource(imageRsrc);
@@ -109,7 +112,6 @@ public class LocationFeedActivity extends AppCompatActivity {
 
         if(checkedIn){
             Button btn = (Button)findViewById(R.id.checkInButton);
-//            btn.setEnabled(false);
             btn.setVisibility(View.GONE);
             findViewById(R.id.createPostButton).setVisibility(View.VISIBLE);
         }
@@ -263,7 +265,6 @@ public class LocationFeedActivity extends AppCompatActivity {
     public void onCheckIn(View view) {
         //Disable button
         Button btn = (Button)findViewById(R.id.checkInButton);
-        btn.setEnabled(false);
         btn.setVisibility(View.GONE);
         findViewById(R.id.createPostButton).setVisibility(View.VISIBLE);
 
@@ -279,11 +280,6 @@ public class LocationFeedActivity extends AppCompatActivity {
 
         new TPartyTask().execute("refreshActivity", this, LocationFeedActivity.class, bundle);
     }
-
-//    public void viewAllPostsSelected(View view) {
-//        Intent trendingIntent = new Intent(this, ViewPostsActivity.class);
-//        startActivity(trendingIntent);
-//    }
 
     private class CustomListAdapter extends BaseAdapter {
         private Context mContext;
