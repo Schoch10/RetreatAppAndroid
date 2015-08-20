@@ -1,46 +1,39 @@
 package slalom.com.retreatapplication;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.content.Intent;
-import android.util.Log;
-
-import slalom.com.retreatapplication.util.TPartyService;
+import android.widget.TextView;
 
 
-public class HomeActivity extends ActionBarActivity {
+public class HomeActivity extends AppCompatActivity {
 
     private static final String TAG = HomeActivity.class.getSimpleName();
+    private static final String PREFS_NAME = "UserPreferences";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        SharedPreferences prefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
 
-        //Intent tPartySvc = new Intent(this, TPartyTask.class);
-        //tPartySvc.putExtra("call", "getCheckIns");
-        //startService(tPartySvc);
-        // technically service stops itself, should we only initialize new service if it's been too long since last call? always initialize?
+        //Uncomment this call when testing
+        //setContentView(R.layout.activity_home);
 
-        SharedPreferences prefs = getPreferences(MODE_PRIVATE);
-        Log.d(TAG, prefs.toString());
-        /*
-        if (prefs.getBoolean("tpartyfirstrun", true)) {
-            Log.d(TAG, "tpartyfirstrun: true");
-        */
+        //Comment this if {} block out when testing
+        if (prefs.getString("userName", "").equals("")) {
             setContentView(R.layout.activity_home);
-        /*
-            prefs.edit().putBoolean("tpartyfirstrun", false).commit();
-        } else if (!prefs.getBoolean("tpartyfirstrun", false)) {
-            Log.d(TAG, "tpartyfirstrun: false");
-            setContentView(R.layout.activity_retreat_app_main_view);
-            prefs.edit().putBoolean("tpartyfirstrun", true).commit();
+        } else {
+            Intent mainViewIntent = new Intent(getApplicationContext(), RetreatAppMainView.class);
+            startActivity(mainViewIntent);
         }
-        */
+
+
     }
 
 

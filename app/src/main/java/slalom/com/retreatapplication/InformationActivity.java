@@ -1,17 +1,49 @@
 package slalom.com.retreatapplication;
 
-import android.support.v7.app.ActionBarActivity;
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.content.Intent;
+import android.view.View;
+import android.widget.ListView;
+import android.widget.TextView;
 
-
-public class InformationActivity extends ActionBarActivity {
+public class InformationActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_information);
+
+        TextView addressView = (TextView)findViewById(R.id.textView8);
+
+        addressView.setOnClickListener(new TextView.OnClickListener() {
+           public void onClick(View view) {
+               String address = Uri.encode("310 Mount Washington Hotel Rd Bretton Woods, NH 03575");
+               String geoUri = "geo:0,0?q="+address;
+               Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(geoUri));
+               startActivity(intent);
+
+           }
+        });
+
+        TextView phoneNumberView = (TextView) findViewById(R.id.textView10);
+
+        phoneNumberView.setOnClickListener(new TextView.OnClickListener() {
+            public void onClick(View view) {
+                Intent intent = new Intent(Intent.ACTION_DIAL);
+                intent.setData(Uri.parse("tel:6032781000"));
+                startActivity(intent);
+            }
+        }
+
+
+        );
+
+
+
     }
 
     @Override

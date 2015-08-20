@@ -1,11 +1,11 @@
 package slalom.com.retreatapplication;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -36,16 +36,19 @@ import slalom.com.retreatapplication.db.TPartyDBHelper;
 import slalom.com.retreatapplication.util.PostObject;
 import slalom.com.retreatapplication.util.TPartyTask;
 
-public class LocationFeedActivity extends Activity {
+public class LocationFeedActivity extends AppCompatActivity {
 
     private static final String TAG = LocationFeedActivity.class.getSimpleName();
     //private static final int MIN_DISTANCE = 175;
     private TextView postTextView;
 
     private TPartyDBHelper dbHelper;
+    private Intent activityIntent;
+    private Bundle bundle;
     private boolean checkedIn = false;
     private int userId = 0;
     private int locationId = 0;
+    private String location = "";
 
     // UserPreferences file that hold local userId
     private static final String PREFS_NAME = "UserPreferences";
@@ -59,10 +62,14 @@ public class LocationFeedActivity extends Activity {
         SharedPreferences prefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
         userId = prefs.getInt("userId", 2);
 
-        Bundle b = getIntent().getExtras();
-        if(b != null) {
-            locationId = (int) b.getLong("locationId", 3);
+        bundle = getIntent().getExtras();
+        if(bundle != null) {
+            locationId = (int) bundle.getLong("locationId", 3);
+            location = bundle.getString("locationName");
         }
+
+        //update ActionBar title with location name of selected location in view
+        setTitle(location);
 
         //Need an object that stores location > image mappings
 //        int imageRsrc = -1;
@@ -135,7 +142,9 @@ public class LocationFeedActivity extends Activity {
             TPartyDBHelper dbHelper = new TPartyDBHelper(LocationFeedActivity.this);
             List<PostObject> localPosts = dbHelper.getLocalPosts(locationId);
 
-//            postTextView.setText(localPosts.toString());
+            postListAdapter = new CustomListAdapter(LocationFeedActivity.this, localPosts);
+            ListView postListView = (ListView) findViewById(R.id.postListView);
+            postListView.setAdapter(postListAdapter);
         }
 
         private JSONArray getPosts(Integer locationId) {
@@ -240,12 +249,13 @@ public class LocationFeedActivity extends Activity {
     }
 
     public void onCreatePost(View view) {
-        Bundle b = new Bundle();
-        b.putLong("locationId", locationId);
+        bundle = new Bundle();
+        bundle.putLong("locationId", locationId);
+        bundle.putString("locationName", location);
 
-        Intent createPostActivity = new Intent(this, CreatePostActivity.class);
-        createPostActivity.putExtras(b);
-        startActivity(createPostActivity);
+        activityIntent = new Intent(this, CreatePostActivity.class);
+        activityIntent.putExtras(bundle);
+        startActivity(activityIntent);
     }
 
     public void onCheckIn(View view) {
@@ -258,11 +268,18 @@ public class LocationFeedActivity extends Activity {
         new TPartyTask().execute("checkInUser", this, userId, locationId);
     }
 
+    public void refreshLocationFeed(View view) {
+        bundle = new Bundle();
+        bundle.putLong("locationId", locationId);
+        bundle.putString("locationName", location);
+
+        new TPartyTask().execute("refreshActivity", this, LocationFeedActivity.class, bundle);
+    }
+
 //    public void viewAllPostsSelected(View view) {
 //        Intent trendingIntent = new Intent(this, ViewPostsActivity.class);
 //        startActivity(trendingIntent);
 //    }
-
 
     private class CustomListAdapter extends BaseAdapter {
         private Context mContext;

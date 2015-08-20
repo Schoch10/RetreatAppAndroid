@@ -3,6 +3,8 @@ package slalom.com.retreatapplication.util;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.os.Bundle;
+import android.widget.ListView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -29,9 +31,11 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 
 import slalom.com.retreatapplication.LocationFeedActivity;
+import slalom.com.retreatapplication.R;
 import slalom.com.retreatapplication.TrendingActivity;
 import slalom.com.retreatapplication.db.TPartyDBHelper;
 import slalom.com.retreatapplication.model.CheckIn;
+import slalom.com.retreatapplication.model.Location;
 
 public class TPartyTask extends AsyncTask<Object, Object, Object> {
     private static final String TAG = TPartyTask.class.getSimpleName();
@@ -41,9 +45,12 @@ public class TPartyTask extends AsyncTask<Object, Object, Object> {
     private final String CHECK_IN_USER = TPARTY_ENDPOINT + "checkin";
     private final String SAVE_POST = TPARTY_ENDPOINT + "DoPost";
     private TPartyDBHelper dbHelper;
+    private Class activityClass;
     private String operationName;
+    private Intent activityIntent;
     private Activity activityContext;
-    private int userId; private int locationId;
+    private Bundle bundle;
+    private int userId; private int locationId; private String locationName;
     private String postText; private String serviceURL;
 
     @Override
@@ -59,7 +66,6 @@ public class TPartyTask extends AsyncTask<Object, Object, Object> {
 
             if ("getCheckIns".equals(operationName)) {
                 saveCheckIns(getResp(CHECK_INS));
-                refreshActivity(TrendingActivity.class);
 
             } else if ("checkInUser".equals(operationName)) {
                 //Construct Service url
@@ -73,26 +79,25 @@ public class TPartyTask extends AsyncTask<Object, Object, Object> {
                 //fetch CheckIns
                 saveCheckIns(getResp(CHECK_INS));
 
-                //Refresh
-                //Intent viewPostsActivity = new Intent(this, ViewPostsActivity.class);
-                //startActivity(viewPostsActivity);
-
             } else if ("getPosts".equals(operationName)) {
                 //savePosts(getResp(POSTS));
 
-            } else if ("getCheckIns".equals(operationName)) {
-                saveCheckIns(getResp(CHECK_INS));
+            }else if ("refreshActivity".equals(operationName)) {
+                activityClass = (Class)args[2];
+                if(args[3]!=null) bundle = (Bundle)args[3];
+                refreshActivity(activityClass, bundle);
 
             } else if ("savePost".equals(operationName)) {
                 //Construct Service url
                 userId = (int)args[2];
                 locationId = (int)args[3];
-                postText = (String)args[4];
+                locationName = (String)args[4];
+                postText = (String)args[5];
                 serviceURL = SAVE_POST +"?userId=" + userId +"&locationId="+locationId +"&postText="+postText;
 
                 //Save post
                 //savePost(serviceURL);
-                savePost(SAVE_POST, userId, locationId, postText);
+                savePost(SAVE_POST, userId, locationId, locationName, postText);
             }
 
         } catch (Exception e) {
@@ -103,9 +108,7 @@ public class TPartyTask extends AsyncTask<Object, Object, Object> {
     }
 
     @Override
-    protected void onPostExecute(Object arg) {
-        //
-    }
+    protected void onPostExecute(Object arg) { }
 
     //JSON Array response from service call
     private boolean checkInUser(String serviceCall) throws IOException, JSONException {
@@ -145,9 +148,10 @@ public class TPartyTask extends AsyncTask<Object, Object, Object> {
         return resp_jArray;
     }
 
-    private void refreshActivity(Class activityClass){
+    private void refreshActivity(Class activityClass, Bundle bundle){
         //Refresh View
-        Intent activityIntent = new Intent(activityContext, activityClass);
+        activityIntent = new Intent(activityContext, activityClass);
+        if(bundle!=null) activityIntent.putExtras(bundle);
         activityContext.startActivity(activityIntent);
         activityContext.finish();
     }
@@ -169,13 +173,6 @@ public class TPartyTask extends AsyncTask<Object, Object, Object> {
         }
         dbHelper.saveCheckIns(checkIns);
         updateLocations(checkInsArray);
-
-        //Refresh View
-        /*
-        Intent refresh = new Intent(activityContext, TrendingActivity.class);
-        activityContext.startActivity(refresh);
-        activityContext.finish();
-        */
     }
 
     private void updateLocations(JSONArray checkInsArray) throws JSONException {
@@ -195,7 +192,7 @@ public class TPartyTask extends AsyncTask<Object, Object, Object> {
         dbHelper.updateLocations(checkIns);
     }
 
-    private void savePost(String serviceCall, int userId, int locationId, String postText) throws IOException, JSONException {
+    private void savePost(String serviceCall, int userId, int locationId, String locationName, String postText) throws IOException, JSONException {
         // Create a new HttpClient and Post Header
         HttpClient httpclient = new DefaultHttpClient();
         HttpPost httppost = new HttpPost(serviceCall);
@@ -210,13 +207,14 @@ public class TPartyTask extends AsyncTask<Object, Object, Object> {
 
             // Execute HTTP Post Request
             HttpResponse response = httpclient.execute(httppost);
-        } catch (IOException e) {
+        } catch (Exception e) {
             // TODO Auto-generated catch block
         }
 
         //Refresh View
-        Intent refresh = new Intent(activityContext, LocationFeedActivity.class);
-        activityContext.startActivity(refresh);
-        activityContext.finish();
+        bundle = new Bundle();
+        bundle.putLong("locationId", locationId);
+        bundle.putString("locationName", locationName);
+        refreshActivity(LocationFeedActivity.class, bundle);
     }
 }

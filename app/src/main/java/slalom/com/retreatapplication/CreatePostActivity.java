@@ -1,8 +1,8 @@
 package slalom.com.retreatapplication;
 
-import android.app.Activity;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -13,9 +13,11 @@ import slalom.com.retreatapplication.util.TPartyTask;
 /**
  * Created by senthilrajav on 8/13/15.
  */
-public class CreatePostActivity extends Activity {
+public class CreatePostActivity extends AppCompatActivity {
     private int userId = 0;
     private int locationId = 0;
+    private String location = "Omni";
+    private Bundle bundle;
 
     // UserPreferences file that hold local userId
     private static final String PREFS_NAME = "UserPreferences";
@@ -27,10 +29,14 @@ public class CreatePostActivity extends Activity {
         SharedPreferences prefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
         userId = prefs.getInt("userId", 2);
 
-        Bundle b = getIntent().getExtras();
-        if(b != null) {
-            locationId = (int) b.getLong("locationId", 3);
+        bundle = getIntent().getExtras();
+        if(bundle != null) {
+            locationId = (int) bundle.getLong("locationId", 3);
+            location = (String) bundle.getString("locationName", "Omni");
         }
+
+        //update ActionBar title with location name of selected location in view
+        setTitle(location);
 
         setContentView(R.layout.activity_create_post);
     }
@@ -63,7 +69,7 @@ public class CreatePostActivity extends Activity {
 
         //Call checkIn API and update local DB
         //Trigger Async Task
-        new TPartyTask().execute("savePost", this, userId, locationId, newPost);
+        new TPartyTask().execute("savePost", this, userId, locationId, location, newPost);
     }
 
 }

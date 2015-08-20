@@ -3,7 +3,7 @@ package slalom.com.retreatapplication;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -15,7 +15,7 @@ import android.widget.GridView;
 import android.widget.TextView;
 
 
-public class GameViewActivity extends ActionBarActivity {
+public class GameViewActivity extends AppCompatActivity {
 
     private String[] strArray;
     private GridViewAdapter gridViewAdapter = new GridViewAdapter(this);

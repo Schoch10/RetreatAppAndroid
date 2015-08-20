@@ -13,7 +13,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import slalom.com.retreatapplication.LocationFeedActivity;
-import slalom.com.retreatapplication.AgendaActivity;
 import slalom.com.retreatapplication.R;
 
 /**
@@ -55,10 +54,10 @@ public class HashMapAdapter  extends BaseAdapter {
         if (convertView == null) {
             LayoutInflater inflater = (LayoutInflater) activityContext.getApplicationContext()
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = inflater.inflate(R.layout.image_list, parent, false);
+            convertView = inflater.inflate(R.layout.agenda_item, parent, false);
         }
-        TextView textTitle = (TextView)convertView.findViewById(R.id.item);
-        textDetail = (TextView)convertView.findViewById(R.id.textView1);
+        TextView textTitle = (TextView)convertView.findViewById(R.id.agenda_item_name);
+        textDetail = (TextView)convertView.findViewById(R.id.agenda_item_location);
 
         textTitle.setText(key);
         textDetail.setText("Checked In: " + Value);
