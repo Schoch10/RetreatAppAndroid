@@ -57,37 +57,12 @@
         android:dividerHeight="5dp"
         android:divider="#EEEEEE" />
 
-    <!--android:layout_above="@+id/linearLayout"-->
-    <!--<LinearLayout-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_alignParentBottom="true"-->
-        <!--android:id="@+id/linearLayout">-->
-
-        <!--<Button-->
-            <!--android:id="@+id/checkInButton"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_weight="50"-->
-            <!--android:onClick="onCheckIn"-->
-            <!--android:text="Check In" />-->
-
-        <!--<Button-->
+       <!--<Button-->
             <!--android:id="@+id/refreshButton"-->
             <!--android:layout_width="wrap_content"-->
             <!--android:layout_height="wrap_content"-->
             <!--android:layout_weight="50"-->
             <!--android:onClick="refreshLocationFeed"-->
             <!--android:text="Refresh" />-->
-
-        <!--<Button-->
-            <!--android:id="@+id/createPostButton"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_weight="50"-->
-            <!--android:onClick="onCreatePost"-->
-            <!--android:text="Post" />-->
-
-    <!--</LinearLayout>-->
 
 </RelativeLayout>
