@@ -63,7 +63,7 @@
 
     <Button
         android:id="@+id/button6"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:onClick="trendingButtonSelected"
         android:text=" Select Location > "
@@ -110,13 +110,14 @@
         android:id="@+id/button2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignEnd="@+id/textView3"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_alignRight="@+id/textView3"
         android:onClick="gameViewSelected"
-        android:text="@string/top_secret_label"
-        android:background="#808080"/>
+        android:text="Find Someone Who..."
+        android:background="#0372C8"
+        android:textColor="#FFFFFF"
+        android:layout_alignRight="@+id/linearLayout"
+        android:layout_alignEnd="@+id/linearLayout" />
 
 </RelativeLayout>

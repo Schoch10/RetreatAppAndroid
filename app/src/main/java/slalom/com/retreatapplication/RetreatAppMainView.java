@@ -9,23 +9,60 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Calendar;
 
 
 public class RetreatAppMainView extends AppCompatActivity {
-
+    private Date today; private Date tPartyDate;
+    private boolean timeToParty = false;
     private static final String PREFS_NAME = "UserPreferences";
+    private static final int TPARTY_DATE = 28; //August 28, 2015
+    private static final int TPARTY_TIME = 18; //6 PM
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_retreat_app_main_view);
-        setCountdowntimer(findViewById(R.id.textView3));
+
+        today = new Date();
+        tPartyDate = new Date(today.getYear(),today.getMonth(),TPARTY_DATE);
+        if(today.after(tPartyDate) || today.equals(tPartyDate)){
+            // Get calendar set to the current date and time
+            Calendar cal = Calendar.getInstance();
+
+            // Set time of calendar to 18:00
+            cal.set(Calendar.HOUR_OF_DAY, TPARTY_TIME);
+            cal.set(Calendar.MINUTE, 0);
+            cal.set(Calendar.SECOND, 0);
+            cal.set(Calendar.MILLISECOND, 0);
+
+            // Check if current time is after 18:00 today
+            if(Calendar.getInstance().after(cal) || Calendar.getInstance().after(cal))
+                timeToParty = true;
+        }
+
+        Button btn = (Button)findViewById(R.id.button2);
+        if(timeToParty){
+            TextView countdownText = (TextView)findViewById(R.id.textView2);
+            countdownText.setVisibility(View.GONE);
+
+            TextView timerText = (TextView)findViewById(R.id.textView3);
+            timerText.setVisibility(View.GONE);
+
+            btn.setEnabled(true);
+        }
+        else{
+            setCountdowntimer(findViewById(R.id.textView3));
+
+            btn.setEnabled(false);
+        }
 
         SharedPreferences prefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
         ((TextView)findViewById(R.id.textView4)).setText(prefs.getString("userName", ""));
@@ -82,7 +119,7 @@ public class RetreatAppMainView extends AppCompatActivity {
 
     public void setCountdowntimer(View view) {
         final TextView textView = (TextView)view;
-        Date now = new Date();
+        today = new Date();
         SimpleDateFormat dformat = new SimpleDateFormat("dd.MM.yyyy");
         Date date = null;
         try {
@@ -91,7 +128,7 @@ public class RetreatAppMainView extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        long millisecondsLeft = date.getTime() - now.getTime();
+        long millisecondsLeft = date.getTime() - today.getTime();
 
         CountDownTimer timer = new CountDownTimer(millisecondsLeft, 1000) {
             int days, hours, minutes, seconds, secondsLeft;
