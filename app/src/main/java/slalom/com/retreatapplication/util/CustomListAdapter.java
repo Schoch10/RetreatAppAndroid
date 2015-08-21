@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import slalom.com.retreatapplication.R;
@@ -48,6 +49,7 @@ public class CustomListAdapter extends BaseAdapter {
             convertView = inflater.inflate(R.layout.agenda_item, parent, false);
         }
 
+        ImageView imageView = (ImageView)convertView.findViewById(R.id.agenda_item_icon);
         TextView textTitle = (TextView)convertView.findViewById(R.id.agenda_item_name);
         TextView textDetail = (TextView)convertView.findViewById(R.id.agenda_item_location);
         TextView textDetailTime = (TextView)convertView.findViewById(R.id.agenda_item_time);
@@ -56,6 +58,7 @@ public class CustomListAdapter extends BaseAdapter {
         String detail = itemList[position][1];
         String time = itemList[position][2];
 
+        imageView.setImageResource(imgId[position]);
         textTitle.setText(title);
         textDetail.setText(detail);
         textDetailTime.setText(time);

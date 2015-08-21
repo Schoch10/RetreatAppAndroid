@@ -12,22 +12,32 @@ import slalom.com.retreatapplication.util.CustomListAdapter;
 public class AgendaActivity extends AppCompatActivity {
 
     private String[][] agenda = {
-            { "Arrive & Checkin", "Mt. Omni Lobby", "4:00 PM" },
-            { "Cocktail Hour", "Mt. Omni Pool", "4:00 PM"  },
-            { "Breakfast", "Mt. Omni Restaurant", "4:00 PM"  },
-            { "Activities Freetime", "Check Activities Schedule", "4:00 PM"  },
-            { "20s Gala", "Mt. Omni Ballroom", "4:00 PM"  },
-            { "Breakfast", "Mt. Omni Restaurant", "4:00 PM"  },
-            { "Checkout", "Mt. Omni Lobby", "4:00 PM" }
+            { "Arrive & Check-in", "Omni Mt. Washington Lobby", "4:00 PM" },
+            { "Cocktails & Dinner", "Jewel Terrace \nWeather Back Up: Grand Ballroom", "6:00 PM - 10:00 PM" },
+            { "After Party", "The Cave and Stickney’s", "10:00 PM - Midnight" },
+            { "Breakfast", "Main Dining Room", "7:00 AM - 10:00 AM" },
+            { "Golf", "Omni Mt. Washington Golf Course", "9:00 AM" },
+            { "Lawn Games", "South Veranda Lawn", "10:00 AM" },
+            { "Zipline", "Omni Canopy Tours - Slopes", "11:00 AM" },
+            { "Outdoor Activities", "Check Activities Emails", "All Day" },
+            { "1920s Speakeasy", "Presidential Ballroom, Presidential Foyer, Presidential Garden", "6:00 PM - 10:00 PM" },
+            { "After Party", "The Cave and Stickney’s", "10:00 PM - Midnight" },
+            { "Breakfast", "Main Dining Room", "7:00 AM - 10:00 AM" },
+            { "Checkout", "Omni Mt. Washington Lobby", "11:00 AM" }
     };
     private Integer[] imgId = {
-            R.drawable.ic_launcher,
-            R.drawable.ic_launcher,
-            R.drawable.ic_launcher,
-            R.drawable.ic_launcher,
-            R.drawable.ic_launcher,
-            R.drawable.ic_launcher,
-            R.drawable.ic_launcher
+            R.drawable.checkin,
+            R.drawable.cocktails,
+            R.drawable.cocktails,
+            R.drawable.breakfast,
+            R.drawable.golf,
+            R.drawable.lawngames,
+            R.drawable.zipline,
+            R.drawable.outdoors,
+            R.drawable.banquet,
+            R.drawable.cocktails,
+            R.drawable.breakfast,
+            R.drawable.checkout
     };
 
     @Override
