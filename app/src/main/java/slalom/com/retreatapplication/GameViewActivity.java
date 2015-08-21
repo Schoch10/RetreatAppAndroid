@@ -66,9 +66,6 @@ public class GameViewActivity extends AppCompatActivity {
     @Override
     protected void onStop(){
         super.onStop();
-
-        // We need an Editor object to make preference changes.
-        // All objects are from android.context.Context
         SharedPreferences settings = getPreferences(MODE_PRIVATE);
         SharedPreferences.Editor editor = settings.edit();
 
@@ -76,13 +73,12 @@ public class GameViewActivity extends AppCompatActivity {
         int cardCount = gridViewAdapter.getCount();
         String answerText;
         for (int i = 0; i < cardCount; i++) {
-            answerText = ((EditText)gridview.getChildAt(i).findViewById(R.id.editText2))
+            answerText = ((EditText)gridview.getChildAt(i).findViewById(R.id.answer_field))
                     .getText().toString();
-            if (answerText != "") {
+            if (!answerText.equals("")) {
                 editor.putString("question_" + i, answerText);
             }
         }
-
         // Commit the edits!
         editor.commit();
     }
@@ -114,7 +110,7 @@ public class GameViewActivity extends AppCompatActivity {
                 convertView = inflater.inflate(R.layout.card_view, parent, false);
             }
             TextView textView = (TextView)convertView.findViewById(R.id.question);
-            EditText editView = (EditText)convertView.findViewById(R.id.editText2);
+            EditText editView = (EditText)convertView.findViewById(R.id.answer_field);
 
             textView.setText(questionsArray[position]);
             if (strArray != null && strArray[position] != "") {
@@ -125,18 +121,18 @@ public class GameViewActivity extends AppCompatActivity {
         }
 
         private String[] questionsArray = {
-                "How old is Russell?",
-                "What object does Mikey B look like when he stands?",
-                "Who Broke the Elevator?",
-                "Name an IM&A SSIS Architect?",
-                "How does Todd Richman get to work in the summer?",
-                "Who are Slalom's founders?",
-                "What is a fun fact about someone else?",
-                "What is Todd Christy's favorite snack?",
-                "What consultant was mounted by a cow?",
-                "What is the Dude's favorite hobby?",
-                "What is a fun fact about Barry?",
-                "Who has more than 3 siblings?"
+                "...Attended the Boston Business Journal Best Places to Work Award Ceremony?",
+                "...Can Name 5 of Slalom's Core Values?",
+                "...Volunteered at the Greater Boston Food Bank with Slalom?",
+                "...Has Run the Boston Marathon?",
+                "...Participated in Last Year's Shuffleboard Tournament",
+                "...Part of the Slalom Boston First 20?",
+                "...Won a Mogul Award?",
+                "...Has Hiked Mt. Washington?",
+                "...Started at Slalom After Jan 1, 2015?",
+                "...is Wearing their Slalom Fitbit?",
+                "...Plays a Musical Instrument?",
+                "...Developed this app!"
         };
     }
 }

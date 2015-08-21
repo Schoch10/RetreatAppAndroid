@@ -23,19 +23,20 @@
     <string name="trending_button">Trending</string>
 
     //Info Page Strings
+    <string name="title_activity_information">Information Activity</string>
     <string name="information">Retreat Information</string>
     <string name="address">310 Mount Washington Hotel Rd \nBretton Woods, NH 03575</string>
     <string name="phone_number">603-278-1000</string>
 
     //Trending Page String
     <string name="trending">Trending</string>
-
-    <string name="hello_world">Hello world!</string>
-    <string name="title_activity_game_view">GameViewActivity</string>
-    <string name="title_activity_information">Information Activity</string>
-    <string name="title_activity_agenda">Agenda</string>
     <string name="title_activity_location_feed">Location Feed</string>
     <string name="title_activity_trending">Trending Now</string>
+
+    <string name="title_activity_game_view">GameViewActivity</string>
+    <string name="find_someone_who">Find some who...</string>
+
+    <string name="title_activity_agenda">Agenda</string>
 
 
     //Activity/Location Page Strings

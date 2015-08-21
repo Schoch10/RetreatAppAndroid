@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="120dp"
-    android:background="#FFFFFF">
+    android:layout_height="150dp"
+    android:background="#FFFFFF"
+    android:focusable="true"
+    android:focusableInTouchMode="true">
 
     <TextView
         android:id="@+id/question"
@@ -12,15 +14,16 @@
         android:text="Question Text"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:padding="5dp"
-        android:textColor="#000000"
-        android:textAlignment="center" />
+        android:textColor="#2687D0"
+        android:textAlignment="center"
+        android:gravity="center" />
 
     <EditText
-        android:id="@+id/editText2"
+        android:id="@+id/answer_field"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:textColor="#2687D0"
+        android:textColor="#000000"
         android:textSize="14sp"
         android:padding="5dp"
         android:drawableBottom="#000000"
@@ -28,6 +31,8 @@
         android:lines="1"
         android:textColorHint="#BFBFBF"
         android:singleLine="true"
-        android:textAlignment="center" />
+        android:textAlignment="center"
+        android:focusable="true"
+        android:focusableInTouchMode="false" />
 
 </RelativeLayout>
