@@ -39,20 +39,18 @@ import slalom.com.retreatapplication.util.TPartyTask;
 
 public class LocationFeedActivity extends AppCompatActivity {
 
-    private static final String TAG = LocationFeedActivity.class.getSimpleName();
-    //private static final int MIN_DISTANCE = 175;
-    private TextView postTextView;
-
-    private TPartyDBHelper dbHelper;
-    private Intent activityIntent;
-    private Bundle bundle;
-    private boolean checkedIn = false;
+    private final String TAG = LocationFeedActivity.class.getSimpleName();
     private int userId = 0;
     private int locationId = 0;
     private String location = "";
+    private final String PREFS_NAME = "UserPreferences";
+    private final String USER_ID = "userId";
+    private final String USER_IMAGE = "userImage";
+    private final String LOC_ID = "locationId";
+    private final String LOC_NAME = "locationName";
+    private final String POST_ENDPOINT = "http://tpartyservice-dev.elasticbeanstalk.com/home/getpostsforlocation?locationid=";
 
-    // UserPreferences file that hold local userId
-    private static final String PREFS_NAME = "UserPreferences";
+    private Bundle bundle;
 
     private CustomListAdapter postListAdapter;
 
@@ -61,66 +59,45 @@ public class LocationFeedActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         SharedPreferences prefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
-        userId = prefs.getInt("userId", 2);
+        userId = prefs.getInt(USER_ID, 2);
 
         bundle = getIntent().getExtras();
         if(bundle != null) {
-            locationId = (int) bundle.getLong("locationId", 3);
-            location = bundle.getString("locationName");
+            locationId = (int) bundle.getLong(LOC_ID, 3);
+            location = bundle.getString(LOC_NAME);
         }
 
         //update ActionBar title with location name of selected location in view
         setTitle(location);
 
-        //Need an object that stores location > image mappings
-//        int imageRsrc = -1;
-//        switch(locationId) {
-//            case 3: imageRsrc = R.mipmap.omni; break;
-//            case 4: imageRsrc = R.mipmap.golf; break;
-//
-//            default: imageRsrc = R.mipmap.omni; break;
-//        }
-
         setContentView(R.layout.location_feed_activity);
+
         //Add user image to check in and post button
-        ((ImageView)findViewById(R.id.user_image)).setImageURI(Uri.parse(prefs.getString("userImage", "")));
+        ((ImageView) findViewById(R.id.user_image)).setImageURI(Uri.parse(prefs.getString(USER_IMAGE, "")));
+        TextView postTextView = (TextView)findViewById(R.id.post_text);
 
-//        ImageView test_image = (ImageView)findViewById(R.id.test_image);
-//        test_image.setImageResource(imageRsrc);
-//        postTextView = (TextView)findViewById(R.id.postTextView);
 
-        postTextView= (TextView)findViewById(R.id.post_text);
-
-        dbHelper = new TPartyDBHelper(this);
-
-        List<PostObject> localPosts = dbHelper.getLocalPosts(locationId);
-
-        for (PostObject post: localPosts) {
-            Log.d(TAG, post.postId().toString());
-            Log.d(TAG, post.userId().toString());
-            Log.d(TAG, post.userName().toString());
-            Log.d(TAG, post.locationId().toString());
-            Log.d(TAG, post.image().toString());
-            Log.d(TAG, post.text().toString());
-            Log.d(TAG, post.timestamp().toString());
-        }
-
+        //Check remote DB for posts and display those when finished
         getPostsAsync getPostsRunner = new getPostsAsync();
         getPostsRunner.execute(locationId);
 
-        checkedIn = dbHelper.isUserCheckedIn(userId, locationId);
+        //Meanwhile Check local DB for posts and display those
+        TPartyDBHelper dbHelper = new TPartyDBHelper(this);
+        List<PostObject> localPosts = dbHelper.getLocalPosts(locationId);
+        postListAdapter = new CustomListAdapter(this, localPosts);
+        ListView postListView = (ListView) findViewById(R.id.postListView);
+        postListView.setAdapter(postListAdapter);
 
+        //See if user is checked into this location or not
+        boolean checkedIn = dbHelper.isUserCheckedIn(userId, locationId);
         if(checkedIn){
             Button btn = (Button)findViewById(R.id.checkInButton);
             btn.setVisibility(View.GONE);
             findViewById(R.id.createPostButton).setVisibility(View.VISIBLE);
         }
-
-        postListAdapter = new CustomListAdapter(this, localPosts);
-        ListView postListView = (ListView) findViewById(R.id.postListView);
-        postListView.setAdapter(postListAdapter);
     }
 
+    //Async task to handle querying AWS on separate thread
     private class getPostsAsync extends AsyncTask<Integer, String, String> {
 
         Integer locationId;
@@ -128,6 +105,7 @@ public class LocationFeedActivity extends AppCompatActivity {
 
         @Override
         protected String doInBackground(Integer... location) {
+            //Parent method for getting posts from remote DB and storing them in local DB
             publishProgress("Getting latest post...");
             locationId = location[0];
             savePosts(locationId, getPosts(locationId));
@@ -142,7 +120,7 @@ public class LocationFeedActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(String result) {
-
+            //Once we know we've updated the local DB, we query it and update the display
             TPartyDBHelper dbHelper = new TPartyDBHelper(LocationFeedActivity.this);
             List<PostObject> localPosts = dbHelper.getLocalPosts(locationId);
 
@@ -152,18 +130,15 @@ public class LocationFeedActivity extends AppCompatActivity {
         }
 
         private JSONArray getPosts(Integer locationId) {
-
+            //Ask AWS for all the posts for this location
             JSONArray respJArray = new JSONArray();
 
             try {
-
-                String postCall = "http://tpartyservice-dev.elasticbeanstalk.com/home/getpostsforlocation?locationid=" + locationId.toString();
+                String postCall = POST_ENDPOINT + locationId.toString();
                 URL url = new URL(postCall);
                 HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
-                InputStream in = new BufferedInputStream(urlConnection.getInputStream());
 
-                // Since all REST responses will be arrays of JSON we can just package them up
-                // as JSONArrays and send them back to the calling method
+                InputStream in = new BufferedInputStream(urlConnection.getInputStream());
                 StringBuilder responseBuilder = new StringBuilder();
                 BufferedReader r = new BufferedReader(new InputStreamReader(in));
                 String line;
@@ -178,7 +153,6 @@ public class LocationFeedActivity extends AppCompatActivity {
 
                 respJArray = new JSONArray(response);
 
-
             } catch (IOException|JSONException e) {
                 Log.d(TAG, e.toString());
             }
@@ -187,9 +161,8 @@ public class LocationFeedActivity extends AppCompatActivity {
 
         }
 
-
         private void savePosts(Integer locationId, JSONArray respArray) {
-
+            //Iterate through array of posts and store them in local DB
             List<PostObject> posts = new ArrayList<PostObject>();
 
             Integer postId;
@@ -256,8 +229,7 @@ public class LocationFeedActivity extends AppCompatActivity {
         bundle = new Bundle();
         bundle.putLong("locationId", locationId);
         bundle.putString("locationName", location);
-
-        activityIntent = new Intent(this, CreatePostActivity.class);
+        Intent activityIntent = new Intent(this, CreatePostActivity.class);
         activityIntent.putExtras(bundle);
         startActivity(activityIntent);
     }
