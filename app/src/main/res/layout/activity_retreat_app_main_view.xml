@@ -9,7 +9,7 @@
     tools:context="slalom.com.retreatapplication.RetreatAppMainView">
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/countdown_text_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
@@ -24,14 +24,14 @@
         android:textColor="#0372C8" />
 
     <TextView
-        android:id="@+id/textView3"
+        android:id="@+id/timer_text_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignEnd="@+id/textView2"
+        android:layout_alignEnd="@+id/countdown_text_view"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_alignRight="@+id/textView2"
-        android:layout_below="@+id/textView2"
+        android:layout_alignRight="@+id/countdown_text_view"
+        android:layout_below="@+id/countdown_text_view"
         android:gravity="center"
         android:text="@string/countdown_timer_label"
         android:textAlignment="center"
@@ -39,30 +39,30 @@
         android:textColor="#000000"/>
 
     <ImageView
-        android:id="@+id/imageView"
+        android:id="@+id/retreat_user_image"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/textView3"
-        android:layout_above="@+id/textView4"
+        android:layout_below="@+id/timer_text_view"
+        android:layout_above="@+id/retreat_user_name"
         android:maxHeight="130dp"
         android:minWidth="150dp"
         android:src="@mipmap/ic_launcher"
         android:layout_centerHorizontal="true" />
 
     <TextView
-        android:id="@+id/textView4"
+        android:id="@+id/retreat_user_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="User Name"
         android:gravity="center"
-        android:layout_above="@+id/button6"
+        android:layout_above="@+id/select_location_button"
         android:layout_marginBottom="5dp"
         android:layout_centerHorizontal="true"
         android:textColor="#0372C8"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
     <Button
-        android:id="@+id/button6"
+        android:id="@+id/select_location_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:onClick="trendingButtonSelected"
@@ -70,10 +70,10 @@
         android:background="#0372C8"
         android:textColor="#FFFFFF"
         android:layout_above="@+id/linearLayout"
-        android:layout_alignRight="@+id/imageView"
-        android:layout_alignEnd="@+id/imageView"
-        android:layout_alignLeft="@+id/imageView"
-        android:layout_alignStart="@+id/imageView" />
+        android:layout_alignRight="@+id/retreat_user_image"
+        android:layout_alignEnd="@+id/retreat_user_image"
+        android:layout_alignLeft="@+id/retreat_user_image"
+        android:layout_alignStart="@+id/retreat_user_image" />
 
     <LinearLayout
         android:id="@+id/linearLayout"
@@ -82,7 +82,7 @@
         android:orientation="horizontal"
         android:weightSum="1"
         android:gravity="center"
-        android:layout_above="@+id/button2"
+        android:layout_above="@+id/game_view_button"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_marginTop="5dp"
@@ -94,7 +94,7 @@
             android:orientation="vertical"
             android:layout_marginRight="50dp">
             <ImageButton
-                android:id="@+id/button3"
+                android:id="@+id/info_button"
                 android:layout_width="60dp"
                 android:layout_height="60dp"
                 android:onClick="infoButtonSelected"
@@ -116,7 +116,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
             <ImageButton
-                android:id="@+id/button4"
+                android:id="@+id/agenda_button"
                 android:layout_width="60dp"
                 android:layout_height="60dp"
                 android:onClick="agendaButtonSelected"
@@ -137,7 +137,7 @@
     </LinearLayout>
 
     <Button
-        android:id="@+id/button2"
+        android:id="@+id/game_view_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"

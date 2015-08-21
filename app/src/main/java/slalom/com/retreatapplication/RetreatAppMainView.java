@@ -48,25 +48,25 @@ public class RetreatAppMainView extends AppCompatActivity {
                 timeToParty = true;
         }
 
-        Button btn = (Button)findViewById(R.id.button2);
+        Button btn = (Button)findViewById(R.id.game_view_button);
         if(timeToParty){
-            TextView countdownText = (TextView)findViewById(R.id.textView2);
+            TextView countdownText = (TextView)findViewById(R.id.countdown_text_view);
             countdownText.setVisibility(View.GONE);
 
-            TextView timerText = (TextView)findViewById(R.id.textView3);
+            TextView timerText = (TextView)findViewById(R.id.timer_text_view);
             timerText.setVisibility(View.GONE);
 
             btn.setEnabled(true);
         }
         else{
-            setCountdowntimer(findViewById(R.id.textView3));
+            setCountdownTimer(findViewById(R.id.timer_text_view));
 
             btn.setEnabled(false);
         }
 
         SharedPreferences prefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
-        ((TextView)findViewById(R.id.textView4)).setText(prefs.getString("userName", ""));
-        ((ImageView)findViewById(R.id.imageView)).setImageURI(Uri.parse(prefs.getString("userImage", "")));
+        ((TextView)findViewById(R.id.retreat_user_name)).setText(prefs.getString("userName", ""));
+        ((ImageView)findViewById(R.id.retreat_user_image)).setImageURI(Uri.parse(prefs.getString("userImage", "")));
 
     }
 
@@ -107,17 +107,12 @@ public class RetreatAppMainView extends AppCompatActivity {
         startActivity(agendaIntent);
     }
 
-    public void activitiesButtonSelected(View view) {
-        Intent activitiesIntent = new Intent(this, LocationFeedActivity.class);
-        startActivity(activitiesIntent);
-    }
-
     public void trendingButtonSelected(View view) {
         Intent trendingIntent = new Intent(this, TrendingActivity.class);
         startActivity(trendingIntent);
     }
 
-    public void setCountdowntimer(View view) {
+    public void setCountdownTimer(View view) {
         final TextView textView = (TextView)view;
         today = new Date();
         SimpleDateFormat dformat = new SimpleDateFormat("dd.MM.yyyy");

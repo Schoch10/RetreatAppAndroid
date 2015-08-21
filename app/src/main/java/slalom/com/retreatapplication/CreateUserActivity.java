@@ -100,7 +100,6 @@ public class CreateUserActivity extends AppCompatActivity {
                 //Log.d(TAG, bitmap.toString());
                 //((ImageView) findViewById(R.id.imageView3)).setImageBitmap(bitmap);
                 ((ImageView) findViewById(R.id.imageView3)).setImageURI(imageUri);
-                //((ImageView) findViewById(R.id.imageView)).setImageURI(imageUri);
 
                 /*
                 String[] filePathColumn = {MediaStore.Images.Media.DATA};
