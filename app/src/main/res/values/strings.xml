@@ -17,8 +17,8 @@
     <string name="countdown_title_label">Countdown</string>
     <string name="countdown_timer_label">Timer</string>
     <string name="top_secret_label">Top Secret</string>
-    <string name="information_button">Info</string>
-    <string name="agenda_button">Agenda</string>
+    <string name="information_button">INFO</string>
+    <string name="agenda_button">AGENDA</string>
     <string name="activities_button">Activities</string>
     <string name="trending_button">Trending</string>
 
