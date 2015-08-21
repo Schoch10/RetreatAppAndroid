@@ -37,6 +37,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/textView7"
         android:layout_marginTop="5dp"
+        android:textColor="#0372C8"
         android:text="@string/address"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
@@ -60,6 +61,7 @@
         android:layout_below="@+id/textView9"
         android:layout_marginTop="5dp"
         android:text="@string/phone_number"
+        android:textColor="#0372C8"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
 </LinearLayout>
