@@ -102,7 +102,7 @@ public class CreatePostActivity extends AppCompatActivity {
                 Uri imageUri = data.getData();
                 Log.d(TAG, "String: " + imageUri.toString());
                 Log.d(TAG, "Path: " + imageUri.getPath());
-                ((ImageView) findViewById(R.id.imageView4)).setImageURI(imageUri);
+                ((ImageView) findViewById(R.id.upload_image)).setImageURI(imageUri);
 
                 String imageUriId = imageUri.getPathSegments().get(1).split(":")[1];
                 String[] filePathColumn = {MediaStore.Images.Media.DATA};

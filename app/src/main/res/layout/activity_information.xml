@@ -10,13 +10,13 @@
     android:weightSum="1">
 
     <ImageView
-        android:id="@+id/imageView4"
+        android:id="@+id/omni_image"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_alignParentTop="true"
         android:layout_weight="0.6"
         android:contentDescription="Omni Mt. Washington Resort"
-        android:src="@drawable/white_slalom_logo" />
+        android:src="@drawable/omni" />
 
     <TextView
         android:id="@+id/textView7"
@@ -24,7 +24,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_below="@+id/imageView4"
+        android:layout_below="@+id/omni_image"
         android:layout_marginTop="20dp"
         android:background="#DFDFDF"
         android:text="Address"
