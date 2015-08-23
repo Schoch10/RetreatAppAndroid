@@ -1,12 +1,18 @@
 package slalom.com.retreatapplication;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
 
 import slalom.com.retreatapplication.util.TPartyTask;
 
@@ -19,8 +25,17 @@ public class CreatePostActivity extends AppCompatActivity {
     private String location = "Omni";
     private Bundle bundle;
 
+    //image selected to upload
+    private String postImage;
+
     // UserPreferences file that hold local userId
     private static final String PREFS_NAME = "UserPreferences";
+
+    //Set int for Select Picture Activity callback identify
+    private static final int SELECT_PICTURE = 1;
+
+    //Set string to easily identify debug data
+    private static final String TAG = CreatePostActivity.class.getSimpleName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,4 +87,35 @@ public class CreatePostActivity extends AppCompatActivity {
         new TPartyTask().execute("savePost", this, userId, locationId, location, newPost);
     }
 
+    public void uploadPostPictureSelected(View view) {
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(Intent.createChooser(intent,
+                "Select Picture"), SELECT_PICTURE);
+    }
+
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode == RESULT_OK) {
+            Log.d(TAG, "Result OK");
+            if (requestCode == SELECT_PICTURE) {
+                Uri imageUri = data.getData();
+                Log.d(TAG, "String: " + imageUri.toString());
+                Log.d(TAG, "Path: " + imageUri.getPath());
+                ((ImageView) findViewById(R.id.imageView4)).setImageURI(imageUri);
+
+                String imageUriId = imageUri.getPathSegments().get(1).split(":")[1];
+                String[] filePathColumn = {MediaStore.Images.Media.DATA};
+                Cursor cursor = getContentResolver().query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, filePathColumn, "_id = ?", new String[]{imageUriId}, null);
+                cursor.moveToFirst();
+                int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+                postImage = cursor.getString(columnIndex);
+                cursor.close();
+
+                //TODO: DO SOMETHING WITH THIS IMAGE WHEN CREATING THE POST OBJECT/SERVICE CALL!!
+            } else {
+                Log.d(TAG, "Result not OK");
+            }
+        }
+    }
 }

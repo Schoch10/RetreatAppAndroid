@@ -16,7 +16,7 @@
         android:layout_alignParentTop="true"
         android:layout_weight="0.6"
         android:contentDescription="Omni Mt. Washington Resort"
-        android:src="@mipmap/omni" />
+        android:src="@drawable/white_slalom_logo" />
 
     <TextView
         android:id="@+id/textView7"
