@@ -27,7 +27,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_below="@+id/omni_image"
+        android:layout_below="@+id/upload_image"
         android:hint="Enter Comment here..."
         android:inputType="textMultiLine"
         android:layout_marginTop="10dp" />
