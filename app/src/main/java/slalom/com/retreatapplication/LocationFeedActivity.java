@@ -304,7 +304,7 @@ public class LocationFeedActivity extends AppCompatActivity {
             } else {
                 postImageView.setImageURI(Uri.parse(post.image()));
             }
-            if (post.text().equals(null) || post.text().equals("")) {
+            if (post.text().equals("null") || post.text().equals("")) {
                 postTextView.setVisibility(View.GONE);
             } else {
                 postTextView.setText(post.text());
