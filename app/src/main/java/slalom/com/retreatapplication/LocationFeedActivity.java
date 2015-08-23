@@ -30,7 +30,10 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import slalom.com.retreatapplication.db.TPartyDBHelper;
@@ -292,10 +295,20 @@ public class LocationFeedActivity extends AppCompatActivity {
 
             postUserImageView.setImageResource(R.drawable.ic_launcher);
             postUserNameTextView.setText(post.userName());
-            elapsedTimestampTextView.setText("" + post.timestamp());
-            postImageView.setImageResource(R.drawable.ic_launcher);
-            postTextView.setText(post.text());
 
+            DateFormat df = new SimpleDateFormat("MM/dd HH:mm");
+            elapsedTimestampTextView.setText(df.format(new Date(post.timestamp())));
+
+            if (post.image().equals(null) || post.image().equals("")) {
+                postImageView.setVisibility(View.GONE);
+            } else {
+                postImageView.setImageURI(Uri.parse(post.image()));
+            }
+            if (post.text().equals(null) || post.text().equals("")) {
+                postTextView.setVisibility(View.GONE);
+            } else {
+                postTextView.setText(post.text());
+            }
             return convertView;
         }
     }
