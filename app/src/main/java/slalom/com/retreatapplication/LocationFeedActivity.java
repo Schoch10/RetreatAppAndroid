@@ -307,19 +307,25 @@ public class LocationFeedActivity extends AppCompatActivity {
             if (post.image().equals(null) || post.image().equals("")) {
                 postImageView.setVisibility(View.GONE);
             } else {
-                    makeBitmapsTask makeBmsRunner = new makeBitmapsTask();
-                    makeBmsRunner.execute(post.image());
+                    postImageView.setVisibility(View.VISIBLE);
+                    new makeBitmapsTask(postImageView).execute(post.image());
                     //postImageView.setImageURI(Uri.parse(imageUrl.toURI().toString()));
             }
             if (post.text().equals("null") || post.text().equals("")) {
                 postTextView.setVisibility(View.GONE);
             } else {
+                postTextView.setVisibility(View.VISIBLE);
                 postTextView.setText(post.text());
             }
             return convertView;
         }
 
         private class makeBitmapsTask extends AsyncTask<String, String, Bitmap> {
+            private ImageView postImageView;
+
+            public makeBitmapsTask(ImageView imageView) {
+                postImageView = imageView;
+            }
 
             protected Bitmap doInBackground(String... url) {
                 URL imageUrl = null;
@@ -338,6 +344,7 @@ public class LocationFeedActivity extends AppCompatActivity {
             }
 
             protected void onPostExecute(Bitmap result) {
+                        if (result != null && postImageView != null)
                         postImageView.setImageBitmap(result);
                     }
             }
