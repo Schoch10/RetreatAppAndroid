@@ -3,6 +3,8 @@ package slalom.com.retreatapplication;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -29,6 +31,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -259,6 +263,7 @@ public class LocationFeedActivity extends AppCompatActivity {
     private class CustomListAdapter extends BaseAdapter {
         private Context mContext;
         private List<PostObject> postList;
+        private ImageView postImageView;
 
         public CustomListAdapter(Context c, List<PostObject> postList) {
             mContext = c;
@@ -288,7 +293,7 @@ public class LocationFeedActivity extends AppCompatActivity {
             ImageView postUserImageView = (ImageView) convertView.findViewById(R.id.post_user_image);
             TextView postUserNameTextView = (TextView)convertView.findViewById(R.id.post_user_name);
             TextView elapsedTimestampTextView = (TextView)convertView.findViewById(R.id.post_elapsed_timestamp);
-            ImageView postImageView = (ImageView) convertView.findViewById(R.id.post_image);
+            postImageView = (ImageView) convertView.findViewById(R.id.post_image);
             TextView postTextView = (TextView)convertView.findViewById(R.id.post_text);
 
             PostObject post = ((PostObject) getItem(position));
@@ -302,7 +307,9 @@ public class LocationFeedActivity extends AppCompatActivity {
             if (post.image().equals(null) || post.image().equals("")) {
                 postImageView.setVisibility(View.GONE);
             } else {
-                postImageView.setImageURI(Uri.parse(post.image()));
+                    makeBitmapsTask makeBmsRunner = new makeBitmapsTask();
+                    makeBmsRunner.execute(post.image());
+                    //postImageView.setImageURI(Uri.parse(imageUrl.toURI().toString()));
             }
             if (post.text().equals("null") || post.text().equals("")) {
                 postTextView.setVisibility(View.GONE);
@@ -311,8 +318,31 @@ public class LocationFeedActivity extends AppCompatActivity {
             }
             return convertView;
         }
+
+        private class makeBitmapsTask extends AsyncTask<String, String, Bitmap> {
+
+            protected Bitmap doInBackground(String... url) {
+                URL imageUrl = null;
+                Bitmap imageBm = null;
+                try {
+                    imageUrl = new URL(url[0]);
+                    HttpURLConnection urlConn = (HttpURLConnection) imageUrl.openConnection();
+                    InputStream in = new BufferedInputStream(urlConn.getInputStream());
+                    imageBm = BitmapFactory.decodeStream(in);
+                } catch (Exception e) {
+                    Log.e("Error", e.getMessage());
+                    e.printStackTrace();
+                }
+                return imageBm;
+
+            }
+
+            protected void onPostExecute(Bitmap result) {
+                        postImageView.setImageBitmap(result);
+                    }
+            }
+        }
     }
-}
 
 
     /*
