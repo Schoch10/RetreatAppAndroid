@@ -59,7 +59,7 @@
         android:layout_height="wrap_content"
         android:text="Upload a picture..."
         android:id="@+id/button7"
-        android:onClick="uploadPostPictureSelected"
+        android:onClick="uploadPictureSelected"
         android:layout_alignTop="@+id/button"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
