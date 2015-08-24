@@ -67,13 +67,13 @@
         android:layout_height="wrap_content"
         android:onClick="trendingButtonSelected"
         android:text=" Select Location > "
+        android:paddingRight="20dp"
+        android:paddingLeft="20dp"
+        android:layout_marginTop="10dp"
         android:background="#0372C8"
         android:textColor="#FFFFFF"
         android:layout_above="@+id/linearLayout"
-        android:layout_alignRight="@+id/retreat_user_image"
-        android:layout_alignEnd="@+id/retreat_user_image"
-        android:layout_alignLeft="@+id/retreat_user_image"
-        android:layout_alignStart="@+id/retreat_user_image" />
+        android:layout_centerHorizontal="true" />
 
     <LinearLayout
         android:id="@+id/linearLayout"

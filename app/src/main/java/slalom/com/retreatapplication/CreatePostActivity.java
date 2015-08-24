@@ -1,6 +1,5 @@
 package slalom.com.retreatapplication;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
@@ -15,39 +14,28 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.Button;
 import android.util.Base64;
 import android.graphics.BitmapFactory;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
 
-import java.io.BufferedInputStream;
 import java.io.BufferedReader;
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.net.URLEncoder;
 import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;
 import java.io.File;
 
 import org.apache.http.HttpResponse;
-import org.apache.http.HttpEntity;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.mime.HttpMultipartMode;
 import org.apache.http.entity.mime.MultipartEntity;
-import org.apache.http.entity.mime.MultipartEntityBuilder;
 import org.apache.http.entity.mime.content.ByteArrayBody;
-import org.apache.http.entity.mime.content.StringBody;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.protocol.BasicHttpContext;
 import org.apache.http.protocol.HttpContext;
-import org.apache.http.entity.ContentType;
 
 /**
  * Created by senthilrajav on 8/13/15.
@@ -62,13 +50,17 @@ public class CreatePostActivity extends AppCompatActivity {
     private Bitmap bitmap;
     private String filePath;
 
+    //image selected to upload
+    private String postImage;
+
     // UserPreferences file that hold local userId
     private static final String PREFS_NAME = "UserPreferences";
-    //Set string to easily identify debug data
-    private static final String TAG = CreatePostActivity.class.getSimpleName();
+    //Set int for Select Picture Activity callback identify
+    private static int RESULT_LOAD_IMG = 1;
     //Set int for Select Picture Activity callback identify
     private static final int SELECT_PICTURE = 1;
-    private static int RESULT_LOAD_IMG = 1;
+    //Set string to easily identify debug data
+    private static final String TAG = CreatePostActivity.class.getSimpleName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,7 +70,7 @@ public class CreatePostActivity extends AppCompatActivity {
         userId = prefs.getInt("userId", 2);
 
         bundle = getIntent().getExtras();
-        if(bundle != null) {
+        if (bundle != null) {
             locationId = (int) bundle.getLong("locationId", 3);
             location = bundle.getString("locationName");
         }
@@ -87,7 +79,7 @@ public class CreatePostActivity extends AppCompatActivity {
         setTitle(location);
 
         setContentView(R.layout.activity_create_post);
-        imgView = (ImageView) findViewById(R.id.imageView4);
+        imgView = (ImageView) findViewById(R.id.upload_image);
     }
 
     @Override
@@ -177,7 +169,7 @@ public class CreatePostActivity extends AppCompatActivity {
     }
 
     public void createPostSelected(View view) {
-        EditText textValue = (EditText)findViewById(R.id.editText);
+        EditText textValue = (EditText) findViewById(R.id.editText);
         String postText = textValue.getText().toString();
 
         //Call checkIn API and update local DB
@@ -187,7 +179,7 @@ public class CreatePostActivity extends AppCompatActivity {
         returnToLocationFeed();
     }
 
-    public void returnToLocationFeed(){
+    public void returnToLocationFeed() {
         //return to locationFeedActivity
         bundle = new Bundle();
         bundle.putLong("locationId", locationId);
@@ -215,7 +207,7 @@ public class CreatePostActivity extends AppCompatActivity {
      * @throws IOException
      */
     public byte[] getBytesFromFile(String filePath) throws IOException {
-        File file= new File(filePath);
+        File file = new File(filePath);
         InputStream is = new FileInputStream(file);
         // Get the size of the file
         long length = file.length();
@@ -227,25 +219,24 @@ public class CreatePostActivity extends AppCompatActivity {
             // File is too large
         }
         // Create the byte array to hold the data
-        byte[] bytes = new byte[(int)length];
+        byte[] bytes = new byte[(int) length];
         // Read in the bytes
         int offset = 0;
         int numRead = 0;
         while (offset < bytes.length
-                && (numRead=is.read(bytes, offset, bytes.length-offset)) >= 0) {
+                && (numRead = is.read(bytes, offset, bytes.length - offset)) >= 0) {
             offset += numRead;
         }
         // Ensure all the bytes have been read in
         if (offset < bytes.length) {
-            throw new IOException("Could not completely read file "+file.getName());
+            throw new IOException("Could not completely read file " + file.getName());
         }
         // Close the input stream and return bytes
         is.close();
         return bytes;
     }
 
-    public String getBase64EncodeToString(String filePath)
-    {
+    public String getBase64EncodeToString(String filePath) {
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inSampleSize = 3;
         bitmap = BitmapFactory.decodeFile(filePath, options);
@@ -271,7 +262,7 @@ public class CreatePostActivity extends AppCompatActivity {
             String filePath = cursor.getString(columnIndex);
             cursor.close();
             return filePath;
-        }else {
+        } else {
             return null;
         }
     }
@@ -290,7 +281,7 @@ public class CreatePostActivity extends AppCompatActivity {
         int scale = 1;
         while (true) {
             if (width_tmp < REQUIRED_SIZE && height_tmp < REQUIRED_SIZE)
-            break;
+                break;
             width_tmp /= 2;
             height_tmp /= 2;
             scale *= 2;
@@ -313,7 +304,7 @@ public class CreatePostActivity extends AppCompatActivity {
             try {
                 HttpClient httpClient = new DefaultHttpClient();
                 HttpContext localContext = new BasicHttpContext();
-                String serviceURL = "http://tpartyservice-dev.elasticbeanstalk.com/api/post/SubmitPost?userid="+args[0]+"&locationid="+args[1]+"&posttext="+args[2];
+                String serviceURL = "http://tpartyservice-dev.elasticbeanstalk.com/api/post/SubmitPost?userid=" + args[0] + "&locationid=" + args[1] + "&posttext=" + args[2];
                 HttpPost httpPost = new HttpPost(serviceURL);
 
                 MultipartEntity entity = new MultipartEntity(HttpMultipartMode.BROWSER_COMPATIBLE);
@@ -355,7 +346,5 @@ public class CreatePostActivity extends AppCompatActivity {
             }
 
         }
-
-
     }
 }
