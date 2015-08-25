@@ -26,6 +26,7 @@ import java.io.InputStreamReader;
 import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;
 import java.io.File;
+import java.net.URLEncoder;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -49,7 +50,6 @@ public class CreatePostActivity extends AppCompatActivity {
     private ImageView imgView;
     private Bitmap bitmap;
     private String filePath;
-
     //image selected to upload
     private String postImage;
 
@@ -304,13 +304,16 @@ public class CreatePostActivity extends AppCompatActivity {
             try {
                 HttpClient httpClient = new DefaultHttpClient();
                 HttpContext localContext = new BasicHttpContext();
-                String serviceURL = "http://tpartyservice-dev.elasticbeanstalk.com/api/post/SubmitPost?userid=" + args[0] + "&locationid=" + args[1] + "&posttext=" + args[2];
+                String serviceURL = "http://tpartyservice-dev.elasticbeanstalk.com/api/post/SubmitPost?userid=" + args[0] + "&locationid=" + args[1] + "&posttext=" + URLEncoder.encode(args[2], "utf-8");
                 HttpPost httpPost = new HttpPost(serviceURL);
 
                 MultipartEntity entity = new MultipartEntity(HttpMultipartMode.BROWSER_COMPATIBLE);
 
                 ByteArrayOutputStream bos = new ByteArrayOutputStream();
-                bitmap.compress(CompressFormat.JPEG, 100, bos);
+                if (bitmap != null) {
+                    bitmap.compress(CompressFormat.JPEG, 100, bos);
+                }
+
                 byte[] data = bos.toByteArray();
                 entity.addPart("uploaded", new ByteArrayBody(data, "myImage.jpg"));
                 httpPost.setEntity(entity);
@@ -338,13 +341,17 @@ public class CreatePostActivity extends AppCompatActivity {
                     sBuilder = sBuilder.append(sResponse);
                 }
                 sResponse = sBuilder.toString();*/
-
-                return null;
+                Log.d("This post succeeded", args[2]);
+                return "Success:"+args[2];
 
             } catch (Exception e) {
-                return "Something went wrong. Please try again.";
+                Log.d("This post failed: ", e.toString());
+                return "Failed: "+args[2];
             }
+        }
 
+        protected void onPostExecute(String result) {
+            Log.d("Post outcome:", result);
         }
     }
 }

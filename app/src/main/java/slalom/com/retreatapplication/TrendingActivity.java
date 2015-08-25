@@ -78,6 +78,8 @@ public class TrendingActivity extends AppCompatActivity {
                 activityContext.startActivity(activityIntent);
             }
         });
+
+        dbHelper.close();
     }
 
     public void refreshCheckInsSelected(View view) {
@@ -174,6 +176,8 @@ public class TrendingActivity extends AppCompatActivity {
 
                 saveCheckIns(getResp(CHECK_INS));
 
+                dbHelper.close();
+
             } catch (Exception e) {
                 //What should we do here?;
             }
@@ -190,6 +194,8 @@ public class TrendingActivity extends AppCompatActivity {
             customArrayAdapter = new CustomArrayAdapter(TrendingActivity.this, R.layout.activity_trending, locations);
             listView = (ListView) findViewById(R.id.listView1);
             listView.setAdapter(customArrayAdapter);
+
+            dbHelper.close();
         }
     }
 }
