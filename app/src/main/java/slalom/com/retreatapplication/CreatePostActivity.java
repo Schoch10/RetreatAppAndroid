@@ -312,9 +312,10 @@ public class CreatePostActivity extends AppCompatActivity {
                 ByteArrayOutputStream bos = new ByteArrayOutputStream();
                 if (bitmap != null) {
                     bitmap.compress(CompressFormat.JPEG, 100, bos);
-                    byte[] data = bos.toByteArray();
-                    entity.addPart("uploaded", new ByteArrayBody(data, "myImage.jpg"));
                 }
+
+                byte[] data = bos.toByteArray();
+                entity.addPart("uploaded", new ByteArrayBody(data, "myImage.jpg"));
                 httpPost.setEntity(entity);
 
                 /*MultipartEntityBuilder builder = MultipartEntityBuilder.create();
