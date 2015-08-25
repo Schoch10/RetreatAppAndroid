@@ -31,8 +31,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -299,7 +297,7 @@ public class LocationFeedActivity extends AppCompatActivity {
             PostObject post = ((PostObject) getItem(position));
 
             postUserImageView.setImageResource(R.drawable.ic_launcher);
-            postUserNameTextView.setText(post.userName());
+            postUserNameTextView.setText(post.userName().replace("%20", " "));
 
             DateFormat df = new SimpleDateFormat("MM/dd HH:mm");
             elapsedTimestampTextView.setText(df.format(new Date(post.timestamp())));
@@ -315,7 +313,7 @@ public class LocationFeedActivity extends AppCompatActivity {
                 postTextView.setVisibility(View.GONE);
             } else {
                 postTextView.setVisibility(View.VISIBLE);
-                postTextView.setText(post.text());
+                postTextView.setText(post.text().replace("%20", " "));
             }
             return convertView;
         }
