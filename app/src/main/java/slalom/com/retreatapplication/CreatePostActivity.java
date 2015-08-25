@@ -145,9 +145,10 @@ public class CreatePostActivity extends AppCompatActivity {
 
         //Call checkIn API and update local DB
         //Trigger Async Task
-        new createPostAsync().execute(String.valueOf(userId), String.valueOf(locationId), postText);
-
-        returnToLocationFeed();
+        if((postText!=null && !postText.equals("")) || bitmap!=null){
+            new createPostAsync().execute(String.valueOf(userId), String.valueOf(locationId), postText);
+            returnToLocationFeed();
+        }
     }
 
     public void returnToLocationFeed() {
