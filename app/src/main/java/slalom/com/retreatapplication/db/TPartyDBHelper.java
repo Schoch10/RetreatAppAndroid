@@ -252,6 +252,7 @@ public class TPartyDBHelper extends SQLiteOpenHelper {
             values.put(PostContract.RowEntry.TIMESTAMP, post.timestamp());
 
             db.insert(PostContract.TABLE_NAME, null, values);
+
         }
 
     }

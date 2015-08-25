@@ -44,7 +44,8 @@
         </activity>
         <activity
             android:name=".LocationFeedActivity"
-            android:label="@string/title_activity_location_feed" >
+            android:label="@string/title_activity_location_feed"
+            android:launchMode="singleTask">
         </activity>
         <activity
             android:name=".TrendingActivity"
@@ -56,7 +57,8 @@
         </activity>
         <activity
             android:name=".CreatePostActivity"
-            android:label="New Post" >
+            android:label="New Post"
+            android:noHistory="true">
         </activity>
         <activity
             android:name=".CheckedInUsersActivity"
