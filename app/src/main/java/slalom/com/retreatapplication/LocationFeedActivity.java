@@ -52,6 +52,7 @@ public class LocationFeedActivity extends AppCompatActivity {
     private final String LOC_ID = "locationId";
     private final String LOC_NAME = "locationName";
     private final String POST_ENDPOINT = "http://tpartyservice-dev.elasticbeanstalk.com/home/getpostsforlocation?locationid=";
+    private final String PAGE_LIMIT = "&page=100";
 
     private Bundle bundle;
 
@@ -107,8 +108,8 @@ public class LocationFeedActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        getPostsAsync getPostsRunner = new getPostsAsync();
-        getPostsRunner.execute(locationId);
+        Log.d(TAG, "about to update posts...");
+        new getPostsAsync().execute(locationId);
         Log.d(TAG, "onStart() called");
     }
 
@@ -159,7 +160,7 @@ public class LocationFeedActivity extends AppCompatActivity {
             InputStream in = null;
 
             try {
-                String postCall = POST_ENDPOINT + locationId.toString();
+                String postCall = POST_ENDPOINT + locationId.toString(); //+ PAGE_LIMIT;
                 URL url = new URL(postCall);
                 urlConnection = (HttpURLConnection) url.openConnection();
 

@@ -82,9 +82,15 @@ public class TrendingActivity extends AppCompatActivity {
         dbHelper.close();
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        new LocationsAsyncTask().execute(this);
+
+    }
     public void refreshCheckInsSelected(View view) {
         // Trigger Async Task
-        new TPartyTask().execute("refreshActivity", this, TrendingActivity.class, null);
+        new LocationsAsyncTask().execute(this);
     }
 
     @Override
