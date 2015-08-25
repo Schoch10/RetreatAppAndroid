@@ -113,6 +113,8 @@ public class TPartyDBHelper extends SQLiteOpenHelper {
             values.put(CheckInContract.RowEntry.COLUMN_NAME_CHECKIN_ID, item.getCheckInID());
             long rowId = db.insert(CheckInContract.TABLE_NAME, null, values);
         }
+
+        db.close();
     }
 
     public void updateLocations(Map<Integer, Integer> checkIns){
@@ -128,6 +130,7 @@ public class TPartyDBHelper extends SQLiteOpenHelper {
             values.put(LocationContract.RowEntry.COLUMN_NAME_CHECKIN, checkInCount);
 
             db.update(LocationContract.TABLE_NAME, values, LocationContract.RowEntry.COLUMN_NAME_LOCATION_ID + "=" + locID, null);
+            db.close();
         }
     }
 
@@ -160,6 +163,8 @@ public class TPartyDBHelper extends SQLiteOpenHelper {
             locations.add(location);
         }
         cursor.close();
+
+        db.close();
 
         return (locations);
     }
@@ -196,7 +201,7 @@ public class TPartyDBHelper extends SQLiteOpenHelper {
             );
             if(checkInId > 0) checkedIn = true;
         }
-
+        db.close();
         return checkedIn;
     }
 
@@ -228,7 +233,7 @@ public class TPartyDBHelper extends SQLiteOpenHelper {
             sortedPosts.add(post);
         }
         cursor.close();
-
+        db.close();
         return sortedPosts;
     }
 
@@ -252,6 +257,7 @@ public class TPartyDBHelper extends SQLiteOpenHelper {
             values.put(PostContract.RowEntry.TIMESTAMP, post.timestamp());
 
             db.insert(PostContract.TABLE_NAME, null, values);
+            db.close();
         }
 
     }

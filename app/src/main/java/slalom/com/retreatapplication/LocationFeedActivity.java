@@ -65,6 +65,8 @@ public class LocationFeedActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        Log.d(TAG, "onCreate() called");
+
         SharedPreferences prefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
         userId = prefs.getInt(USER_ID, 2);
 
@@ -106,6 +108,19 @@ public class LocationFeedActivity extends AppCompatActivity {
         dbHelper.close();
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        getPostsAsync getPostsRunner = new getPostsAsync();
+        getPostsRunner.execute(locationId);
+        Log.d(TAG, "onStart() called");
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.d(TAG, "onResume() called");
+    }
     //Async task to handle querying AWS on separate thread
     private class getPostsAsync extends AsyncTask<Integer, String, String> {
 
@@ -255,6 +270,7 @@ public class LocationFeedActivity extends AppCompatActivity {
         bundle.putLong("locationId", locationId);
         bundle.putString("locationName", location);
         Intent activityIntent = new Intent(this, CreatePostActivity.class);
+        activityIntent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
         activityIntent.putExtras(bundle);
         startActivity(activityIntent);
     }
