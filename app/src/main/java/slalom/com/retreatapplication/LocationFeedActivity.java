@@ -31,11 +31,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URISyntaxException;
 import java.net.URL;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -333,10 +329,9 @@ public class LocationFeedActivity extends AppCompatActivity {
             PostObject post = ((PostObject) getItem(position));
 
             postUserImageView.setImageResource(R.drawable.ic_launcher);
-            postUserNameTextView.setText(post.userName());
+            postUserNameTextView.setText(post.userName().replace("%20", " "));
 
-            DateFormat df = new SimpleDateFormat("MM/dd HH:mm");
-            elapsedTimestampTextView.setText(df.format(new Date(post.timestamp())));
+            elapsedTimestampTextView.setText(formatTimeSincePostString(post.timestamp()));
 
             if (post.image().equals(null) || post.image().equals("")) {
                 postImageView.setVisibility(View.GONE);
@@ -350,10 +345,43 @@ public class LocationFeedActivity extends AppCompatActivity {
                 postTextView.setVisibility(View.GONE);
             } else {
                 postTextView.setVisibility(View.VISIBLE);
-                postTextView.setText(post.text());
+                postTextView.setText(post.text().replace("%20", " "));
             }
             return convertView;
         }
+
+        public String formatTimeSincePostString(long timeStamp) {
+            String timeSincePost = "";
+            Date now = new Date();
+            Date postTime = new Date(timeStamp);
+            int days, hours, minutes, timeSincePostInSeconds;
+            long timeSincePostInMilliseconds = now.getTime() - postTime.getTime();
+            timeSincePostInSeconds = (int)(timeSincePostInMilliseconds / 1000);
+
+            days = timeSincePostInSeconds / 86400;
+
+            if (days == 0) {
+                hours = timeSincePostInSeconds / 3600;
+            } else {
+                hours = (timeSincePostInSeconds % 86400) / 3600;
+            }
+            if (hours == 0) {
+                minutes = timeSincePostInSeconds / 60;
+            } else {
+                minutes = (timeSincePostInSeconds % 3600) / 60;
+            }
+            if (minutes == 0 && hours == 0 & days == 0) {
+                timeSincePost = "Just Now";
+            } else if (hours == 0 &&  days == 0) {
+                timeSincePost = String.format("%d Minutes Ago", minutes);
+            } else if (days == 0) {
+                timeSincePost = String.format("%d Hours Ago", hours);
+            } else {
+                timeSincePost = String.format("%d Days Ago", days);
+            }
+            return timeSincePost;
+        }
+
 
         private class makeBitmapsTask extends AsyncTask<String, String, Bitmap> {
             private ImageView postImageView;

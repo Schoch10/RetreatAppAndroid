@@ -14,18 +14,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.util.Base64;
 import android.graphics.BitmapFactory;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
 
 import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.ByteArrayOutputStream;
-import java.io.FileInputStream;
-import java.io.File;
 import java.net.URLEncoder;
 
 import org.apache.http.HttpResponse;
@@ -46,17 +41,12 @@ public class CreatePostActivity extends AppCompatActivity {
     private int locationId = 0;
     private String location = "Omni";
     private Bundle bundle;
-    private String encodedString;
     private ImageView imgView;
     private Bitmap bitmap;
     private String filePath;
-    //image selected to upload
-    private String postImage;
 
     // UserPreferences file that hold local userId
     private static final String PREFS_NAME = "UserPreferences";
-    //Set int for Select Picture Activity callback identify
-    private static int RESULT_LOAD_IMG = 1;
     //Set int for Select Picture Activity callback identify
     private static final int SELECT_PICTURE = 1;
     //Set string to easily identify debug data
@@ -117,24 +107,7 @@ public class CreatePostActivity extends AppCompatActivity {
             Log.d(TAG, "Result OK");
             if (requestCode == SELECT_PICTURE) {
                 Uri selectedImageUri = data.getData();
-                Log.d(TAG, "String: " + selectedImageUri.toString());
-                Log.d(TAG, "Path: " + selectedImageUri.getPath());
-                //Uri uriPath = Uri.parse(imageUri.getPath());
-                //InputStream uriStream = getContentResolver().openInputStream(imageUri);
-                //Bitmap bitmap = BitmapFactory.decodeStream(this.getContentResolver().openInputStream(imageUri));
-                //Bitmap bitmap = BitmapFactory.decodeFile(imageUri.toString());
-                //Log.d(TAG, bitmap.toString());
-                //((ImageView) findViewById(R.id.imageView3)).setImageBitmap(bitmap);
                 imgView.setImageURI(selectedImageUri);
-
-                /*
-                String[] filePathColumn = {MediaStore.Images.Media.DATA};
-                Cursor cursor = getContentResolver().query(imageUri, filePathColumn, null, null, null);
-                cursor.moveToFirst();
-                int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-                String filePath = cursor.getString(columnIndex);
-                cursor.close();*/
-
                 /** Get File Path and Decode File **/
                 try {
                     // OI FILE Manager
@@ -148,7 +121,6 @@ public class CreatePostActivity extends AppCompatActivity {
                     } else if (filemanagerstring != null) {
                         filePath = filemanagerstring;
                     } else {
-                        //Toast.makeText(getApplicationContext(), "Unknown path", Toast.LENGTH_LONG).show();
                         Log.e("Bitmap", "Unknown path");
                     }
 
@@ -158,7 +130,6 @@ public class CreatePostActivity extends AppCompatActivity {
                         bitmap = null;
                     }
                 } catch (Exception e) {
-                    //Toast.makeText(getApplicationContext(), "Internal error", Toast.LENGTH_LONG).show();
                     Log.e(e.getClass().getName(), e.getMessage(), e);
                 }
 
@@ -174,9 +145,10 @@ public class CreatePostActivity extends AppCompatActivity {
 
         //Call checkIn API and update local DB
         //Trigger Async Task
-        new createPostAsync().execute(String.valueOf(userId), String.valueOf(locationId), postText);
-
-        returnToLocationFeed();
+        if((postText!=null && !postText.equals("")) || bitmap!=null){
+            new createPostAsync().execute(String.valueOf(userId), String.valueOf(locationId), postText);
+            returnToLocationFeed();
+        }
     }
 
     public void returnToLocationFeed() {
@@ -188,68 +160,6 @@ public class CreatePostActivity extends AppCompatActivity {
         Intent locationIndent = new Intent(this, LocationFeedActivity.class);
         locationIndent.putExtras(bundle);
         startActivity(locationIndent);
-    }
-
-    public void loadImagefromGallery(View view) {
-        // Create intent to Open Image applications like Gallery, Google Photos
-        Intent galleryIntent = new Intent(Intent.ACTION_PICK,
-                android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-        // Start the Intent
-        startActivityForResult(galleryIntent, RESULT_LOAD_IMG);
-    }
-
-
-    /**
-     * Simple Reads the image file and converts them to Bytes
-     *
-     * @param filePath of the file
-     * @return byte array which is converted from the image
-     * @throws IOException
-     */
-    public byte[] getBytesFromFile(String filePath) throws IOException {
-        File file = new File(filePath);
-        InputStream is = new FileInputStream(file);
-        // Get the size of the file
-        long length = file.length();
-        // You cannot create an array using a long type.
-        // It needs to be an int type.
-        // Before converting to an int type, check
-        // to ensure that file is not larger than Integer.MAX_VALUE.
-        if (length > Integer.MAX_VALUE) {
-            // File is too large
-        }
-        // Create the byte array to hold the data
-        byte[] bytes = new byte[(int) length];
-        // Read in the bytes
-        int offset = 0;
-        int numRead = 0;
-        while (offset < bytes.length
-                && (numRead = is.read(bytes, offset, bytes.length - offset)) >= 0) {
-            offset += numRead;
-        }
-        // Ensure all the bytes have been read in
-        if (offset < bytes.length) {
-            throw new IOException("Could not completely read file " + file.getName());
-        }
-        // Close the input stream and return bytes
-        is.close();
-        return bytes;
-    }
-
-    public String getBase64EncodeToString(String filePath) {
-        BitmapFactory.Options options = new BitmapFactory.Options();
-        options.inSampleSize = 3;
-        bitmap = BitmapFactory.decodeFile(filePath, options);
-        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-
-        // Must compress the Image to reduce image size to make upload easy
-        bitmap.compress(Bitmap.CompressFormat.PNG, 50, stream);
-        byte[] byte_arr = stream.toByteArray();
-
-        // Encode Image to String
-        encodedString = Base64.encodeToString(byte_arr, 0);
-
-        return encodedString;
     }
 
     public String getPath(Uri uri) {
@@ -296,7 +206,6 @@ public class CreatePostActivity extends AppCompatActivity {
     }
 
     private class createPostAsync extends AsyncTask<String, String, String> {
-
         @Override
         protected String doInBackground(String... args) {
             publishProgress("Creating post...");
@@ -312,35 +221,16 @@ public class CreatePostActivity extends AppCompatActivity {
                 ByteArrayOutputStream bos = new ByteArrayOutputStream();
                 if (bitmap != null) {
                     bitmap.compress(CompressFormat.JPEG, 100, bos);
+                    byte[] data = bos.toByteArray();
+                    entity.addPart("uploaded", new ByteArrayBody(data, "myImage.jpg"));
+                    httpPost.setEntity(entity);
                 }
-
-                byte[] data = bos.toByteArray();
-                entity.addPart("uploaded", new ByteArrayBody(data, "myImage.jpg"));
-                httpPost.setEntity(entity);
-
-                /*MultipartEntityBuilder builder = MultipartEntityBuilder.create();
-                builder.setMode(HttpMultipartMode.BROWSER_COMPATIBLE);
-                builder.addBinaryBody("upfile", getBytesFromFile(filePath), ContentType.DEFAULT_BINARY, "myImage.jpg");
-                //builder.addTextBody("userid", args[0], ContentType.TEXT_PLAIN);
-                //builder.addTextBody("locationid", args[1], ContentType.TEXT_PLAIN);
-                builder.addTextBody("posttext", args[2], ContentType.TEXT_PLAIN);
-
-                HttpEntity entity = builder.build();
-                httpPost.setEntity(entity);*/
 
                 HttpResponse response = httpClient.execute(httpPost, localContext);
                 BufferedReader reader = new BufferedReader(
                         new InputStreamReader(
                                 response.getEntity().getContent(), "UTF-8"));
 
-                /*
-                String sResponse;
-                StringBuilder sBuilder = new StringBuilder();
-
-                while ((sResponse = reader.readLine()) != null) {
-                    sBuilder = sBuilder.append(sResponse);
-                }
-                sResponse = sBuilder.toString();*/
                 Log.d("This post succeeded", args[2]);
                 return "Success:"+args[2];
 
