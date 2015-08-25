@@ -15,15 +15,16 @@
         <activity
             android:name=".HomeActivity"
             android:label="Welcome to the Slalom T Party!"
-            android:noHistory="true">
+            android:noHistory="true" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
             android:name=".CreateUserActivity"
-            android:label="Create User">
+            android:label="Create User" >
         </activity>
         <activity
             android:name=".RetreatAppMainView"
@@ -56,6 +57,10 @@
         <activity
             android:name=".CreatePostActivity"
             android:label="New Post" >
+        </activity>
+        <activity
+            android:name=".CheckedInUsersActivity"
+            android:label="@string/title_activity_checked_in_users" >
         </activity>
     </application>
 
