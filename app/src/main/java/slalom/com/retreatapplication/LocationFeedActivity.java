@@ -102,6 +102,8 @@ public class LocationFeedActivity extends AppCompatActivity {
             btn.setVisibility(View.GONE);
             findViewById(R.id.createPostButton).setVisibility(View.VISIBLE);
         }
+
+        dbHelper.close();
     }
 
     //Async task to handle querying AWS on separate thread
@@ -134,18 +136,23 @@ public class LocationFeedActivity extends AppCompatActivity {
             postListAdapter = new CustomListAdapter(LocationFeedActivity.this, localPosts);
             ListView postListView = (ListView) findViewById(R.id.postListView);
             postListView.setAdapter(postListAdapter);
+
+            dbHelper.close();
         }
 
         private JSONArray getPosts(Integer locationId) {
             //Ask AWS for all the posts for this location
             JSONArray respJArray = new JSONArray();
 
+            HttpURLConnection urlConnection = null;
+            InputStream in = null;
+
             try {
                 String postCall = POST_ENDPOINT + locationId.toString();
                 URL url = new URL(postCall);
-                HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+                urlConnection = (HttpURLConnection) url.openConnection();
 
-                InputStream in = new BufferedInputStream(urlConnection.getInputStream());
+                in = new BufferedInputStream(urlConnection.getInputStream());
                 StringBuilder responseBuilder = new StringBuilder();
                 BufferedReader r = new BufferedReader(new InputStreamReader(in));
                 String line;
@@ -162,6 +169,16 @@ public class LocationFeedActivity extends AppCompatActivity {
 
             } catch (IOException|JSONException e) {
                 Log.d(TAG, e.toString());
+            } finally {
+                if (urlConnection != null) {
+                    urlConnection.disconnect();
+                }
+                if (in != null) {
+                    try {
+                        in.close();
+                    } catch (Exception e) {
+                    }
+                }
             }
 
             return respJArray;
@@ -205,6 +222,7 @@ public class LocationFeedActivity extends AppCompatActivity {
 
             TPartyDBHelper dbHelper = new TPartyDBHelper(LocationFeedActivity.this);
             dbHelper.savePosts(locationId, posts);
+            dbHelper.close();
 
         }
 
@@ -308,6 +326,7 @@ public class LocationFeedActivity extends AppCompatActivity {
                 postImageView.setVisibility(View.GONE);
             } else {
                     postImageView.setVisibility(View.VISIBLE);
+                    postImageView.setImageBitmap(BitmapFactory.decodeResource(LocationFeedActivity.this.getResources(), R.drawable.ic_launcher));
                     new makeBitmapsTask(postImageView).execute(post.image());
                     //postImageView.setImageURI(Uri.parse(imageUrl.toURI().toString()));
             }
@@ -330,14 +349,27 @@ public class LocationFeedActivity extends AppCompatActivity {
             protected Bitmap doInBackground(String... url) {
                 URL imageUrl = null;
                 Bitmap imageBm = null;
+                HttpURLConnection urlConn = null;
+                BufferedInputStream in = null;
                 try {
                     imageUrl = new URL(url[0]);
-                    HttpURLConnection urlConn = (HttpURLConnection) imageUrl.openConnection();
-                    InputStream in = new BufferedInputStream(urlConn.getInputStream());
+                    urlConn = (HttpURLConnection) imageUrl.openConnection();
+                    in = new BufferedInputStream(urlConn.getInputStream());
                     imageBm = BitmapFactory.decodeStream(in);
+                    Log.d("Image found in S3", imageUrl.toString());
+
                 } catch (Exception e) {
-                    Log.e("Error", e.getMessage());
-                    e.printStackTrace();
+                    Log.d("Image not found in S3", e.getMessage());
+                    imageBm = BitmapFactory.decodeResource(LocationFeedActivity.this.getResources(), R.drawable.ic_launcher);
+                } finally {
+                    if (urlConn != null) {
+                        urlConn.disconnect();
+                    }
+                    if (in != null) {
+                        try {
+                            in.close();
+                        } catch (Exception e) {}
+                    }
                 }
                 return imageBm;
 
