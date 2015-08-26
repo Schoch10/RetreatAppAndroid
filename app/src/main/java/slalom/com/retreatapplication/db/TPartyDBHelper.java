@@ -8,13 +8,14 @@ import android.database.Cursor;
 import java.util.ArrayList;
 
 import java.util.Map;
-import slalom.com.retreatapplication.model.Location;
+
 import slalom.com.retreatapplication.model.CheckIn;
-import java.util.HashMap;
+import slalom.com.retreatapplication.model.Location;
+
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
+
+import slalom.com.retreatapplication.util.CheckInObject;
 import slalom.com.retreatapplication.util.PostObject;
 
 
@@ -204,6 +205,7 @@ public class TPartyDBHelper extends SQLiteOpenHelper {
         return checkedIn;
     }
 
+
     public List<PostObject> getLocalPosts(Integer locationId) {
         List<PostObject> sortedPosts = new LinkedList<PostObject>();
 
@@ -236,6 +238,34 @@ public class TPartyDBHelper extends SQLiteOpenHelper {
         return sortedPosts;
     }
 
+    public List<CheckInObject> getLocalCheckIns(Integer locationId) {
+        List<CheckInObject> sortedCheckIns = new LinkedList<CheckInObject>();
+
+        SQLiteDatabase db = getReadableDatabase();
+
+        // After the query, the cursor points to the first database row
+        // returned by the request.
+        String[] args = {locationId.toString()};
+        Cursor cursor = db.rawQuery(
+                "SELECT * FROM " + CheckInContract.TABLE_NAME
+                        + " WHERE " + CheckInContract.RowEntry.COLUMN_NAME_LOCATION_ID + "=?"
+                        + " ORDER BY " + CheckInContract.RowEntry.COLUMN_NAME_CHECK_IN_DATE + " DESC"
+                , args);
+
+        while (cursor.moveToNext()) {
+            Integer checkInId = cursor.getInt(cursor.getColumnIndex(CheckInContract.RowEntry.COLUMN_NAME_CHECKIN_ID));
+            Integer userId = cursor.getInt(cursor.getColumnIndex(CheckInContract.RowEntry.COLUMN_NAME_USER_ID));
+            String userName = cursor.getString(cursor.getColumnIndex(CheckInContract.RowEntry.COLUMN_NAME_USERNAME));
+            Integer storedLocationId = cursor.getInt(cursor.getColumnIndex(CheckInContract.RowEntry.COLUMN_NAME_LOCATION_ID));
+            String locationName = cursor.getString(cursor.getColumnIndex(CheckInContract.RowEntry.COLUMN_NAME_LOCATION_NAME));
+            Long timestamp = cursor.getLong(cursor.getColumnIndex(CheckInContract.RowEntry.COLUMN_NAME_CHECK_IN_DATE));
+
+            CheckInObject checkIn = new CheckInObject(checkInId, userId, userName, storedLocationId, locationName, timestamp);
+        }
+        cursor.close();
+
+        return sortedCheckIns;
+    }
 
     public void savePosts(Integer locationId, List<PostObject> posts) {
 

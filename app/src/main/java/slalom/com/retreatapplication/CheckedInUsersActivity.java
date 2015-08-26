@@ -1,6 +1,7 @@
 package slalom.com.retreatapplication;
 
 import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
@@ -16,17 +17,29 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CheckedInUsersActivity extends AppCompatActivity {
+import slalom.com.retreatapplication.db.TPartyDBHelper;
+import slalom.com.retreatapplication.util.CheckInObject;
 
+public class CheckedInUsersActivity extends AppCompatActivity {
+    private TPartyDBHelper dbHelper;
+    private Bundle bundle;
     private CustomListAdapter checkInsListAdapter;
+    private int locationId;
+    private final String LOC_ID = "locationId";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_checked_in_users);
 
+        bundle = getIntent().getExtras();
+        if(bundle != null) {
+            locationId = (int) bundle.getLong(LOC_ID, 3);
+        }
+
         // temporary list so this class doesn't have errors
-        List<?> checkIns = new ArrayList<Object> ();
+        dbHelper = new TPartyDBHelper(this);
+        List<CheckInObject> checkIns = dbHelper.getLocalCheckIns(locationId);
 
         checkInsListAdapter = new CustomListAdapter(this, checkIns);
         ListView checkInsListView = (ListView) findViewById(R.id.checked_in_users_list_view);
@@ -57,9 +70,9 @@ public class CheckedInUsersActivity extends AppCompatActivity {
 
     private class CustomListAdapter extends BaseAdapter {
         private Context mContext;
-        private List<?> checkIns;
+        private List<CheckInObject> checkIns;
 
-        public CustomListAdapter(Context c, List<?> checkIns) {
+        public CustomListAdapter(Context c, List<CheckInObject> checkIns) {
             mContext = c;
             this.checkIns = checkIns;
         }

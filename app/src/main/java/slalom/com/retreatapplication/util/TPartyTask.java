@@ -193,7 +193,7 @@ public class TPartyTask extends AsyncTask<Object, Object, Object> {
     }
 
     private void savePost(String serviceCall, int userId, int locationId, String locationName, String postText) throws IOException, JSONException {
-        // Create a new HttpClient and Post Header
+        // Create a new HttpClient and PostObject Header
         HttpClient httpclient = new DefaultHttpClient();
         HttpPost httppost = new HttpPost(serviceCall);
 
@@ -205,7 +205,7 @@ public class TPartyTask extends AsyncTask<Object, Object, Object> {
             nameValuePairs.add(new BasicNameValuePair("postText", postText));
             httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
 
-            // Execute HTTP Post Request
+            // Execute HTTP PostObject Request
             HttpResponse response = httpclient.execute(httppost);
         } catch (Exception e) {
             // TODO Auto-generated catch block

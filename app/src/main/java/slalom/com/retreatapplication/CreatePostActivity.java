@@ -246,7 +246,7 @@ public class CreatePostActivity extends AppCompatActivity {
         }
 
         protected void onPostExecute(String result) {
-            Log.d("Post outcome:", result);
+            Log.d("PostObject outcome:", result);
         }
     }
 }
