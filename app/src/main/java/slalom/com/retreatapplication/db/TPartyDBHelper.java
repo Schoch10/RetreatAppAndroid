@@ -80,8 +80,8 @@ public class TPartyDBHelper extends SQLiteOpenHelper {
         item = new Location(); item.setLocationId(4); item.setLocationName("Lobby & Terrace"); item.setLocationImage("lobby.png"); item.setCheckin(0); locations.add(item);
         item = new Location(); item.setLocationId(5); item.setLocationName("Golf"); item.setLocationImage("golf.png"); item.setCheckin(0); locations.add(item);
         item = new Location(); item.setLocationId(6); item.setLocationName("Lawn Games"); item.setLocationImage("lawn.png"); item.setCheckin(0); locations.add(item);
-        item = new Location(); item.setLocationId(7); item.setLocationName("Spa"); item.setLocationImage("spa.png"); item.setCheckin(0); locations.add(item);
-        item = new Location(); item.setLocationId(8); item.setLocationName("Outdoor Activities/Town"); item.setLocationImage("outdoor.png"); item.setCheckin(0); locations.add(item);
+        item = new Location(); item.setLocationId(7); item.setLocationName("Town"); item.setLocationImage("town.png"); item.setCheckin(0); locations.add(item);
+        item = new Location(); item.setLocationId(8); item.setLocationName("Outdoor Activities"); item.setLocationImage("outdoor.png"); item.setCheckin(0); locations.add(item);
         item = new Location(); item.setLocationId(9); item.setLocationName("Stickney's"); item.setLocationImage("stickneys.png"); item.setCheckin(0); locations.add(item);
         item = new Location(); item.setLocationId(10); item.setLocationName("Pool"); item.setLocationImage("pool.png"); item.setCheckin(0); locations.add(item);
         item = new Location(); item.setLocationId(11); item.setLocationName("Presidential Foyer"); item.setLocationImage("pfoyer.png"); item.setCheckin(0); locations.add(item);
