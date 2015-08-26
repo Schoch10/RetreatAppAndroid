@@ -8,7 +8,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -88,27 +87,10 @@ public class CreateUserActivity extends AppCompatActivity {
     }
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == RESULT_OK) {
-            Log.d(TAG, "Result OK");
             if (requestCode == SELECT_PICTURE) {
                 Uri imageUri = data.getData();
-                Log.d(TAG, "String: " + imageUri.toString());
-                Log.d(TAG, "Path: " + imageUri.getPath());
-                //Uri uriPath = Uri.parse(imageUri.getPath());
-                //InputStream uriStream = getContentResolver().openInputStream(imageUri);
-                //Bitmap bitmap = BitmapFactory.decodeStream(this.getContentResolver().openInputStream(imageUri));
-                //Bitmap bitmap = BitmapFactory.decodeFile(imageUri.toString());
-                //Log.d(TAG, bitmap.toString());
-                //((ImageView) findViewById(R.id.imageView3)).setImageBitmap(bitmap);
                 ((ImageView) findViewById(R.id.imageView3)).setImageURI(imageUri);
 
-                /*
-                String[] filePathColumn = {MediaStore.Images.Media.DATA};
-                Cursor cursor = getContentResolver().query(imageUri, filePathColumn, null, null, null);
-                cursor.moveToFirst();
-                int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-                String filePath = cursor.getString(columnIndex);
-                cursor.close();
-*/
                 String imageUriId = imageUri.getPathSegments().get(1).split(":")[1];
                 String[] filePathColumn = {MediaStore.Images.Media.DATA};
                 Cursor cursor = getContentResolver().query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, filePathColumn, "_id = ?", new String[]{imageUriId}, null);
@@ -116,22 +98,10 @@ public class CreateUserActivity extends AppCompatActivity {
                 int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
                 userImage = cursor.getString(columnIndex);
                 cursor.close();
-
-            } else {
-                Log.d(TAG, "Result not OK");
             }
         }
     }
-    /*
-    private String getRealPathFromUri(Uri uri) {
-        String[]  data = { MediaStore.Images.Media.DATA };
-        CursorLoader loader = new CursorLoader(this, uri, data, null, null, null);
-        Cursor cursor = loader.loadInBackground();
-        int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-        cursor.moveToFirst();
-        return cursor.getString(column_index);
-    }
-    */
+
     public void createUserSelected(View view) {
 
         nameEditText = (EditText)findViewById(R.id.nameEditText);
@@ -142,14 +112,12 @@ public class CreateUserActivity extends AppCompatActivity {
 
     }
 
-
     private class sendPostsAsync extends AsyncTask<String, String, String> {
 
         String response;
 
         @Override
         protected String doInBackground(String... userName)  {
-            publishProgress("Creating user record...");
 
             try {
 
@@ -192,11 +160,6 @@ public class CreateUserActivity extends AppCompatActivity {
 
             return response;
 
-        }
-
-        @Override
-        protected void onProgressUpdate(String... update) {
-             nameEditText.setHint(update[0]);
         }
 
         @Override

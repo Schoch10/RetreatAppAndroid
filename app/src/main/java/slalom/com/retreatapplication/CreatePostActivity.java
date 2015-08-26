@@ -108,9 +108,9 @@ public class CreatePostActivity extends AppCompatActivity {
     }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        Log.d(TAG, String.valueOf(resultCode==RESULT_OK));
+
         if (resultCode == RESULT_OK) {
-            Log.d(TAG, "Result OK");
+
             if (requestCode == SELECT_PICTURE) {
                 Uri selectedImageUri = data.getData();
                 imgView.setImageURI(selectedImageUri);
@@ -139,8 +139,6 @@ public class CreatePostActivity extends AppCompatActivity {
                     Log.e(e.getClass().getName(), e.getMessage(), e);
                 }
 
-            } else {
-                Log.d(TAG, "Result not OK");
             }
         }
     }
@@ -237,17 +235,12 @@ public class CreatePostActivity extends AppCompatActivity {
                         new InputStreamReader(
                                 response.getEntity().getContent(), "UTF-8"));
 
-                Log.d("This post succeeded", args[2]);
                 return "Success:"+args[2];
 
             } catch (Exception e) {
-                Log.d("This post failed: ", e.toString());
                 return "Failed: "+args[2];
             }
         }
 
-        protected void onPostExecute(String result) {
-            Log.d("PostObject outcome:", result);
-        }
     }
 }

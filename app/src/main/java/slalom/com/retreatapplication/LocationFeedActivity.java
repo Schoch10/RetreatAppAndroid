@@ -64,8 +64,6 @@ public class LocationFeedActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        Log.d(TAG, "onCreate() called");
-
         SharedPreferences prefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
         userId = prefs.getInt(USER_ID, 2);
 
@@ -115,11 +113,6 @@ public class LocationFeedActivity extends AppCompatActivity {
         Log.d(TAG, "onStart() called");
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        Log.d(TAG, "onResume() called");
-    }
     //Async task to handle querying AWS on separate thread
     private class getPostsAsync extends AsyncTask<Integer, String, String> {
 
@@ -129,7 +122,7 @@ public class LocationFeedActivity extends AppCompatActivity {
         @Override
         protected String doInBackground(Integer... location) {
             //Parent method for getting posts from remote DB and storing them in local DB
-            publishProgress("Getting latest post...");
+            //publishProgress("Getting latest post...");
             locationId = location[0];
             savePosts(locationId, getPosts(locationId));
 
@@ -176,8 +169,6 @@ public class LocationFeedActivity extends AppCompatActivity {
                 }
 
                 response = responseBuilder.toString();
-
-                Log.d(TAG, response);
 
                 respJArray = new JSONArray(response);
 
@@ -417,10 +408,8 @@ public class LocationFeedActivity extends AppCompatActivity {
                     urlConn = (HttpURLConnection) imageUrl.openConnection();
                     in = new BufferedInputStream(urlConn.getInputStream());
                     imageBm = BitmapFactory.decodeStream(in);
-                    Log.d("Image found in S3", imageUrl.toString());
 
                 } catch (Exception e) {
-                    Log.d("Image not found in S3", e.getMessage());
                     imageBm = BitmapFactory.decodeResource(LocationFeedActivity.this.getResources(), R.drawable.placeholder);
                 } finally {
                     if (urlConn != null) {
@@ -443,48 +432,3 @@ public class LocationFeedActivity extends AppCompatActivity {
             }
         }
     }
-
-
-    /*
-        @Override
-        public boolean onTouchEvent(MotionEvent event) {
-
-            switch(event.getAction()) {
-
-                case MotionEvent.ACTION_DOWN:
-                    x1 = event.getX();
-                    break;
-
-                case MotionEvent.ACTION_UP:
-                    x2 = event.getX();
-                    float deltaX = x2 - x1;
-                    if (Math.abs(deltaX) > MIN_DISTANCE) {
-                        if (deltaX > 0) {
-                            //swipe right
-                            Log.d(TAG, "swipe right? x1: " + x1 + ", x2: " + x2);
-
-                            // Need an object that stores location id > rank mapping
-                            // so when user swipes we increment or decrement rank, and
-                            // and get loc id associated with that rank
-                            Intent nextActivityIntent = new Intent(this, LocationFeedActivity.class);
-                            nextActivityIntent.putExtra(LOC_ID_EXTRA, currentLocId+1);
-                            startActivity(nextActivityIntent);
-
-                    } else if (deltaX < 0) {
-                            //swipe left
-                            Log.d(TAG, "swipe left? x1: " + x1 + ", x2: " + x2);
-
-                            Intent nextActivityIntent = new Intent(this, LocationFeedActivity.class);
-                            nextActivityIntent.putExtra(LOC_ID_EXTRA, currentLocId-1);
-                            startActivity(nextActivityIntent);
-
-                        }
-                    }
-
-                    break;
-            }
-
-            return true;
-
-        }
-    */
