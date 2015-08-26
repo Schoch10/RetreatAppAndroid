@@ -79,7 +79,7 @@ public class TrendingActivity extends AppCompatActivity {
             }
         });
 
-        dbHelper.close();
+        //dbHelper.close();
     }
 
     @Override
@@ -182,8 +182,6 @@ public class TrendingActivity extends AppCompatActivity {
 
                 saveCheckIns(getResp(CHECK_INS));
 
-                dbHelper.close();
-
             } catch (Exception e) {
                 //What should we do here?;
             }
@@ -201,7 +199,6 @@ public class TrendingActivity extends AppCompatActivity {
             listView = (ListView) findViewById(R.id.listView1);
             listView.setAdapter(customArrayAdapter);
 
-            dbHelper.close();
         }
     }
 }

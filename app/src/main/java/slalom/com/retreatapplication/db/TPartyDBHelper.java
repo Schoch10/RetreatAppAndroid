@@ -127,7 +127,7 @@ public class TPartyDBHelper extends SQLiteOpenHelper {
             values = new ContentValues();
             values.put(LocationContract.RowEntry.COLUMN_NAME_CHECKIN, checkInCount);
 
-            db.update(LocationContract.TABLE_NAME, values, LocationContract.RowEntry.COLUMN_NAME_LOCATION_ID + "=" + locID, null);
+        db.update(LocationContract.TABLE_NAME, values, LocationContract.RowEntry.COLUMN_NAME_LOCATION_ID + "=" + locID, null);
         }
     }
 
