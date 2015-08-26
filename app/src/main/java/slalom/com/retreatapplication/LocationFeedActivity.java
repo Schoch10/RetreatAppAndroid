@@ -40,6 +40,8 @@ import slalom.com.retreatapplication.db.TPartyDBHelper;
 import slalom.com.retreatapplication.util.PostObject;
 import slalom.com.retreatapplication.util.TPartyTask;
 
+import com.koushikdutta.ion.Ion;
+
 public class LocationFeedActivity extends AppCompatActivity {
 
     private final String TAG = LocationFeedActivity.class.getSimpleName();
@@ -346,8 +348,15 @@ public class LocationFeedActivity extends AppCompatActivity {
             } else {
                     postImageView.setVisibility(View.VISIBLE);
                     postImageView.setImageBitmap(BitmapFactory.decodeResource(LocationFeedActivity.this.getResources(), R.drawable.placeholder));
-                    new makeBitmapsTask(postImageView).execute(post.image());
+                    //new makeBitmapsTask(postImageView).execute(post.image());
                     //postImageView.setImageURI(Uri.parse(imageUrl.toURI().toString()));
+
+                    // start with the ImageView
+                    Ion.with(postImageView)
+                    // use a placeholder google_image if it needs to load from the network
+                    .placeholder(R.drawable.placeholder)
+                    // load the url
+                    .load(post.image());
             }
             if (post.text().equals("null") || post.text().equals("")) {
                 postTextView.setVisibility(View.GONE);
