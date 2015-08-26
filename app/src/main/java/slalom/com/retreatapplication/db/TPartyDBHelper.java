@@ -261,7 +261,12 @@ public class TPartyDBHelper extends SQLiteOpenHelper {
             Long timestamp = cursor.getLong(cursor.getColumnIndex(CheckInContract.RowEntry.COLUMN_NAME_CHECK_IN_DATE));
 
             CheckInObject checkIn = new CheckInObject(checkInId, userId, userName, storedLocationId, locationName, timestamp);
+
+            sortedCheckIns.add(checkIn);
         }
+
+
+
         cursor.close();
 
         return sortedCheckIns;

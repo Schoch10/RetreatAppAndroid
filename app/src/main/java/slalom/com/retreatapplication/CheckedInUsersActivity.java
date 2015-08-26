@@ -4,6 +4,7 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -18,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import slalom.com.retreatapplication.db.TPartyDBHelper;
+import slalom.com.retreatapplication.model.CheckIn;
 import slalom.com.retreatapplication.util.CheckInObject;
 
 public class CheckedInUsersActivity extends AppCompatActivity {
@@ -40,6 +42,10 @@ public class CheckedInUsersActivity extends AppCompatActivity {
         // temporary list so this class doesn't have errors
         dbHelper = new TPartyDBHelper(this);
         List<CheckInObject> checkIns = dbHelper.getLocalCheckIns(locationId);
+
+        for (CheckInObject aCheckIn: checkIns) {
+            Log.d("CheckInActivity", aCheckIn.toString());
+        }
 
         checkInsListAdapter = new CustomListAdapter(this, checkIns);
         ListView checkInsListView = (ListView) findViewById(R.id.checked_in_users_list_view);

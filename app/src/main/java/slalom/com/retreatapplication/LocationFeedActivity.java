@@ -259,7 +259,9 @@ public class LocationFeedActivity extends AppCompatActivity {
             return true;
         } else if (id == R.id.action_check_ins) {
             Intent activityIntent = new Intent(this, CheckedInUsersActivity.class);
-//            activityIntent.putExtras(bundle);
+            bundle = new Bundle();
+            bundle.putLong("locationId", locationId);
+            activityIntent.putExtras(bundle);
             startActivity(activityIntent);
             return true;
         }
