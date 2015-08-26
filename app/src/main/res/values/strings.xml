@@ -46,7 +46,7 @@
 
     <string name="check_ins">Check-Ins</string>
     <string name="current_checked_in">Currently Checked-In</string>
-    <string name="title_activity_checked_in_users">CheckedInUsersActivity</string>
+    <string name="title_activity_checked_in_users">Check-ins</string>
 
     <string name="post_button_text">Post</string>
 </resources>

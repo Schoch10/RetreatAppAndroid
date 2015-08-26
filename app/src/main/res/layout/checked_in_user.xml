@@ -5,7 +5,7 @@
     android:weightSum="1">
 
     <ImageView
-        android:id="@+id/user_profile_pic"
+        android:id="@+id/check_in_user_profile_pic"
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_marginBottom="15dp"
@@ -23,7 +23,7 @@
         android:layout_marginLeft="20dp"
         android:layout_weight="0.42">
         <TextView
-            android:id="@+id/user_name"
+            android:id="@+id/check_in_user_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="User name"

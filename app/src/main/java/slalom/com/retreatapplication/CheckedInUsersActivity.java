@@ -1,7 +1,6 @@
 package slalom.com.retreatapplication;
 
 import android.content.Context;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -15,11 +14,10 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import slalom.com.retreatapplication.db.TPartyDBHelper;
-import slalom.com.retreatapplication.model.CheckIn;
 import slalom.com.retreatapplication.util.CheckInObject;
 
 public class CheckedInUsersActivity extends AppCompatActivity {
@@ -85,7 +83,7 @@ public class CheckedInUsersActivity extends AppCompatActivity {
 
         @Override
         public int getCount() {
-            return 0;
+            return checkIns.size();
         }
 
         @Override
@@ -106,15 +104,53 @@ public class CheckedInUsersActivity extends AppCompatActivity {
                 convertView = inflater.inflate(R.layout.checked_in_user, parent, false);
             }
 
-            ImageView userImageView = (ImageView) convertView.findViewById(R.id.user_profile_pic);
-            TextView userNameTextView = (TextView)convertView.findViewById(R.id.user_name);
+            ImageView userImageView = (ImageView) convertView.findViewById(R.id.check_in_user_profile_pic);
+            TextView userNameTextView = (TextView)convertView.findViewById(R.id.check_in_user_name);
             TextView checkInTimestampTextView = (TextView)convertView.findViewById(R.id.check_in_timestamp);
 
-            userImageView.setImageResource(R.drawable.ic_launcher);
-            userNameTextView.setText("user_name");
-            checkInTimestampTextView.setText(" ");
+            CheckInObject checkIn = ((CheckInObject) getItem(position));
+
+            userImageView.setVisibility(View.GONE);
+            userNameTextView.setText(checkIn.userName().replace("%20", " "));
+            checkInTimestampTextView.setVisibility(View.GONE);
+
+            // only uncomment code below if the service eventually returns these values
+//            userImageView.setImageResource(R.drawable.ic_launcher);
+//            checkInTimestampTextView.setText(formatTimeSinceCheckInString(checkIn.getTimestamp()));
 
             return convertView;
+        }
+
+        public String formatTimeSinceCheckInString(long timeStamp) {
+            String timeSinceCheckIn = "";
+            Date now = new Date();
+            Date checkInTime = new Date(timeStamp);
+            int days, hours, minutes, timeSinceCheckInInSeconds;
+            long timeSinceCheckInInMilliseconds = now.getTime() - checkInTime.getTime();
+            timeSinceCheckInInSeconds = (int)(timeSinceCheckInInMilliseconds / 1000);
+
+            days = timeSinceCheckInInSeconds / 86400;
+
+            if (days == 0) {
+                hours = timeSinceCheckInInSeconds / 3600;
+            } else {
+                hours = (timeSinceCheckInInSeconds % 86400) / 3600;
+            }
+            if (hours == 0) {
+                minutes = timeSinceCheckInInSeconds / 60;
+            } else {
+                minutes = (timeSinceCheckInInSeconds % 3600) / 60;
+            }
+            if (minutes == 0 && hours == 0 & days == 0) {
+                timeSinceCheckIn = "Just Now";
+            } else if (hours == 0 &&  days == 0) {
+                timeSinceCheckIn = String.format("%d Minutes Ago", minutes);
+            } else if (days == 0) {
+                timeSinceCheckIn = String.format("%d Hours Ago", hours);
+            } else {
+                timeSinceCheckIn = String.format("%d Days Ago", days);
+            }
+            return timeSinceCheckIn;
         }
     }
 }
