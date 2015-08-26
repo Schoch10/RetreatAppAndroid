@@ -343,7 +343,7 @@ public class LocationFeedActivity extends AppCompatActivity {
                 postImageView.setVisibility(View.GONE);
             } else {
                     postImageView.setVisibility(View.VISIBLE);
-                    postImageView.setImageBitmap(BitmapFactory.decodeResource(LocationFeedActivity.this.getResources(), R.drawable.ic_launcher));
+                    postImageView.setImageBitmap(BitmapFactory.decodeResource(LocationFeedActivity.this.getResources(), R.drawable.placeholder));
                     new makeBitmapsTask(postImageView).execute(post.image());
                     //postImageView.setImageURI(Uri.parse(imageUrl.toURI().toString()));
             }
@@ -410,7 +410,7 @@ public class LocationFeedActivity extends AppCompatActivity {
 
                 } catch (Exception e) {
                     Log.d("Image not found in S3", e.getMessage());
-                    imageBm = BitmapFactory.decodeResource(LocationFeedActivity.this.getResources(), R.drawable.ic_launcher);
+                    imageBm = BitmapFactory.decodeResource(LocationFeedActivity.this.getResources(), R.drawable.placeholder);
                 } finally {
                     if (urlConn != null) {
                         urlConn.disconnect();
