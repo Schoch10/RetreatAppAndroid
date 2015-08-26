@@ -119,6 +119,10 @@ public class TPartyDBHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getReadableDatabase();
         ContentValues values; int locID; int checkInCount;
 
+        db.execSQL("DELETE FROM " + LocationContract.TABLE_NAME);
+
+        initializeData(db);
+
         for (Map.Entry<Integer, Integer> entry : checkIns.entrySet()) {
             locID = entry.getKey();
             checkInCount = entry.getValue();
