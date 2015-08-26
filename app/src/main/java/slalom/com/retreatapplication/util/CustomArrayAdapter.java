@@ -19,13 +19,11 @@ import slalom.com.retreatapplication.model.Location;
  */
 public class CustomArrayAdapter extends ArrayAdapter<Location> {
     // declaring our ArrayList of items
-    private Intent activityIntent;
     private Activity activityContext;
     private ArrayList<Location> objects;
     private Location location;
     private TextView textTitle;
     private TextView textDetail;
-    //private Button buttonRefresh;
 
     /* here we must override the constructor for ArrayAdapter
     * the only variable we care about now is ArrayList<Item> objects,
@@ -64,39 +62,14 @@ public class CustomArrayAdapter extends ArrayAdapter<Location> {
 
         if (location != null) {
 
-            // This is how you obtain a reference to the TextViews.
-            // These TextViews are created in the XML files we defined.
-
             textTitle = (TextView)v.findViewById(R.id.location_name);
             textDetail = (TextView)v.findViewById(R.id.check_in_count);
             //buttonRefresh = (Button)v.findViewById(R.id.buttonRefresh);
 
-            textTitle.setText(location.getLocationName());
+            textTitle.setText(location.getLocationName().toUpperCase());
             textDetail.setText("" + location.getCheckin());
-
-            /*
-            // Button click listener
-            textTitle.setOnClickListener(new View.OnClickListener() {
-                // When Button is clicked
-                public void onClick(View v) {
-                    // Disable the button to avoid playing of song multiple times
-                    textDetail.setEnabled(false);
-
-                    activityIntent = new Intent(activityContext, ActivitiesActivity.class);
-
-                    //String selected = objects.get(position);
-                    Bundle b = new Bundle();
-                    b.putString("locName", location.getLocationName());
-                    b.putLong("locId", location.getLocationId());
-                    activityIntent.putExtras(b);
-
-                    activityContext.startActivity(activityIntent);
-                }
-            });*/
         }
         // the view must be returned to our activity
         return v;
-
     }
-
 }

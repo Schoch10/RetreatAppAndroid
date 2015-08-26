@@ -74,7 +74,7 @@ public class LocationFeedActivity extends AppCompatActivity {
         }
 
         //update ActionBar title with location name of selected location in view
-        setTitle(location);
+        setTitle(location.toUpperCase());
 
         setContentView(R.layout.location_feed_activity);
 
