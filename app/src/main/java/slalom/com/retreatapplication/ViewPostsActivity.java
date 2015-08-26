@@ -2,16 +2,13 @@ package slalom.com.retreatapplication;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ListView;
 import android.widget.Button;
-import android.database.Cursor;
+import android.widget.ListView;
 
-import slalom.com.retreatapplication.db.CheckInContract;
 import slalom.com.retreatapplication.db.TPartyDBHelper;
 import slalom.com.retreatapplication.util.CustomListAdapter;
 import slalom.com.retreatapplication.util.TPartyTask;
@@ -76,9 +73,9 @@ public class ViewPostsActivity extends Activity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
+//        if (id == R.id.action_settings) {
+//            return true;
+//        }
 
         return super.onOptionsItemSelected(item);
     }

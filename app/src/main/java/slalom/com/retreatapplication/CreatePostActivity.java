@@ -87,9 +87,10 @@ public class CreatePostActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        } else if (id == R.id.action_post) {
+//        if (id == R.id.action_settings) {
+//            return true;
+//        }
+        if (id == R.id.action_post) {
             //TODO: destroy this activity & send post data to service!
             createPostSelected();
             return true;

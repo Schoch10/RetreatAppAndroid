@@ -255,9 +255,10 @@ public class LocationFeedActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        } else if (id == R.id.action_check_ins) {
+//        if (id == R.id.action_settings) {
+//            return true;
+//        }
+        if (id == R.id.action_check_ins) {
             Intent activityIntent = new Intent(this, CheckedInUsersActivity.class);
             bundle = new Bundle();
             bundle.putLong("locationId", locationId);

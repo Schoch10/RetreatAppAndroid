@@ -10,7 +10,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -31,7 +30,6 @@ import slalom.com.retreatapplication.db.TPartyDBHelper;
 import slalom.com.retreatapplication.model.CheckIn;
 import slalom.com.retreatapplication.model.Location;
 import slalom.com.retreatapplication.util.CustomArrayAdapter;
-import slalom.com.retreatapplication.util.TPartyTask;
 
 
 public class TrendingActivity extends AppCompatActivity {
@@ -108,9 +106,9 @@ public class TrendingActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
+//        if (id == R.id.action_settings) {
+//            return true;
+//        }
 
         return super.onOptionsItemSelected(item);
     }
