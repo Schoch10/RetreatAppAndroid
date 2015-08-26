@@ -272,7 +272,6 @@ public class LocationFeedActivity extends AppCompatActivity {
         bundle.putLong("locationId", locationId);
         bundle.putString("locationName", location);
         Intent activityIntent = new Intent(this, CreatePostActivity.class);
-        activityIntent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
         activityIntent.putExtras(bundle);
         startActivity(activityIntent);
     }

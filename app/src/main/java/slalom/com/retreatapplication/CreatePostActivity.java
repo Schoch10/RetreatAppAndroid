@@ -107,6 +107,7 @@ public class CreatePostActivity extends AppCompatActivity {
     }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        Log.d(TAG, String.valueOf(resultCode==RESULT_OK));
         if (resultCode == RESULT_OK) {
             Log.d(TAG, "Result OK");
             if (requestCode == SELECT_PICTURE) {
