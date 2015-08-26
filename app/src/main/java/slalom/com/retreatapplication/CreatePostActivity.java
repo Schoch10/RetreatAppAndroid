@@ -3,6 +3,9 @@ package slalom.com.retreatapplication;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.Bitmap.CompressFormat;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -14,14 +17,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.graphics.BitmapFactory;
-import android.graphics.Bitmap;
-import android.graphics.Bitmap.CompressFormat;
-
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.io.ByteArrayOutputStream;
-import java.net.URLEncoder;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -32,6 +27,11 @@ import org.apache.http.entity.mime.content.ByteArrayBody;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.protocol.BasicHttpContext;
 import org.apache.http.protocol.HttpContext;
+
+import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
+import java.io.InputStreamReader;
+import java.net.URLEncoder;
 
 /**
  * Created by senthilrajav on 8/13/15.
@@ -75,7 +75,7 @@ public class CreatePostActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_game_view, menu);
+        getMenuInflater().inflate(R.menu.menu_create_post, menu);
         return true;
     }
 
@@ -88,6 +88,10 @@ public class CreatePostActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            return true;
+        } else if (id == R.id.action_post) {
+            //TODO: destroy this activity & send post data to service!
+            createPostSelected();
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -139,7 +143,7 @@ public class CreatePostActivity extends AppCompatActivity {
         }
     }
 
-    public void createPostSelected(View view) {
+    public void createPostSelected() {
         EditText textValue = (EditText) findViewById(R.id.editText);
         String postText = textValue.getText().toString();
 

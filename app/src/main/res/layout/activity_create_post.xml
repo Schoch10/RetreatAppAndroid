@@ -8,18 +8,18 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="slalom.com.retreatapplication.CreatePostActivity">
 
-    <ImageView
+    <ImageButton
         android:id="@+id/upload_image"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_weight="0.6"
+        android:layout_weight="0.7"
         android:contentDescription="Photo Upload"
-        android:maxHeight="400px"
         android:minHeight="400px"
         android:src="@drawable/uploadphoto"
-        android:visibility="visible" />
+        android:visibility="visible"
+        android:onClick="uploadPictureSelected" />
 
     <EditText
         android:id="@+id/editText"
@@ -31,33 +31,5 @@
         android:hint="Enter Comment here..."
         android:inputType="textMultiLine"
         android:layout_marginTop="10dp" />
-
-    <LinearLayout
-        android:id="@+id/linearLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentBottom="true"
-        android:gravity="center"
-        android:orientation="horizontal"
-        android:weightSum="1">
-
-        <Button
-            android:id="@+id/button7"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.5"
-            android:onClick="uploadPictureSelected"
-            android:text="Upload a Photo" />
-
-        <Button
-            android:id="@+id/button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.5"
-            android:onClick="createPostSelected"
-            android:text="Post" />
-    </LinearLayout>
 
 </RelativeLayout>
