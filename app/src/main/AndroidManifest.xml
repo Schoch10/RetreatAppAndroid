@@ -56,8 +56,7 @@
         </activity>
         <activity
             android:name=".CreatePostActivity"
-            android:label="New Post"
-            android:noHistory="true">
+            android:label="New Post">
         </activity>
     </application>
 

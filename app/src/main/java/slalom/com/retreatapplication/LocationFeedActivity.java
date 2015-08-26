@@ -160,7 +160,7 @@ public class LocationFeedActivity extends AppCompatActivity {
             InputStream in = null;
 
             try {
-                String postCall = POST_ENDPOINT + locationId.toString(); //+ PAGE_LIMIT;
+                String postCall = POST_ENDPOINT + locationId.toString() + PAGE_LIMIT;
                 URL url = new URL(postCall);
                 urlConnection = (HttpURLConnection) url.openConnection();
 
