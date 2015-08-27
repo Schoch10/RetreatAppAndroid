@@ -12,18 +12,18 @@ import slalom.com.retreatapplication.util.CustomListAdapter;
 public class AgendaActivity extends AppCompatActivity {
 
     private String[][] agenda = {
-            { "Arrive & Check-in", "Omni Mt. Washington Lobby", "4:00 PM" },
-            { "Cocktails & Dinner", "Jewel Terrace \nWeather Back Up: Grand Ballroom", "6:00 PM - 10:00 PM" },
-            { "After Party", "The Cave and Stickney’s", "10:00 PM - Midnight" },
-            { "Breakfast", "Main Dining Room", "7:00 AM - 10:00 AM" },
-            { "Golf", "Omni Mt. Washington Golf Course", "9:00 AM" },
-            { "Lawn Games", "South Veranda Lawn", "10:00 AM" },
-            { "Zipline", "Omni Canopy Tours - Slopes", "11:00 AM" },
-            { "Outdoor Activities", "Check Activities Emails", "All Day" },
-            { "1920s Speakeasy", "Presidential Ballroom, Presidential Foyer, Presidential Garden", "6:00 PM - 10:00 PM" },
-            { "After Party", "The Cave and Stickney’s", "10:00 PM - Midnight" },
-            { "Breakfast", "Main Dining Room", "7:00 AM - 10:00 AM" },
-            { "Checkout", "Omni Mt. Washington Lobby", "11:00 AM" }
+            { "Arrive & Check-in", "Omni Mt. Washington Lobby", "Friday, 4:00 PM" },
+            { "Cocktails & Dinner", "Jewel Terrace \nWeather Back Up: Grand Ballroom", "Friday, 6:00 PM - 10:00 PM" },
+            { "After Party", "The Cave and Stickney’s", "Friday, 10:00 PM - Midnight" },
+            { "Breakfast", "Main Dining Room", "Saturday, 7:00 AM - 10:00 AM" },
+            { "Golf", "Omni Mt. Washington Golf Course", "Saturday, 9:00 AM" },
+            { "Lawn Games", "South Veranda Lawn", "Saturday, 10:00 AM" },
+            { "Zipline", "Omni Canopy Tours - Slopes", "Saturday, 11:00 AM" },
+            { "Outdoor Activities", "Check Activities Emails", "All Day Saturday" },
+            { "1920s Speakeasy", "Presidential Ballroom, Presidential Foyer, Presidential Garden", "Saturday, 6:00 PM - 10:00 PM" },
+            { "After Party", "The Cave and Stickney’s", "Saturday, 10:00 PM - Midnight" },
+            { "Breakfast", "Main Dining Room", "Sunday, 7:00 AM - 10:00 AM" },
+            { "Checkout", "Omni Mt. Washington Lobby", "Sunday, 11:00 AM" }
     };
     private Integer[] imgId = {
             R.drawable.checkin,
