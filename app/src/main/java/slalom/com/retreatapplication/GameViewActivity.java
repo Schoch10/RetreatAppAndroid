@@ -54,7 +54,7 @@ public class GameViewActivity extends AppCompatActivity {
     private String[] getStoredAnswers(SharedPreferences prefs, int cardCount) {
         String[] answers = new String[cardCount];
         for (int i = 0; i < cardCount; i++) {
-            answers[i] = prefs.getString("question_" + i, "");
+            answers[i] = prefs.getString("question_" + String.valueOf(i), "");
         }
         return answers;
     }
@@ -84,7 +84,7 @@ public class GameViewActivity extends AppCompatActivity {
     @Override
     protected void onStop(){
         super.onStop();
-        SharedPreferences settings = getPreferences(MODE_PRIVATE);
+        SharedPreferences settings = getSharedPreferences("UserPreferences", MODE_PRIVATE);
         SharedPreferences.Editor editor = settings.edit();
 
         GridView gridview = (GridView) findViewById(R.id.gridview);
@@ -94,7 +94,8 @@ public class GameViewActivity extends AppCompatActivity {
             answerText = ((EditText)gridview.getChildAt(i).findViewById(R.id.answer_field))
                     .getText().toString();
             if (!answerText.equals("")) {
-                editor.putString("question_" + i, answerText);
+                editor.putString("question_" + String.valueOf(i), answerText);
+                editor.commit();
             }
         }
         // Commit the edits!

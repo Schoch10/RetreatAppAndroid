@@ -10,17 +10,17 @@
 
     <ImageButton
         android:id="@+id/upload_image"
-        android:layout_width="wrap_parentdp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_weight="0.7"
         android:contentDescription="Photo Upload"
         android:minHeight="400px"
-        android:src="@drawable/old_camera"
         android:visibility="visible"
         android:onClick="uploadPictureSelected"
-        android:longClickable="false" />
+        android:longClickable="false"
+        android:src="@drawable/uploadphoto" />
 
     <EditText
         android:id="@+id/editText"
@@ -29,7 +29,7 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_below="@+id/upload_image"
-        android:hint="Enter Comment here..."
+        android:hint="Post a comment..."
         android:inputType="textMultiLine"
         android:layout_marginTop="10dp" />
 
