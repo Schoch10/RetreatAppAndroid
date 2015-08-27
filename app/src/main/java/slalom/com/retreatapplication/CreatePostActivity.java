@@ -33,6 +33,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URLEncoder;
+import java.util.List;
 
 /**
  * Created by senthilrajav on 8/13/15.
@@ -168,8 +169,15 @@ public class CreatePostActivity extends AppCompatActivity {
     }
 
     public String getPath(Uri uri) {
-        String imageUriId = uri.getPathSegments().get(1).split(":")[1];
-            String[] filePathColumn = {MediaStore.Images.Media.DATA};
+        String imageUriId;
+        String tempImageUriPath = uri.toString().substring(uri.toString().lastIndexOf("/") + 1);
+        if (tempImageUriPath.contains("%3A")) {
+            imageUriId = tempImageUriPath.split("%3A")[1];
+        } else {
+            imageUriId = tempImageUriPath;
+        }
+        
+        String[] filePathColumn = {MediaStore.Images.Media.DATA};
         Cursor cursor = getContentResolver().query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, filePathColumn, "_id = ?", new String[]{imageUriId}, null);
         if (cursor != null) {
             cursor.moveToFirst();
