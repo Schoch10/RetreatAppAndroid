@@ -57,15 +57,17 @@ public class RetreatAppMainView extends AppCompatActivity {
         SharedPreferences prefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
         ((TextView)findViewById(R.id.retreat_user_name)).setText(prefs.getString("userName", ""));
 
-        //((ImageView)findViewById(R.id.retreat_user_image)).setImageURI(Uri.parse(prefs.getString("userImage", "")));
-
         ImageView userImageView = (ImageView)findViewById(R.id.retreat_user_image);
-        // start with the ImageView
-        Ion.with(userImageView)
-                // use a placeholder google_image if it needs to load from the network
-                .placeholder(R.drawable.placeholder)
-                // load the url
-                .load(prefs.getString("userImage", ""));
+        if (prefs.getString("userImage", "").equals("")) {
+            userImageView.setImageResource(R.drawable.person_placeholder);
+        } else {
+            // start with the ImageView
+            Ion.with(userImageView)
+                    // use a placeholder google_image if it needs to load from the network
+                    .placeholder(R.drawable.person_placeholder)
+                            // load the url
+                    .load(prefs.getString("userImage", ""));
+        }
 
         Button btn = (Button)findViewById(R.id.game_view_button);
         if(timeToParty){
@@ -77,11 +79,11 @@ public class RetreatAppMainView extends AppCompatActivity {
 
             RelativeLayout layout = (RelativeLayout)findViewById(R.id.main_layout);
 
-            RelativeLayout.LayoutParams imageparams = new RelativeLayout.LayoutParams(
+            RelativeLayout.LayoutParams imageParams = new RelativeLayout.LayoutParams(
                     RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-            imageparams.addRule(RelativeLayout.ALIGN_PARENT_TOP);
-            imageparams.addRule(RelativeLayout.ABOVE, R.id.select_location_button);
-            layout.updateViewLayout(userImageView, imageparams);
+            imageParams.addRule(RelativeLayout.ALIGN_PARENT_TOP);
+            imageParams.addRule(RelativeLayout.ABOVE, R.id.retreat_user_name);
+            layout.updateViewLayout(userImageView, imageParams);
             btn.setEnabled(true);
         }
         else{
