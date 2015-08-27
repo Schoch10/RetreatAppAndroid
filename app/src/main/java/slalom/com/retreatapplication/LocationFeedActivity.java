@@ -38,6 +38,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 
 import slalom.com.retreatapplication.db.TPartyDBHelper;
 import slalom.com.retreatapplication.util.PostObject;
@@ -341,6 +342,7 @@ public class LocationFeedActivity extends AppCompatActivity {
             postUserNameTextView.setText(post.userName().replace("%20", " "));
 
             DateFormat df = new SimpleDateFormat("MM/dd KK:mm a");
+            df.setTimeZone(TimeZone.getTimeZone("GMT-0100"));
             elapsedTimestampTextView.setText(df.format(new Date(post.timestamp())));
 
             if (post.image().equals(null) || post.image().equals("")) {
