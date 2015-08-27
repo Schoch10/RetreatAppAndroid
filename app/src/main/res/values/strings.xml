@@ -32,6 +32,7 @@
     <string name="trending">Trending</string>
     <string name="title_activity_location_feed">Location Feed</string>
     <string name="title_activity_trending">Trending Now</string>
+    <string name="refresh">Refresh</string>
 
     <string name="title_activity_game_view">GameViewActivity</string>
     <string name="find_someone_who">Find some who...</string>
