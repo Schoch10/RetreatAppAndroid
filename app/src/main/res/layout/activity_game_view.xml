@@ -9,20 +9,19 @@
     tools:context="slalom.com.retreatapplication.GameViewActivity"
     android:background="#EEEEEE">
 
-    <TextView
-        android:id="@+id/find_someone_who"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
-        android:textColor="#0372C8"
-        android:textSize="24sp"
-        android:text="@string/find_someone_who"/>
+    <!--<TextView-->
+        <!--android:id="@+id/find_someone_who"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginBottom="10dp"-->
+        <!--android:textColor="#0372C8"-->
+        <!--android:textSize="24sp"-->
+        <!--android:text="@string/find_someone_who"/>-->
 
     <GridView xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/gridview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/find_someone_who"
         android:columnWidth="90dp"
         android:horizontalSpacing="10dp"
         android:numColumns="auto_fit"

@@ -7,7 +7,7 @@
 
     <application
         android:allowBackup="true"
-        android:label="T-party"
+        android:label=""
         android:icon="@drawable/t_party_app"
         android:theme="@style/CustomActionBarTheme" >
         <service android:name=".util.TPartyService" />

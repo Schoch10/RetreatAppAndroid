@@ -4,8 +4,8 @@
     tools:context="slalom.com.retreatapplication.LocationFeedActivity">
 
     <item android:id="@+id/action_check_ins"
-        android:icon="@drawable/ic_check_circle_white_18dp"
         android:title="@string/check_ins"
-        app:showAsAction="ifRoom" />
+        android:visible="true"
+        app:showAsAction="always" />
 
 </menu>

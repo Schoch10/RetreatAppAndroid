@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -21,6 +20,8 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.koushikdutta.ion.Ion;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -32,6 +33,8 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -40,13 +43,12 @@ import slalom.com.retreatapplication.db.TPartyDBHelper;
 import slalom.com.retreatapplication.util.PostObject;
 import slalom.com.retreatapplication.util.TPartyTask;
 
-import com.koushikdutta.ion.Ion;
-
 public class LocationFeedActivity extends AppCompatActivity {
 
     private final String TAG = LocationFeedActivity.class.getSimpleName();
     private int userId = 0;
     private int locationId = 0;
+    private String checkInCount = "";
     private String location = "";
     private final String PREFS_NAME = "UserPreferences";
     private final String USER_ID = "userId";
@@ -55,6 +57,7 @@ public class LocationFeedActivity extends AppCompatActivity {
     private final String LOC_NAME = "locationName";
     private final String POST_ENDPOINT = "http://tpartyservice-dev.elasticbeanstalk.com/home/getpostsforlocation?locationid=";
     private final String PAGE_LIMIT = "&page=100";
+    private final String CHECK_IN_COUNT = "checkInCount";
 
     private Bundle bundle;
 
@@ -71,27 +74,26 @@ public class LocationFeedActivity extends AppCompatActivity {
         if(bundle != null) {
             locationId = (int) bundle.getLong(LOC_ID, 3);
             location = bundle.getString(LOC_NAME);
+            checkInCount = "" + bundle.getLong(CHECK_IN_COUNT, 0);
         }
 
         //update ActionBar title with location name of selected location in view
         setTitle(location.toUpperCase());
-
         setContentView(R.layout.location_feed_activity);
-
-        //((ImageView)findViewById(R.id.retreat_user_image)).setImageURI(Uri.parse(prefs.getString("userImage", "")));
 
         //Add user image to check in and post button
         ImageView userImageView = (ImageView) findViewById(R.id.user_image);
 
-        // start with the ImageView
-        Ion.with(userImageView)
-                // use a placeholder google_image if it needs to load from the network
-                .placeholder(R.drawable.ic_launcher)
-                // load the url
-                .load(prefs.getString(USER_IMAGE, ""));
-
-        TextView postTextView = (TextView)findViewById(R.id.post_text);
-
+        if (prefs.getString("userImage", "").equals("")) {
+            userImageView.setImageResource(R.drawable.person_placeholder);
+        } else {
+            // start with the ImageView
+            Ion.with(userImageView)
+                    // use a placeholder google_image if it needs to load from the network
+                    .placeholder(R.drawable.person_placeholder)
+                            // load the url
+                    .load(prefs.getString(USER_IMAGE, ""));
+        }
 
         //Check remote DB for posts and display those when finished
         getPostsAsync getPostsRunner = new getPostsAsync();
@@ -99,10 +101,6 @@ public class LocationFeedActivity extends AppCompatActivity {
 
         //Meanwhile Check local DB for posts and display those
         TPartyDBHelper dbHelper = new TPartyDBHelper(this);
-        /*List<PostObject> localPosts = dbHelper.getLocalPosts(locationId);
-        postListAdapter = new CustomListAdapter(this, localPosts);
-        ListView postListView = (ListView) findViewById(R.id.postListView);
-        postListView.setAdapter(postListAdapter);*/
 
         //See if user is checked into this location or not
         boolean checkedIn = dbHelper.isUserCheckedIn(userId, locationId);
@@ -247,6 +245,8 @@ public class LocationFeedActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_location_feed_activity, menu);
+        MenuItem checkIns = menu.findItem(R.id.action_check_ins);
+        checkIns.setTitle(checkInCount);
         return true;
     }
 
@@ -340,18 +340,15 @@ public class LocationFeedActivity extends AppCompatActivity {
 
             postUserNameTextView.setText(post.userName().replace("%20", " "));
 
-            elapsedTimestampTextView.setText(formatTimeSincePostString(post.timestamp()));
+            DateFormat df = new SimpleDateFormat("MM/dd KK:mm a");
+            elapsedTimestampTextView.setText(df.format(new Date(post.timestamp())));
 
             if (post.image().equals(null) || post.image().equals("")) {
                 postImageView.setVisibility(View.GONE);
             } else {
-                    postImageView.setVisibility(View.VISIBLE);
-                    //postImageView.setImageBitmap(BitmapFactory.decodeResource(LocationFeedActivity.this.getResources(), R.drawable.placeholder));
-                    //new makeBitmapsTask(postImageView).execute(post.image());
-                    //postImageView.setImageURI(Uri.parse(imageUrl.toURI().toString()));
-
-                    // start with the ImageView
-                    Ion.with(postImageView)
+                postImageView.setVisibility(View.VISIBLE);
+                // start with the ImageView
+                Ion.with(postImageView)
                     // use a placeholder google_image if it needs to load from the network
                     .placeholder(R.drawable.placeholder)
                     // load the url
@@ -365,39 +362,6 @@ public class LocationFeedActivity extends AppCompatActivity {
             }
             return convertView;
         }
-
-        public String formatTimeSincePostString(long timeStamp) {
-            String timeSincePost = "";
-            Date now = new Date();
-            Date postTime = new Date(timeStamp);
-            int days, hours, minutes, timeSincePostInSeconds;
-            long timeSincePostInMilliseconds = now.getTime() - postTime.getTime();
-            timeSincePostInSeconds = (int)(timeSincePostInMilliseconds / 1000);
-
-            days = timeSincePostInSeconds / 86400;
-
-            if (days == 0) {
-                hours = timeSincePostInSeconds / 3600;
-            } else {
-                hours = (timeSincePostInSeconds % 86400) / 3600;
-            }
-            if (hours == 0) {
-                minutes = timeSincePostInSeconds / 60;
-            } else {
-                minutes = (timeSincePostInSeconds % 3600) / 60;
-            }
-            if (minutes == 0 && hours == 0 & days == 0) {
-                timeSincePost = "Just Now";
-            } else if (hours == 0 &&  days == 0) {
-                timeSincePost = String.format("%d Minutes Ago", minutes);
-            } else if (days == 0) {
-                timeSincePost = String.format("%d Hours Ago", hours);
-            } else {
-                timeSincePost = String.format("%d Days Ago", days);
-            }
-            return timeSincePost;
-        }
-
 
         private class makeBitmapsTask extends AsyncTask<String, String, Bitmap> {
             private ImageView postImageView;

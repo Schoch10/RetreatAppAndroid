@@ -70,6 +70,7 @@ public class TrendingActivity extends AppCompatActivity {
                 bundle = new Bundle();
                 bundle.putString("locationName", location.getLocationName());
                 bundle.putLong("locationId", location.getLocationId());
+                bundle.putLong("checkInCount", location.getCheckin());
 
                 activityIntent = new Intent(activityContext, LocationFeedActivity.class);
                 activityIntent.putExtras(bundle);

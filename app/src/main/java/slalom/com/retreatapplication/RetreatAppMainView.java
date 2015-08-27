@@ -1,5 +1,6 @@
 package slalom.com.retreatapplication;
 
+import android.app.ActionBar;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -33,9 +34,11 @@ public class RetreatAppMainView extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_retreat_app_main_view);
 
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
-        getSupportActionBar().setLogo(R.drawable.white_slalom_logo);
-        getSupportActionBar().setDisplayUseLogoEnabled(true);
+//        getSupportActionBar().setDisplayShowHomeEnabled(true);
+//        getSupportActionBar().setLogo(R.drawable.white_slalom_logo);
+//        getSupportActionBar().setDisplayUseLogoEnabled(true);
+        getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+        getSupportActionBar().setCustomView(R.layout.action_bar_logo);
 
         today = new Date();
         tPartyDate = new Date(today.getYear(),today.getMonth(),TPARTY_DATE);
