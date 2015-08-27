@@ -1,5 +1,6 @@
 package slalom.com.retreatapplication;
 
+import android.app.DialogFragment;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -20,6 +21,9 @@ public class GameViewActivity extends AppCompatActivity {
     private String[] strArray;
     private GridViewAdapter gridViewAdapter = new GridViewAdapter(this);
 
+    private static final String PREFS_NAME = "UserPreferences";
+    private SharedPreferences prefs;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -27,10 +31,24 @@ public class GameViewActivity extends AppCompatActivity {
         GridView gridview = (GridView) findViewById(R.id.gridview);
 
         // Restore preferences
-        SharedPreferences prefs = getPreferences(MODE_PRIVATE);
+        prefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
         strArray = getStoredAnswers(prefs, gridViewAdapter.getCount());
 
         gridview.setAdapter(gridViewAdapter);
+        if (prefs.getBoolean("showGameInstructionsDialog", false) == false) {
+            showGameInstructionsDialog();
+        }
+    }
+
+    public void showGameInstructionsDialog() {
+        // Create an instance of the dialog fragment and show it
+        DialogFragment dialog = new GameInstructionsFragment();
+        dialog.show(getFragmentManager(), "GameInstructionsFragment");
+
+        prefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putBoolean("showGameInstructionsDialog", true);
+        editor.commit();
     }
 
     private String[] getStoredAnswers(SharedPreferences prefs, int cardCount) {
