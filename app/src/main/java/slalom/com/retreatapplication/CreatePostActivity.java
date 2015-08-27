@@ -30,6 +30,7 @@ import org.apache.http.protocol.HttpContext;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URLEncoder;
 
@@ -112,10 +113,10 @@ public class CreatePostActivity extends AppCompatActivity {
         if (resultCode == RESULT_OK) {
 
             if (requestCode == SELECT_PICTURE) {
-                Uri selectedImageUri = data.getData();
-                imgView.setImageURI(selectedImageUri);
-                /** Get File Path and Decode File **/
                 try {
+                    Uri selectedImageUri = data.getData();
+
+                    /** Get File Path and Decode File **/
                     // OI FILE Manager
                     String filemanagerstring = selectedImageUri.getPath();
 
