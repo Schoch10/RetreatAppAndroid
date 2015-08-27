@@ -169,7 +169,7 @@ public class CreatePostActivity extends AppCompatActivity {
 
     public String getPath(Uri uri) {
         String imageUriId = uri.getPathSegments().get(1).split(":")[1];
-        String[] filePathColumn = {MediaStore.Images.Media.DATA};
+            String[] filePathColumn = {MediaStore.Images.Media.DATA};
         Cursor cursor = getContentResolver().query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, filePathColumn, "_id = ?", new String[]{imageUriId}, null);
         if (cursor != null) {
             cursor.moveToFirst();

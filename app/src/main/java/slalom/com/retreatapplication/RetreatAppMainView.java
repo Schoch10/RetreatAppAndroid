@@ -13,6 +13,8 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.koushikdutta.ion.Ion;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -66,8 +68,16 @@ public class RetreatAppMainView extends AppCompatActivity {
 
         SharedPreferences prefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
         ((TextView)findViewById(R.id.retreat_user_name)).setText(prefs.getString("userName", ""));
-        ((ImageView)findViewById(R.id.retreat_user_image)).setImageURI(Uri.parse(prefs.getString("userImage", "")));
 
+        //((ImageView)findViewById(R.id.retreat_user_image)).setImageURI(Uri.parse(prefs.getString("userImage", "")));
+
+        ImageView userImageView = (ImageView)findViewById(R.id.retreat_user_image);
+        // start with the ImageView
+        Ion.with(userImageView)
+                // use a placeholder google_image if it needs to load from the network
+                .placeholder(R.drawable.ic_launcher)
+                // load the url
+                .load(prefs.getString("userImage", ""));
     }
 
     @Override

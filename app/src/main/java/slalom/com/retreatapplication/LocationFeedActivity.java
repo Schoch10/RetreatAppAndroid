@@ -78,8 +78,18 @@ public class LocationFeedActivity extends AppCompatActivity {
 
         setContentView(R.layout.location_feed_activity);
 
+        //((ImageView)findViewById(R.id.retreat_user_image)).setImageURI(Uri.parse(prefs.getString("userImage", "")));
+
         //Add user image to check in and post button
-        ((ImageView) findViewById(R.id.user_image)).setImageURI(Uri.parse(prefs.getString(USER_IMAGE, "")));
+        ImageView userImageView = (ImageView) findViewById(R.id.user_image);
+
+        // start with the ImageView
+        Ion.with(userImageView)
+                // use a placeholder google_image if it needs to load from the network
+                .placeholder(R.drawable.ic_launcher)
+                // load the url
+                .load(prefs.getString(USER_IMAGE, ""));
+
         TextView postTextView = (TextView)findViewById(R.id.post_text);
 
 
@@ -89,10 +99,10 @@ public class LocationFeedActivity extends AppCompatActivity {
 
         //Meanwhile Check local DB for posts and display those
         TPartyDBHelper dbHelper = new TPartyDBHelper(this);
-        List<PostObject> localPosts = dbHelper.getLocalPosts(locationId);
+        /*List<PostObject> localPosts = dbHelper.getLocalPosts(locationId);
         postListAdapter = new CustomListAdapter(this, localPosts);
         ListView postListView = (ListView) findViewById(R.id.postListView);
-        postListView.setAdapter(postListAdapter);
+        postListView.setAdapter(postListAdapter);*/
 
         //See if user is checked into this location or not
         boolean checkedIn = dbHelper.isUserCheckedIn(userId, locationId);
@@ -338,7 +348,7 @@ public class LocationFeedActivity extends AppCompatActivity {
                 postImageView.setVisibility(View.GONE);
             } else {
                     postImageView.setVisibility(View.VISIBLE);
-                    postImageView.setImageBitmap(BitmapFactory.decodeResource(LocationFeedActivity.this.getResources(), R.drawable.placeholder));
+                    //postImageView.setImageBitmap(BitmapFactory.decodeResource(LocationFeedActivity.this.getResources(), R.drawable.placeholder));
                     //new makeBitmapsTask(postImageView).execute(post.image());
                     //postImageView.setImageURI(Uri.parse(imageUrl.toURI().toString()));
 
