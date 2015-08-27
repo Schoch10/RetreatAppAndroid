@@ -7,14 +7,14 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@drawable/app_icon_2x"
         android:label=""
+        android:icon="@drawable/t_party_app"
         android:theme="@style/CustomActionBarTheme" >
         <service android:name=".util.TPartyService" />
 
         <activity
             android:name=".HomeActivity"
-            android:label="Welcome to the Slalom T Party!"
+            android:label="TParty"
             android:noHistory="true" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -32,7 +32,7 @@
         </activity>
         <activity
             android:name=".GameViewActivity"
-            android:label="Game" >
+            android:label="@string/find_someone_who" >
         </activity>
         <activity
             android:name=".InformationActivity"

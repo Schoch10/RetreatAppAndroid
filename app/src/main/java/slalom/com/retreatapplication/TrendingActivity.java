@@ -86,7 +86,7 @@ public class TrendingActivity extends AppCompatActivity {
         new LocationsAsyncTask().execute(this);
 
     }
-    public void refreshCheckInsSelected(View view) {
+    public void refreshCheckInsSelected() {
         // Trigger Async Task
         new LocationsAsyncTask().execute(this);
     }
@@ -94,7 +94,7 @@ public class TrendingActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_agenda, menu);
+        getMenuInflater().inflate(R.menu.menu_trending, menu);
         return true;
     }
 
@@ -106,9 +106,10 @@ public class TrendingActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-//        if (id == R.id.action_settings) {
-//            return true;
-//        }
+        if (id == R.id.action_refresh) {
+            refreshCheckInsSelected();
+            return true;
+        }
 
         return super.onOptionsItemSelected(item);
     }

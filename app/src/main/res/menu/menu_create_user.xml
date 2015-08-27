@@ -3,4 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="slalom.com.retreatapplication.CreateUserActivity">
 
+    <item android:id="@+id/action_create_user"
+        android:title="@string/title_activity_create_user"
+        android:visible="true"
+        app:showAsAction="always"/>
+
 </menu>

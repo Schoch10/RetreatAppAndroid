@@ -69,10 +69,11 @@ public class CreateUserActivity extends AppCompatActivity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-//        if (id == R.id.action_settings) {
-//            return true;
-//        }
+//        noinspection SimplifiableIfStatement
+        if (id == R.id.action_create_user) {
+            createUserSelected();
+            return true;
+        }
 
         return super.onOptionsItemSelected(item);
     }
@@ -80,7 +81,6 @@ public class CreateUserActivity extends AppCompatActivity {
     public void uploadPictureSelected(View view) {
         Intent intent = new Intent();
         intent.setType("image/*");
-        //intent.setAction(Intent.ACTION_PICK);
         intent.setAction(Intent.ACTION_GET_CONTENT);
         startActivityForResult(Intent.createChooser(intent,
                 "Select Picture"), SELECT_PICTURE);
@@ -89,7 +89,7 @@ public class CreateUserActivity extends AppCompatActivity {
         if (resultCode == RESULT_OK) {
             if (requestCode == SELECT_PICTURE) {
                 Uri imageUri = data.getData();
-                ((ImageView) findViewById(R.id.imageView3)).setImageURI(imageUri);
+                ((ImageView) findViewById(R.id.profile_picture)).setImageURI(imageUri);
 
                 String imageUriId = imageUri.getPathSegments().get(1).split(":")[1];
                 String[] filePathColumn = {MediaStore.Images.Media.DATA};
@@ -102,25 +102,19 @@ public class CreateUserActivity extends AppCompatActivity {
         }
     }
 
-    public void createUserSelected(View view) {
-
+    public void createUserSelected() {
         nameEditText = (EditText)findViewById(R.id.nameEditText);
         userName = nameEditText.getText().toString();
 
         sendPostsAsync sendPostRunner = new sendPostsAsync();
         sendPostRunner.execute(userName);
-
     }
 
     private class sendPostsAsync extends AsyncTask<String, String, String> {
-
         String response;
-
         @Override
         protected String doInBackground(String... userName)  {
-
             try {
-
                 String postCall = "http://tpartyservice-dev.elasticbeanstalk.com/Home/CreateUser";
                 String params = "username="+URLEncoder.encode(userName[0], "utf-8");
 

@@ -34,7 +34,7 @@ public class RetreatAppMainView extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_retreat_app_main_view);
-        
+
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setLogo(R.drawable.white_slalom_logo);
         getSupportActionBar().setDisplayUseLogoEnabled(true);
