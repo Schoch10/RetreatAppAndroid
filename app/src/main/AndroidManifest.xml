@@ -7,14 +7,14 @@
 
     <application
         android:allowBackup="true"
+        android:label=""
         android:icon="@drawable/t_party_app"
-        android:label="RetreatApplication"
         android:theme="@style/CustomActionBarTheme" >
         <service android:name=".util.TPartyService" />
 
         <activity
             android:name=".HomeActivity"
-            android:label="Welcome to the Slalom T Party!"
+            android:label="TParty"
             android:noHistory="true" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -28,7 +28,7 @@
         </activity>
         <activity
             android:name=".RetreatAppMainView"
-            android:label="Slalom" >
+            android:logo="@drawable/white_slalom_logo">
         </activity>
         <activity
             android:name=".GameViewActivity"

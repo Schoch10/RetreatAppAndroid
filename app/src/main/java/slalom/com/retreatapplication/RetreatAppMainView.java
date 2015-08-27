@@ -11,7 +11,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.app.ActionBar;
 
 import com.koushikdutta.ion.Ion;
 
@@ -23,7 +25,7 @@ import java.util.Calendar;
 
 public class RetreatAppMainView extends AppCompatActivity {
     private Date today; private Date tPartyDate;
-    private boolean timeToParty = false;
+    private boolean timeToParty = true;
     private static final String PREFS_NAME = "UserPreferences";
     private static final int TPARTY_DATE = 28; //August 28, 2015
     private static final int TPARTY_TIME = 18; //6 PM
@@ -32,6 +34,10 @@ public class RetreatAppMainView extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_retreat_app_main_view);
+
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setLogo(R.drawable.white_slalom_logo);
+        getSupportActionBar().setDisplayUseLogoEnabled(true);
 
         today = new Date();
         tPartyDate = new Date(today.getYear(),today.getMonth(),TPARTY_DATE);
