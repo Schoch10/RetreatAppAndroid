@@ -23,7 +23,7 @@ import java.util.Date;
 
 public class RetreatAppMainView extends AppCompatActivity {
     private Date today; private Date tPartyDate;
-    private boolean timeToParty = true;
+    private boolean timeToParty = false;
     private static final String PREFS_NAME = "UserPreferences";
     private static final int TPARTY_DATE = 28; //August 28, 2015
     private static final int TPARTY_TIME = 18; //6 PM

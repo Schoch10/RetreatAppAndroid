@@ -176,7 +176,6 @@ public class CreatePostActivity extends AppCompatActivity {
         } else {
             imageUriId = tempImageUriPath;
         }
-        
         String[] filePathColumn = {MediaStore.Images.Media.DATA};
         Cursor cursor = getContentResolver().query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, filePathColumn, "_id = ?", new String[]{imageUriId}, null);
         if (cursor != null) {

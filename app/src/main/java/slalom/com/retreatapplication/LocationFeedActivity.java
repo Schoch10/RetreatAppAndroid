@@ -331,7 +331,6 @@ public class LocationFeedActivity extends AppCompatActivity {
                 convertView = inflater.inflate(R.layout.single_post, parent, false);
             }
 
-            ImageView postUserImageView = (ImageView) convertView.findViewById(R.id.post_user_image);
             TextView postUserNameTextView = (TextView)convertView.findViewById(R.id.post_user_name);
             TextView elapsedTimestampTextView = (TextView)convertView.findViewById(R.id.post_elapsed_timestamp);
             postImageView = (ImageView) convertView.findViewById(R.id.post_image);
@@ -339,7 +338,6 @@ public class LocationFeedActivity extends AppCompatActivity {
 
             PostObject post = ((PostObject) getItem(position));
 
-            postUserImageView.setImageResource(R.drawable.ic_launcher);
             postUserNameTextView.setText(post.userName().replace("%20", " "));
 
             elapsedTimestampTextView.setText(formatTimeSincePostString(post.timestamp()));
