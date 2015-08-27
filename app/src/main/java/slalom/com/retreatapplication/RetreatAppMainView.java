@@ -2,7 +2,6 @@ package slalom.com.retreatapplication;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.v7.app.AppCompatActivity;
@@ -13,14 +12,13 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.app.ActionBar;
 
 import com.koushikdutta.ion.Ion;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.Calendar;
+import java.util.Date;
 
 
 public class RetreatAppMainView extends AppCompatActivity {
@@ -56,22 +54,6 @@ public class RetreatAppMainView extends AppCompatActivity {
                 timeToParty = true;
         }
 
-        Button btn = (Button)findViewById(R.id.game_view_button);
-        if(timeToParty){
-            TextView countdownText = (TextView)findViewById(R.id.countdown_text_view);
-            countdownText.setVisibility(View.GONE);
-
-            TextView timerText = (TextView)findViewById(R.id.timer_text_view);
-            timerText.setVisibility(View.GONE);
-
-            btn.setEnabled(true);
-        }
-        else{
-            setCountdownTimer(findViewById(R.id.timer_text_view));
-
-            btn.setEnabled(false);
-        }
-
         SharedPreferences prefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
         ((TextView)findViewById(R.id.retreat_user_name)).setText(prefs.getString("userName", ""));
 
@@ -81,9 +63,31 @@ public class RetreatAppMainView extends AppCompatActivity {
         // start with the ImageView
         Ion.with(userImageView)
                 // use a placeholder google_image if it needs to load from the network
-                .placeholder(R.drawable.ic_launcher)
+                .placeholder(R.drawable.placeholder)
                 // load the url
                 .load(prefs.getString("userImage", ""));
+
+        Button btn = (Button)findViewById(R.id.game_view_button);
+        if(timeToParty){
+            TextView countdownText = (TextView)findViewById(R.id.countdown_text_view);
+            countdownText.setVisibility(View.GONE);
+
+            TextView timerText = (TextView)findViewById(R.id.timer_text_view);
+            timerText.setVisibility(View.GONE);
+
+            RelativeLayout layout = (RelativeLayout)findViewById(R.id.main_layout);
+
+            RelativeLayout.LayoutParams imageparams = new RelativeLayout.LayoutParams(
+                    RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+            imageparams.addRule(RelativeLayout.ALIGN_PARENT_TOP);
+            imageparams.addRule(RelativeLayout.ABOVE, R.id.select_location_button);
+            layout.updateViewLayout(userImageView, imageparams);
+            btn.setEnabled(true);
+        }
+        else{
+            setCountdownTimer(findViewById(R.id.timer_text_view));
+            btn.setEnabled(false);
+        }
     }
 
     @Override
