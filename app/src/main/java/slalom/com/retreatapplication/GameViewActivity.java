@@ -121,9 +121,9 @@ public class GameViewActivity extends AppCompatActivity {
         }
 
         private String[] questionsArray = {
-                "...Attended the Boston Business Journal Best Places to Work Award Ceremony?",
+                "...Attended the BBJ Best Places to Work Award Ceremony?",
                 "...Can Name 5 of Slalom's Core Values?",
-                "...Volunteered at the Greater Boston Food Bank with Slalom?",
+                "...Volunteered at the Greater Boston Food Bank?",
                 "...Has Run the Boston Marathon?",
                 "...Participated in Last Year's Shuffleboard Tournament",
                 "...Part of the Slalom Boston First 20?",
