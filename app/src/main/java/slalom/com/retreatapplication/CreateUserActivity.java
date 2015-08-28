@@ -91,13 +91,21 @@ public class CreateUserActivity extends AppCompatActivity {
                 Uri imageUri = data.getData();
                 ((ImageView) findViewById(R.id.profile_picture)).setImageURI(imageUri);
 
-                String imageUriId = imageUri.getPathSegments().get(1).split(":")[1];
+                String imageUriId;
+                String tempImageUriPath = imageUri.toString().substring(imageUri.toString().lastIndexOf("/") + 1);
+                if (tempImageUriPath.contains("%3A")) {
+                    imageUriId = tempImageUriPath.split("%3A")[1];
+                } else {
+                    imageUriId = tempImageUriPath;
+                }
                 String[] filePathColumn = {MediaStore.Images.Media.DATA};
                 Cursor cursor = getContentResolver().query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, filePathColumn, "_id = ?", new String[]{imageUriId}, null);
-                cursor.moveToFirst();
-                int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-                userImage = cursor.getString(columnIndex);
-                cursor.close();
+                if (cursor != null) {
+                    cursor.moveToFirst();
+                    int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+                    userImage = cursor.getString(columnIndex);
+                    cursor.close();
+                }
             }
         }
     }
