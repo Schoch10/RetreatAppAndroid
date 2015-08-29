@@ -43,17 +43,6 @@ public class RetreatAppMainView extends AppCompatActivity {
         today = new Date();
         tPartyDate = new Date(today.getYear(),today.getMonth(),TPARTY_DATE);
         if(today.after(tPartyDate) || today.equals(tPartyDate)){
-            // Get calendar set to the current date and time
-            Calendar cal = Calendar.getInstance();
-
-            // Set time of calendar to 18:00
-            cal.set(Calendar.HOUR_OF_DAY, TPARTY_TIME);
-            cal.set(Calendar.MINUTE, 0);
-            cal.set(Calendar.SECOND, 0);
-            cal.set(Calendar.MILLISECOND, 0);
-
-            // Check if current time is after 18:00 today
-            if(Calendar.getInstance().after(cal) || Calendar.getInstance().after(cal))
                 timeToParty = true;
         }
 
